@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor de Mapas - Reserva de la Biosfera</title>
+    <link rel="icon" href="assets/ico/compass_icon_127015.ico" type="image/x-icon">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Leaflet.markercluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .popup-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+        .popup-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        .popup-desc img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 3px;
+            margin-top: 5px;
+        }
+        .popup-details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .popup-details-table td {
+            padding: 4px 0;
+            border-top: 1px solid #eee;
+            vertical-align: top;
+        }
+        .popup-details-table td:first-child {
+            font-weight: bold;
+            padding-right: 10px;
+            color: #555;
+        }
+        .popup-nav-link {
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #0078A8;
+        }
+        .popup-nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .map-header {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background-color: rgba(50, 50, 50, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .map-header h1 {
+            font-size: 1.1em;
+            margin: 0 0 8px 0;
+        }
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-item img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* --- Estilos del Panel Lateral --- */
+        #info-panel {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Oculto por defecto */
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: white;
+            z-index: 2000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -3px 0 15px rgba(0,0,0,0.2);
+        }
+        #info-panel.visible {
+            right: 0;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+        }
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        #close-panel-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #555;
+        }
+        .panel-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        #map-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+        #map-overlay.visible {
+            display: block;
+        }
+        .footer-credits {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .footer-credits a {
+            color: #0078A8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Media Query para móvil */
+        @media (max-width: 600px) {
+            .map-header {
+                max-width: calc(100% - 20px);
+            }
+             #info-panel {
+                max-width: 100%;
+            }
+        }
+
+        /* Soluciona el aviso de "will-change" en algunos navegadores */
+        .leaflet-marker-icon, .leaflet-marker-shadow {
+            will-change: unset !important;
+        }
+        
+        /* Ocultar control de zoom en móvil (portrait) */
+        @media (max-width: 600px) and (orientation: portrait) {
+            .leaflet-control-zoom {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map-overlay"></div>
+    <div id="map"></div>
+
+    <div class="map-header">
+        <h1>Productoras y Actividades de la Sierra del Rincón</h1>
+        <div class="map-legend">
+            <div class="legend-item">
+                <img src="actividades/iconoDoc.png" alt="Icono Actividades">
+                <span>Actividades</span>
+            </div>
+            <div class="legend-item">
+                <img src="productores/iconoDoc.png" alt="Icono Productores">
+                <span>Productores agroalimentarios</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-panel">
+        <div class="panel-header">
+            <h2 id="panel-title"></h2>
+            <button id="close-panel-btn">&times;</button>
+        </div>
+        <div class="panel-content" id="panel-content">
+            <!-- Contenido dinámico se insertará aquí -->
+        </div>
+    </div>
+    
+    <div class="footer-credits">
+        <a href="https://www.sierradelrincon.org/" target="_blank" rel="noopener noreferrer">Reserva de la Biosfera Sierra del Rincón</a>
+    </div>
+
+    <!-- Leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Leaflet.markercluster.js -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <!-- Leaflet Omnivore -->
+    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
+
+    <script>
+        // Inicializar el mapa centrado en España
+        const map = L.map('map').setView([40.416775, -3.703790], 6);
+
+        // Añadir una capa de mapa base de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // --- Carga de capas KML ---
+        let capasCargadas = 0;
+        const totalCapas = 3;
+        const group = new L.FeatureGroup();
+
+        // Función de control para ajustar el zoom después de cargar todas las capas
+        function verificarCargaCompleta() {
+            capasCargadas++;
+            if (capasCargadas === totalCapas) {
+                // Ajustar la vista del mapa a todos los elementos cargados
+                if (group.getLayers().length > 0) {
+                    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+                }
+            }
+        }
+
+        // --- Estilos y configuración ---
+
+        // 1. Capa de Municipios
+        const estiloMunicipios = {
+            color: '#4a4a4a',
+            weight: 2,
+            opacity: 0.6,
+            fillColor: '#808080',
+            fillOpacity: 0.2
+        };
+
+        const municipiosLayer = omnivore.kml('municipios/doc.kml')
+            .on('ready', function() {
+                this.eachLayer(function(layer) {
+                    layer.setStyle(estiloMunicipios);
+                    // Añadir Tooltip con el nombre
+                    if (layer.feature.properties.name) {
+                        layer.bindTooltip(layer.feature.properties.name);
+                    }
+                    group.addLayer(layer);
+                });
+                verificarCargaCompleta();
+            })
+            .on('error', function(error) {
+                console.error("Error al cargar municipios/doc.kml:", error);
+                verificarCargaCompleta(); // Continuar aunque falle una capa
+            })
+            .addTo(map);
+
+        // --- Lógica para Puntos (Productores y Actividades) ---
+
+        const EXCLUDED_DATA_FIELDS = ['styleurl', 'stylehash', 'name', 'description', 'icon', 'visible', 'gx_media_links', 'lat', 'long', 'media_url', 'color', 'nombre', 'iconurl'];
+
+        // DOM Elements for Panel
+        const infoPanel = document.getElementById('info-panel');
+        const panelTitle = document.getElementById('panel-title');
+        const panelContent = document.getElementById('panel-content');
+        const closePanelBtn = document.getElementById('close-panel-btn');
+        const mapOverlay = document.getElementById('map-overlay');
+
+        // Close Panel Logic
+        function closeInfoPanel() {
+            infoPanel.classList.remove('visible');
+            mapOverlay.classList.remove('visible');
+        }
+        closePanelBtn.addEventListener('click', closeInfoPanel);
+        mapOverlay.addEventListener('click', closeInfoPanel);
+
+
+        // Función para mostrar info en el panel
+        function displayFeatureInfo(feature, carpetaBase) {
+            const properties = feature.properties;
+            const name = properties.name || 'Sin título';
+
+            // --- 1.A Icono del Popup ---
+            let iconHtml = '';
+            if (properties.iconUrl) {
+                const iconPath = `${carpetaBase}/${properties.iconUrl}`;
+                iconHtml = `<img src="${iconPath}" class="popup-icon" onerror="this.style.display='none'">`;
+            }
+            
+            // --- 1.B Limpieza de la Descripción ---
+            // --- 1.C Filtrado y formato de propiedades ---
+            let detailsHtml = '';
+            const details = Object.entries(properties)
+                .filter(([key, value]) => value && !EXCLUDED_DATA_FIELDS.includes(key.toLowerCase()))
+                .map(([key, value]) => {
+                    let displayValue = value;
+                    if (typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'))) {
+                        displayValue = `<a href="${value}" target="_blank" rel="noopener noreferrer">${value}</a>`;
+                    }
+                    return `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
+                })
+                .join('');
+            
+            if (details) {
+                detailsHtml = `<table class="popup-details-table">${details}</table>`;
+            }
+
+            // --- 1.D Botón de Navegación (Condicional) ---
+            let navLinkHtml = '';
+            if (properties.gx_media_links) {
+                navLinkHtml = `<a href="${properties.gx_media_links}" class="popup-nav-link" target="_blank" rel="noopener noreferrer">📍 Cómo llegar</a>`;
+            }
+
+            // --- Ensamblaje del contenido para el panel ---
+            const panelBody = `
+                ${detailsHtml}
+                ${navLinkHtml}`;
+            
+            // Actualizar el DOM del panel
+            panelTitle.textContent = name;
+            panelContent.innerHTML = panelBody;
+            
+            // Limpiar icono anterior si lo hubiera
+            const oldIcon = panelTitle.parentElement.querySelector('.popup-icon');
+            if (oldIcon) {
+                oldIcon.remove();
+            }
+
+            // Mostrar icono junto al título si existe
+            if (iconHtml) {
+                panelTitle.insertAdjacentHTML('afterend', iconHtml);
+            }
+
+            // Mostrar Panel
+            infoPanel.classList.add('visible');
+            mapOverlay.classList.add('visible');
+        }
+
+        // Función genérica para onEachFeature en capas de puntos
+        function onEachFeaturePunto(feature, layer, carpetaBase) {
+            layer.on('click', function() {
+                displayFeatureInfo(feature, carpetaBase);
+            });
+        }
+
+        // --- Nueva lógica de carga de KML con parsing de estilos ---
+
+        // Función para parsear los estilos de un KML
+        async function parseKmlStyles(url) {
+            const response = await fetch(url);
+            const kmlText = await response.text();
+            const parser = new DOMParser();
+            const kmlDoc = parser.parseFromString(kmlText, 'application/xml');
+            
+            const styles = new Map();
+            const styleMaps = new Map();
+
+            // Primero, parsear StyleMap para resolver indirecciones
+            kmlDoc.querySelectorAll('StyleMap').forEach(styleMap => {
+                const id = styleMap.getAttribute('id');
+                let normalStyleUrl = null;
+                styleMap.querySelectorAll('Pair').forEach(pair => {
+                    const key = pair.querySelector('key');
+                    if (key && key.textContent.trim() === 'normal') {
+                        normalStyleUrl = pair.querySelector('styleUrl');
+                    }
+                });
+                if (id && normalStyleUrl) {
+                    styleMaps.set(`#${id}`, normalStyleUrl.textContent.trim());
+                }
+            });
+
+            // Segundo, parsear Style para obtener href
+            kmlDoc.querySelectorAll('Style').forEach(style => {
+                const id = style.getAttribute('id');
+                const iconHref = style.querySelector('Icon > href');
+                if (id && iconHref) {
+                    styles.set(`#${id}`, iconHref.textContent.trim());
+                }
+            });
+
+            return { styles, styleMaps };
+        }
+
+        // Función genérica para cargar KML de puntos
+        async function cargarKMLPuntos(url, carpetaBase) {
+            const { styles, styleMaps } = await parseKmlStyles(url);
+            const clusterGroup = L.markerClusterGroup();
+
+            const customLayer = L.geoJson(null, {
+                onEachFeature: (feature, layer) => {
+                    // Extraer styleUrl y resolverlo
+                    let styleUrl = feature.properties.styleUrl;
+
+                    // Si es un StyleMap, obtener el styleUrl normal
+                    if (styleMaps.has(styleUrl)) {
+                        styleUrl = styleMaps.get(styleUrl);
+                    }
+                    
+                    // Obtener el href del icono desde el mapa de estilos
+                    const iconPath = styles.get(styleUrl);
+
+                    // Adjuntar el path del icono a las propiedades para usarlo en el panel
+                    if (iconPath) {
+                        feature.properties.iconUrl = iconPath;
+                    }
+                    
+                    onEachFeaturePunto(feature, layer, carpetaBase);
+                },
+                pointToLayer: (feature, latlng) => {
+                    let styleUrl = feature.properties.styleUrl;
+
+                    if (styleMaps.has(styleUrl)) {
+                        styleUrl = styleMaps.get(styleUrl);
+                    }
+                    
+                    const iconPath = styles.get(styleUrl);
+                    
+                    let finalIconUrl = `${carpetaBase}/iconoDoc.png`; // Fallback
+                    if (iconPath) {
+                        finalIconUrl = `${carpetaBase}/${iconPath}`;
+                    }
+
+                    return L.marker(latlng, {
+                        icon: L.icon({
+                            iconUrl: finalIconUrl,
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 32],
+                            popupAnchor: [0, -32]
+                        })
+                    });
+                }
+            });
+
+            const kmlLayer = omnivore.kml(url, null, customLayer)
+                .on('ready', function() {
+                    clusterGroup.addLayer(this);
+                    map.addLayer(clusterGroup);
+                    this.eachLayer(layer => group.addLayer(layer));
+                    verificarCargaCompleta();
+                })
+                .on('error', function(error) {
+                    console.error(`Error al cargar ${url}:`, error);
+                    verificarCargaCompleta();
+                });
+        }
+
+        // Cargar capas
+        cargarKMLPuntos('productores/doc.kml', 'productores');
+        cargarKMLPuntos('actividades/doc.kml', 'actividades');
+
+    </script>
+
+</body>
+</html>

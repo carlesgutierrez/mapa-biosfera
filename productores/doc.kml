@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>🌿 Productores</name>
+    <Style id="icon-ci-1-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-1.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-1-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-1.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-1">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-1-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-1-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-10-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-10.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-10-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-10.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-10">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-10-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-10-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-2-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-2.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-2-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-2.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-2">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-2-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-2-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-3-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-3.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-3-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-3.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-3">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-3-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-3-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-4-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-4.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-4-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-4.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-4">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-4-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-4-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-5-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-5.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-5-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-5.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-5">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-5-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-5-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-6-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-6.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-6-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-6.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-6">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-6-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-6-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-7-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-7.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-7-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-7.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-7">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-7-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-7-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-8-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-8.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-8-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-8.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-8">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-8-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-8-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-ci-9-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-9.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-ci-9-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>images/icon-9.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-ci-9">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-ci-9-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-ci-9-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>Ahumadero de Madarcos</name>
+      <description><![CDATA[lat: 41.04809808874536<br>long: -3.583806332147842<br>media_url: https://drive.google.com/file/d/1HEF82xY5SVDNZTg_KtSt9JCGwBYzJ34f/view?usp=sharing<br>icon: 🐟<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Ahumados artesanales, salmón, arroz, aceite, salsa, etc.<br>Persona referencia: Jorge<br>Pueblo: Madarcos<br>Web: https://www.elahumadero.com/<br>Email: <br>Red social: https://www.instagram.com/elahumadero/<br>Google Maps: https://maps.app.goo.gl/vWUv7ykkTRg34GUW9<br>Nombre: Ahumadero de Madarcos<br>Teléfono: 618239870]]></description>
+      <styleUrl>#icon-ci-1</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.04809808874536</value>
+        </Data>
+        <Data name="long">
+          <value>-3.583806332147842</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1HEF82xY5SVDNZTg_KtSt9JCGwBYzJ34f/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐟</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Ahumados artesanales, salmón, arroz, aceite, salsa, etc.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Jorge</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Madarcos</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.elahumadero.com/</value>
+        </Data>
+        <Data name="Email">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/elahumadero/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/vWUv7ykkTRg34GUW9</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Ahumadero de Madarcos</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>618239870</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.58380633214784,41.0480980887454,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Colectivo Briznas</name>
+      <description><![CDATA[lat: 41.01204347123549<br>long: -3.4449096033137794<br>media_url: https://drive.google.com/file/d/11aDw-rFStfavM6F3TDWs1Hnpm6G_yPmB/view?usp=sharing<br>icon: 🐐<br>color: blue<br>visible: <br>Estado: activo<br>Descripción: Productores agroecológicos de carne de cabrito, quesos y yogures elaborados con ganadería extensiva en Puebla de la Sierra.<br>Persona referencia: Marina<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: unascabrasenpuebla@gmail.com<br>Red social: <br>Google Maps: <br>Nombre: Colectivo Briznas<br>Teléfono: ]]></description>
+      <styleUrl>#icon-ci-2</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.01204347123549</value>
+        </Data>
+        <Data name="long">
+          <value>-3.4449096033137794</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/11aDw-rFStfavM6F3TDWs1Hnpm6G_yPmB/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐐</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value/>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Productores agroecológicos de carne de cabrito, quesos y yogures elaborados con ganadería extensiva en Puebla de la Sierra.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Marina</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Puebla de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value>unascabrasenpuebla@gmail.com</value>
+        </Data>
+        <Data name="Red social">
+          <value/>
+        </Data>
+        <Data name="Google Maps">
+          <value/>
+        </Data>
+        <Data name="Nombre">
+          <value>Colectivo Briznas</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.44490960331378,41.0120434712355,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Cabras la Barda</name>
+      <description><![CDATA[lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Piezas artesanas, técnicas tradicionales en paja y centeno.<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: https://socarrual.es/productos/<br>Email: cabraslabarda@gmail.com<br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: <br>Nombre: Cabras la Barda<br>Teléfono: ]]></description>
+      <styleUrl>#icon-ci-3</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.01210558438804</value>
+        </Data>
+        <Data name="long">
+          <value>-3.4450128837411294</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐐</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Piezas artesanas, técnicas tradicionales en paja y centeno.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Rebecca</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Puebla de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value>https://socarrual.es/productos/</value>
+        </Data>
+        <Data name="Email">
+          <value>cabraslabarda@gmail.com</value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/cabraslabarda/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value/>
+        </Data>
+        <Data name="Nombre">
+          <value>Cabras la Barda</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.44501288374113,41.012105584388,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Granja Prados Montes</name>
+      <description><![CDATA[lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Granja Prados Montes: Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Red social: https://www.instagram.com/granjapradosmontes/<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96<br>Nombre: Granja Prados Montes<br>Teléfono: ]]></description>
+      <styleUrl>#icon-ci-4</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.0615574712286</value>
+        </Data>
+        <Data name="long">
+          <value>-3.5300623033116296</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐑</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Granja Prados Montes: Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Ana y Guille</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Montejo de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.granjapradosmontes.com/</value>
+        </Data>
+        <Data name="Email">
+          <value>proyectopradosmontes@gmail.com</value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/granjapradosmontes/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/X9Jg6aEMMnsdbod96</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Granja Prados Montes</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.53006230331163,41.0615574712286,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Jardasca</name>
+      <description><![CDATA[lat: 41.07549175334722<br>long: -3.457164539418465<br>media_url: https://drive.google.com/file/d/1FuJYyEb3CUKHBD-0BX8KZQwDZ4c_qRtu/view?usp=sharing<br>icon: 🧀<br>color: blue<br>visible: no<br>Estado: Esperando leche de cabra para empezar a hacer quesos. <br>Descripción: Quesería artesanal en La Hiruela que elabora yogures y quesos con leche cruda de cabras en pastoreo tradicional, fomentando la sostenibilidad y la economía local. 🧀🐐<br>Persona referencia: Javier<br>Pueblo: La Hiruela<br>Web: <br>Email: <br>Red social: https://www.instagram.com/jardasca_queseria/<br>Google Maps: https://maps.app.goo.gl/PuYcwpFYYvVNuYkq8<br>Nombre: Jardasca<br>Teléfono: 645612652]]></description>
+      <styleUrl>#icon-ci-5</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.07549175334722</value>
+        </Data>
+        <Data name="long">
+          <value>-3.457164539418465</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1FuJYyEb3CUKHBD-0BX8KZQwDZ4c_qRtu/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🧀</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>no</value>
+        </Data>
+        <Data name="Estado">
+          <value>Esperando leche de cabra para empezar a hacer quesos. </value>
+        </Data>
+        <Data name="Descripción">
+          <value>Quesería artesanal en La Hiruela que elabora yogures y quesos con leche cruda de cabras en pastoreo tradicional, fomentando la sostenibilidad y la economía local. 🧀🐐</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Javier</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>La Hiruela</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/jardasca_queseria/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/PuYcwpFYYvVNuYkq8</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Jardasca</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>645612652</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.45716453941847,41.0754917533472,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Las Matosas</name>
+      <description><![CDATA[lat: 41.06246286805974<br>long: -3.530419601207211<br>media_url: <br>icon: 🥕<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Explotación familiar ecológica en Montejo de la Sierra dedicada al cultivo de hortalizas y legumbres locales de alta calidad y respeto ambiental. 🥕🌿<br>Persona referencia: Cristina<br>Pueblo: Montejo de la Sierra<br>Web: <br>Email: <br>Red social: <br>Google Maps: <br>Nombre: Las Matosas<br>Teléfono: ]]></description>
+      <styleUrl>#icon-ci-6</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.06246286805974</value>
+        </Data>
+        <Data name="long">
+          <value>-3.530419601207211</value>
+        </Data>
+        <Data name="media_url">
+          <value/>
+        </Data>
+        <Data name="icon">
+          <value>🥕</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Explotación familiar ecológica en Montejo de la Sierra dedicada al cultivo de hortalizas y legumbres locales de alta calidad y respeto ambiental. 🥕🌿</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Cristina</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Montejo de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value/>
+        </Data>
+        <Data name="Google Maps">
+          <value/>
+        </Data>
+        <Data name="Nombre">
+          <value>Las Matosas</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.53041960120721,41.0624628680597,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Pan y rosas</name>
+      <description><![CDATA[lat: 41.0584558020886<br>long: -3.53620123122489<br>media_url: https://drive.google.com/file/d/1aN8XbYtGhRXv-4LJD_JLV3RiBwuYcv2K/view?usp=sharing<br>icon: 🍞<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Elaboran pan artesanal de masa madre y repostería ecológica con ingredientes locales, ofreciendo sabores auténticos y sostenibles de la Sierra del Rincón. 🍞🌰🌾<br>Persona referencia: Mariluz<br>Pueblo: Montejo de la Sierra<br>Web: https://sites.google.com/view/panyrosas/inicio<br>Email: mariluzrubioiglesias@hotmail.com <br>Red social: https://www.instagram.com/panyrosas/<br>Google Maps: https://maps.app.goo.gl/AUKXF6mceYWtTMc9A<br>Nombre: Pan y rosas<br>Teléfono: 616434846]]></description>
+      <styleUrl>#icon-ci-7</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.0584558020886</value>
+        </Data>
+        <Data name="long">
+          <value>-3.53620123122489</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1aN8XbYtGhRXv-4LJD_JLV3RiBwuYcv2K/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🍞</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Elaboran pan artesanal de masa madre y repostería ecológica con ingredientes locales, ofreciendo sabores auténticos y sostenibles de la Sierra del Rincón. 🍞🌰🌾</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Mariluz</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Montejo de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value>https://sites.google.com/view/panyrosas/inicio</value>
+        </Data>
+        <Data name="Email">
+          <value>mariluzrubioiglesias@hotmail.com </value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/panyrosas/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/AUKXF6mceYWtTMc9A</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Pan y rosas</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>616434846</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.53620123122489,41.0584558020886,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Rincon Silvestre</name>
+      <description><![CDATA[lat: 41.0450479<br>long: -3.5417813<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 🌿<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA<br>Nombre: Rincon Silvestre<br>Teléfono: 678424305]]></description>
+      <styleUrl>#icon-ci-8</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.0450479</value>
+        </Data>
+        <Data name="long">
+          <value>-3.5417813</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🌿</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Carol</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Prádena del Rincón</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.rinconsilvestre.net/ </value>
+        </Data>
+        <Data name="Email">
+          <value>fitocosmetica@rinconsilvestre.net </value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/silvestrerincon/#</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/2z1G189wiW5kdsWHA</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Rincon Silvestre</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>678424305</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.5417813,41.0450479,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Apisquillos</name>
+      <description><![CDATA[lat: 41.011448441922695<br>long: -3.444472806056211<br>media_url: <br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Venta de cabrito de lechal.<br>Persona referencia: Marina y Álvaro<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: <br>Red social: https://www.facebook.com/losapisquillos/<br>Google Maps: https://maps.app.goo.gl/BZdiMMgfUsbKH8vZ6<br>Nombre: Apisquillos<br>Teléfono: 918696004 / 669439648]]></description>
+      <styleUrl>#icon-ci-9</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.011448441922695</value>
+        </Data>
+        <Data name="long">
+          <value>-3.444472806056211</value>
+        </Data>
+        <Data name="media_url">
+          <value/>
+        </Data>
+        <Data name="icon">
+          <value>🐐</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Venta de cabrito de lechal.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Marina y Álvaro</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Puebla de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.facebook.com/losapisquillos/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/BZdiMMgfUsbKH8vZ6</value>
+        </Data>
+        <Data name="Nombre">
+          <value>Apisquillos</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>918696004 / 669439648</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.44447280605621,41.0114484419227,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>GanadeMad</name>
+      <description><![CDATA[lat: 40.99283107516844<br>long: -3.6385259609858673<br>media_url: https://drive.google.com/file/d/1CWqnKICkrRebicq4vq0ocPFVXgaia-hS/view?usp=sharing<br>icon: 🐄<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Productores locales de carne de vacuno que cuidan de la tierra. Disfruta de una carne de la máxima calidad, criada en extensivo y servida directamente a tu domicilio. 🌿🥩<br>Persona referencia: Esther<br>Pueblo: Sede fiscal Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)<br>Web: https://www.delganaderoatucasa.com/ <br>Email: ganademad@gmail.com<br>Red social: https://www.instagram.com/delganaderoatucasa/ <br>Google Maps: https://maps.app.goo.gl/HRbuczPT1Q9TBHHX7<br>Nombre: GanadeMad<br>Teléfono: 671784732]]></description>
+      <styleUrl>#icon-ci-10</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>40.99283107516844</value>
+        </Data>
+        <Data name="long">
+          <value>-3.6385259609858673</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1CWqnKICkrRebicq4vq0ocPFVXgaia-hS/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐄</value>
+        </Data>
+        <Data name="color">
+          <value>blue</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Productores locales de carne de vacuno que cuidan de la tierra. Disfruta de una carne de la máxima calidad, criada en extensivo y servida directamente a tu domicilio. 🌿🥩</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Esther</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Sede fiscal Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.delganaderoatucasa.com/ </value>
+        </Data>
+        <Data name="Email">
+          <value>ganademad@gmail.com</value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/delganaderoatucasa/ </value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/HRbuczPT1Q9TBHHX7</value>
+        </Data>
+        <Data name="Nombre">
+          <value>GanadeMad</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>671784732</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.63852596098587,40.9928310751684,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

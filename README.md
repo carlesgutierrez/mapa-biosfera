@@ -52,7 +52,25 @@ Para que la aplicación funcione, los archivos deben mantener la siguiente estru
 - **Enlace de Navegación:** El panel incluye un enlace "📍 Cómo llegar" que abre Google Maps con la ubicación del punto.
 - **Diseño Responsivo:** La interfaz se adapta a diferentes tamaños de pantalla, optimizando la experiencia en escritorio y móvil.
 
-## 4. Próximas Mejoras
+## 4. Cómo Integrar el Mapa
+
+Para insertar este mapa en otra página web (como un sitio de WordPress, un blog, etc.), puedes utilizar un `<iframe>`. Asegúrate de que el proyecto esté alojado en un servidor web accesible públicamente (por ejemplo, a través de GitHub Pages).
+
+Copia y pega el siguiente código HTML en tu página:
+
+```html
+<iframe 
+  src="https://carlesgutierrez.github.io/mapa-biosfera/" 
+  width="100%" 
+  height="800" 
+  style="border:1px solid #ccc; display: block; margin: 0 auto;" 
+  title="Mapa de la Reserva de la Biosfera">
+</iframe>
+```
+
+Puedes ajustar los atributos `width` y `height` según tus necesidades.
+
+## 5. Próximas Mejoras
 
 - **Filtro de Capas:**
   - Implementar un control interactivo para mostrar u ocultar las capas de "Actividades" y "Productores".

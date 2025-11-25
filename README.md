@@ -14,49 +14,85 @@ Este proyecto es una aplicación de mapa web ligera y auto-contenida, diseñada 
 
 ## 2. Estructura del Proyecto
 
-Para que la aplicación funcione, los archivos deben mantener la siguiente estructura de carpetas, ya que los recursos se cargan mediante rutas relativas.
+El proyecto ha sido refactorizado para mejorar su mantenibilidad y escalabilidad.
 
 ```
 .
-├── index.html           # La aplicación principal del mapa
+├── index.html           # Estructura principal
+├── css/
+│   └── styles.css       # Todos los estilos de la aplicación
+├── js/
+│   ├── config.js        # Configuración centralizada (capas, estilos, iconos)
+│   └── app.js           # Lógica principal de la aplicación
 ├── municipios/
 │   └── doc.kml          # KML con los polígonos de los límites municipales
 ├── productores/
 │   ├── doc.kml          # KML con los puntos de interés de los productores
 │   ├── iconoDoc.png     # Icono principal para esta capa
-│   └── images/          # Imágenes usadas en los popups de los productores
+│   └── images/          # Imágenes usadas en los popups
 └── actividades/
     ├── doc.kml          # KML con los puntos de interés de las actividades
     ├── iconoDoc.png     # Icono principal para esta capa
-    └── images/          # Imágenes usadas en los popups de las actividades
+    └── images/          # Imágenes usadas en los popups
 ```
 
 ## 3. Funcionalidades Clave
 
-### A. Visualización del Mapa
-- **Mapa Base:** Utiliza OpenStreetMap como capa de fondo.
-- **Carga Asíncrona:** Las capas KML se cargan de forma asíncrona para no bloquear la interfaz.
-- **Ajuste de Vista Automático:** El mapa se ajusta automáticamente (`fitBounds`) para mostrar todos los datos una vez que las capas han terminado de cargarse.
+### A. Visualización y Capas
+- **Múltiples Capas Base:**
+  - **Gray (Por defecto):** CartoDB Positron, ideal para resaltar los iconos.
+  - **Voyager:** CartoDB Voyager, diseño limpio y moderno.
+  - **Standard:** OpenStreetMap clásico.
+  - **Transporte:** ÖPNVKarte (Transporte público).
+- **Filtrado Interactivo:**
+  - Los elementos de la leyenda ("Actividades" y "Productores") funcionan como botones para activar/desactivar las capas correspondientes.
+- **Clustering Inteligente:**
+  - Los marcadores de Actividades y Productores se agrupan en un mismo sistema de clústeres para evitar solapamientos y mantener el mapa limpio.
 
-### B. Capas de Datos
-- **Límites Municipales:** Polígonos estilizados que muestran el nombre del municipio al pasar el cursor.
-- **Puntos de Interés (Productores y Actividades):**
-  - **Clustering:** Los marcadores se agrupan en clústeres para mantener el mapa limpio en vistas alejadas.
-  - **Iconos Personalizados:** Cada capa principal utiliza un icono distintivo para una fácil identificación en la leyenda y el mapa.
-  - **Parseo de Iconos KML:** El sistema lee el icono específico definido para cada punto dentro del KML y lo asigna al marcador correspondiente.
+### B. Experiencia de Usuario
+- **Modo Alto Contraste:**
+  - Botón dedicado en el header para activar un modo de alto contraste.
+  - Aumenta el tamaño de las fuentes y mejora la visibilidad del mapa.
+- **Panel de Información:**
+  - Al hacer clic en un marcador, se abre un panel lateral con información detallada, imágenes y enlaces.
+- **Tooltips Mejorados:**
+  - Los nombres de los municipios aparecen al pasar el ratón, con un tamaño de fuente optimizado para lectura.
 
-### C. Interacción y Experiencia de Usuario
-- **Panel de Información Detallada:**
-  - Al hacer clic en un marcador, se abre un panel lateral que muestra la información del punto, en lugar de un popup sobre el mapa. Esto permite mostrar más contenido de forma limpia y es más amigable en dispositivos móviles.
-  - El panel muestra dinámicamente el nombre, una tabla con atributos filtrados (excluyendo datos técnicos irrelevantes) y un icono representativo.
-- **Enlace de Navegación:** El panel incluye un enlace "📍 Cómo llegar" que abre Google Maps con la ubicación del punto.
-- **Diseño Responsivo:** La interfaz se adapta a diferentes tamaños de pantalla, optimizando la experiencia en escritorio y móvil.
+### C. Configuración Fácil
+- Todo el comportamiento del mapa se puede ajustar desde `js/config.js`:
+  - Cambiar la capa por defecto.
+  - Ajustar el tamaño de los iconos.
+  - Habilitar/deshabilitar popups en municipios.
+  - Modificar estilos y colores.
 
-## 4. Cómo Integrar el Mapa
+## 4. Cómo Actualizar la Página (GitHub Pages)
 
-Para insertar este mapa en otra página web (como un sitio de WordPress, un blog, etc.), puedes utilizar un `<iframe>`. Asegúrate de que el proyecto esté alojado en un servidor web accesible públicamente (por ejemplo, a través de GitHub Pages).
+Si este proyecto está alojado en GitHub Pages, sigue estos pasos para actualizar la versión online con los últimos cambios:
 
-Copia y pega el siguiente código HTML en tu página:
+1.  **Guardar Cambios:** Asegúrate de haber guardado todos los archivos modificados en tu editor.
+2.  **Commit y Push:**
+    Desde tu terminal o cliente de Git, ejecuta los siguientes comandos:
+
+    ```bash
+    # Añadir todos los cambios al área de preparación
+    git add .
+
+    # Crear un commit con un mensaje descriptivo
+    git commit -m "Refactorización del mapa: nuevas capas, filtrado y alto contraste"
+
+    # Subir los cambios al repositorio remoto (GitHub)
+    git push origin main
+    ```
+    *(Nota: Si tu rama principal se llama `master`, usa `git push origin master`)*.
+
+3.  **Verificación:**
+    - Ve a la pestaña "Actions" o "Settings > Pages" en tu repositorio de GitHub para ver el estado del despliegue.
+    - Una vez completado, los cambios estarán visibles en la URL de tu GitHub Pages (ej. `https://tu-usuario.github.io/mapa-biosfera/`).
+    - **Importante:** Puede tardar unos minutos en actualizarse. Si no ves los cambios, prueba a limpiar la caché de tu navegador (Ctrl+F5 o Cmd+Shift+R).
+
+## 5. Integración
+
+Para insertar este mapa en otra web:
 
 ```html
 <iframe 
@@ -66,16 +102,3 @@ Copia y pega el siguiente código HTML en tu página:
   style="border:1px solid #ccc; display: block; margin: 0 auto;" 
   title="Mapa de la Reserva de la Biosfera">
 </iframe>
-```
-
-Puedes ajustar los atributos `width` y `height` según tus necesidades.
-
-## 5. Próximas Mejoras
-
-- **Filtro de Capas:**
-  - Implementar un control interactivo para mostrar u ocultar las capas de "Actividades" y "Productores".
-  - La leyenda del mapa se actualizará visualmente (ej. cambiando a color gris) para reflejar qué capas están activas.
-
-- **Listado Interactivo de Puntos:**
-  - Añadir una sección en el panel lateral para listar todos los marcadores de la capa visible.
-  - Al hacer clic en un elemento de la lista, el mapa se centrará en el marcador correspondiente y mostrará su información.

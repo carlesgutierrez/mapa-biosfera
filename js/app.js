@@ -24,6 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Inicialización del Mapa ---
 function initMap() {
     map = L.map('map').setView(CONFIG.map.center, CONFIG.map.zoom);
+    
+    // Guardar zoom anterior para detectar dirección del zoom
+    let lastZoom = map.getZoom();
+    map.on('zoomend', () => {
+        const currentZoom = map.getZoom();
+        if (currentZoom < lastZoom) {
+            // Zoom Out detectado -> Cerrar panel y limpiar selección
+            // Esto soluciona el bug de que el halo se quede visible sobre un cluster
+            //closeInfoPanel();
+        }
+        lastZoom = currentZoom;
+    });
 
     // Configurar capas base dinámicamente desde CONFIG
     const baseLayers = {};
@@ -52,7 +64,66 @@ function initMap() {
 
     // Inicializar grupo de clusters compartido
     sharedClusterGroup = L.markerClusterGroup();
+    
+    // Evento click en cluster (nodo verde)
+    sharedClusterGroup.on('clusterclick', function (a) {
+        // Comportamiento por defecto de la librería
+    });
+
+    // Detectar cuando se reagrupan los clusters (zoom out)
+    // Si un marcador seleccionado se agrupa en un cluster, debemos cerrar el panel y limpiar selección.
+    sharedClusterGroup.on('animationend', function() {
+        if (selectedMarker) {
+                // Comprobamos quién es el "padre visible" del marcador seleccionado
+                const visibleParent = sharedClusterGroup.getVisibleParent(selectedMarker);
+
+                // Si el padre visible NO es el marcador mismo, significa que está dentro de un cluster
+                if (visibleParent !== selectedMarker) {
+                    console.log("El marcador seleccionado se ha agrupado en un cluster.");
+                    
+                    // Ejecutar la acción deseada
+                    clearSelection(); 
+                    
+                    // Probablemente también quieras cerrar el panel:
+                    // closeInfoPanel(); 
+                }
+            }
+    });
+
     map.addLayer(sharedClusterGroup);
+    
+    // Evento de zoom del mapa para cerrar panel si es zoom out significativo que agrupa cosas
+    map.on('zoomend', function() {
+        // ... (lógica ya implementada en initMap con lastZoom)
+    });
+
+    // Evento click en el mapa para deseleccionar
+    map.on('click', function(e) {
+        // Si se hace click en el mapa (no en un marcador ni control), cerrar panel
+        // Leaflet propaga el click del marcador al mapa a menos que se use L.DomEvent.stopPropagation
+        // Pero markercluster y nuestros marcadores dejan pasar el evento a veces.
+        // Sin embargo, el evento click del marcador se ejecuta antes.
+        
+        // Si hacemos click en el mapa "vacío", queremos cerrar.
+        // Pero si hacemos click en un marcador, se abre el panel.
+        // El problema es que el evento click del mapa se dispara TAMBIÉN al hacer click en un marcador si no se para la propagación.
+        
+        // Afortunadamente, Leaflet maneja esto bien si comprobamos el target original o si usamos un flag.
+        // Pero una forma más sencilla en Leaflet:
+        // El evento 'click' del mapa se dispara cuando se hace click en el fondo.
+        
+        // Vamos a cerrar el panel.
+        // PERO: Si acabamos de hacer click en un marcador, no queremos cerrarlo inmediatamente.
+        // El evento click del marcador ocurre antes o después?
+        // En Leaflet, el click del marcador se dispara, y si no se para, sube al mapa.
+        
+        // Vamos a añadir stopPropagation en el click del marcador para evitar que llegue aquí.
+        // O simplemente comprobar si el click fue en algo interactivo.
+        
+        // En la función loadPuntos, añadiremos L.DomEvent.stopPropagation(e) en el click del marcador.
+        
+        //closeInfoPanel();
+    });
 }
 
 // --- Inicialización de UI ---
@@ -309,8 +380,13 @@ async function loadPuntos(layerConfig) {
             
             // Evento Click
             layer.on('click', (e) => {
+                // Evitar que el click se propague al mapa y cierre el panel inmediatamente
+                L.DomEvent.stopPropagation(e);
+
                 // Efecto visual selección
                 createHalo(e.latlng);
+
+                selectedMarker = layer; // <--- AÑADIR ESTA LÍNEA para guardar la referencia
                 
                 // Zoom in condicional
                 // Comprobamos si es un cluster spiderfied (varios puntos en el mismo sitio o muy cerca)
@@ -364,7 +440,28 @@ async function loadPuntos(layerConfig) {
                 const isSpiderfied = layer._spiderLeg;
                 
                 if (!isSpiderfied) {
-                    map.flyTo(e.latlng, 16, { duration: 1.5 });
+                    // Calcular centro ajustado si el panel lateral está abierto en escritorio
+                    let targetLatLng = e.latlng;
+                    
+                    // Comprobar si estamos en modo escritorio (ancho > 600px)
+                    if (window.innerWidth > 600) {
+                        // El panel ocupa 400px a la derecha.
+                        // Queremos centrar el punto en el espacio restante (width - 400px).
+                        // El centro de ese espacio está desplazado a la izquierda respecto al centro del mapa total.
+                        // Desplazamiento necesario en píxeles: -200px (mitad del panel) en X.
+                        
+                        // Convertir latlng a punto contenedor, desplazar, y volver a latlng
+                        const point = map.project(e.latlng, 16); // Proyectar al zoom destino
+                        const newPoint = point.add([200, 0]); // Desplazar el centro objetivo a la derecha para que el punto quede a la izquierda
+                        // Espera, si el panel está a la derecha, el área visible es la izquierda.
+                        // El centro del área visible está a la izquierda del centro del mapa.
+                        // Queremos que el marcador (e.latlng) quede en ese centro visual.
+                        // Por tanto, el centro del mapa debe estar a la DERECHA del marcador.
+                        // Así que el target del flyTo debe ser un punto a la derecha del marcador.
+                        targetLatLng = map.unproject(newPoint, 16);
+                    }
+
+                    map.flyTo(targetLatLng, 16, { duration: 1.5 });
                 }
 
                 displayFeatureInfo(feature, layerConfig.folder);

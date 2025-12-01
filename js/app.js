@@ -66,6 +66,12 @@ function initUI() {
     if (contrastBtn) {
         contrastBtn.addEventListener('click', toggleContrastMode);
     }
+
+    // Botón Reset Filtros
+    const resetBtn = document.getElementById('reset-filter-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetFilters);
+    }
 }
 
 function toggleContrastMode() {
@@ -94,29 +100,68 @@ function initLegend() {
             element.classList.add('active');
             
             element.addEventListener('click', () => {
-                toggleLayer(key, element);
+                toggleLayerExclusive(key, element, legendItems);
             });
         }
     });
 }
 
-function toggleLayer(type, element) {
-    const layer = layerGroups[type];
-    if (!layer) return;
+function resetFilters() {
+    const legendItems = {
+        'actividades': document.getElementById('legend-actividades'),
+        'productores': document.getElementById('legend-productores')
+    };
 
-    const isActive = element.classList.contains('active');
-
-    if (isActive) {
-        // Desactivar
-        element.classList.remove('active');
-        element.classList.add('inactive');
-        sharedClusterGroup.removeLayer(layer);
-    } else {
-        // Activar
+    Object.entries(legendItems).forEach(([key, element]) => {
+        const layer = layerGroups[key];
+        
+        // Activar visualmente
         element.classList.remove('inactive');
         element.classList.add('active');
-        sharedClusterGroup.addLayer(layer);
+        
+        // Activar capa
+        if (layer && !sharedClusterGroup.hasLayer(layer)) {
+            sharedClusterGroup.addLayer(layer);
+        }
+    });
+}
+
+function toggleLayerExclusive(selectedType, selectedElement, allElements) {
+    const selectedLayer = layerGroups[selectedType];
+    if (!selectedLayer) {
+        console.warn(`Capa no encontrada para: ${selectedType}`);
+        return;
     }
+
+    const allTypes = Object.keys(allElements);
+
+    allTypes.forEach(type => {
+        const el = allElements[type];
+        const lay = layerGroups[type];
+        
+        if (!lay) return;
+
+        if (type === selectedType) {
+            // Activar el seleccionado
+            el.classList.remove('inactive');
+            el.classList.add('active');
+            
+            // Forzamos añadir sin comprobar hasLayer para asegurar,
+            // aunque MarkerClusterGroup debería manejarlo.
+            // Si ya está, no pasa nada (o se puede comprobar).
+            // Nota: hasLayer en MarkerClusterGroup con GeoJSON a veces es confuso.
+            if (!sharedClusterGroup.hasLayer(lay)) {
+                sharedClusterGroup.addLayer(lay);
+            }
+        } else {
+            // Desactivar los demás
+            el.classList.remove('active');
+            el.classList.add('inactive');
+            
+            // Intentamos remover siempre
+            sharedClusterGroup.removeLayer(lay);
+        }
+    });
 }
 
 // --- Carga de Capas ---

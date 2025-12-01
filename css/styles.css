@@ -76,10 +76,11 @@ html, body {
     z-index: 1000;
     background-color: rgba(50, 50, 50, 0.8);
     color: white;
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 8px;
     text-align: center;
-    max-width: 90%;
+    max-width: 360px;
+    width: 100%;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
@@ -94,22 +95,25 @@ html, body {
 
 .map-legend {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 8px;
     font-size: 0.9em;
+    width: 100%;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     cursor: pointer;
-    padding: 6px 12px;
+    padding: 8px 10px;
     border-radius: 4px;
     transition: all 0.2s;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid transparent;
+    flex-grow: 1;
 }
 
 .legend-item:hover {
@@ -229,22 +233,34 @@ html, body {
 /* --- Footer Credits --- */
 .footer-credits {
     position: absolute;
-    bottom: 5px;
-    right: 10px;
+    bottom: 0;
+    right: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 3px 8px;
-    border-radius: 3px;
-    font-size: 12px;
+    background: rgba(50, 50, 50, 0.95);
+    padding: 5px 10px;
+    border-top-left-radius: 5px;
+    font-size: 11px;
+    color: #ccc;
 }
 
 .footer-credits a {
-    color: #0078A8;
+    color: #ccc;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: normal;
+    transition: color 0.2s;
+}
+
+.footer-credits a:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 /* --- Leaflet Overrides --- */
+/* Ocultar atribución por defecto de Leaflet para unificarla en el footer */
+.leaflet-control-attribution {
+    display: none !important;
+}
+
 /* Fix "will-change" warning */
 .leaflet-marker-icon, .leaflet-marker-shadow {
     will-change: unset !important;
@@ -280,12 +296,26 @@ body.high-contrast .popup-details-table td {
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header {
-        max-width: calc(100% - 20px);
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
         flex-direction: column;
+        padding: 10px;
+        background-color: rgba(50, 50, 50, 0.95);
+        box-sizing: border-box;
     }
     
+    .map-header h1 {
+        font-size: 1em;
+        margin-bottom: 8px;
+    }
+
     #info-panel {
         max-width: 100%;
+        z-index: 2001;
     }
 }
 

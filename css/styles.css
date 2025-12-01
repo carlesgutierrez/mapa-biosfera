@@ -226,6 +226,16 @@ html, body {
     display: none;
 }
 
+/* En pantallas grandes, el overlay no oscurece el mapa, solo bloquea clicks si es necesario */
+@media (min-width: 601px) {
+    #map-overlay {
+        background: transparent;
+        pointer-events: none; /* Permitir interacción con el mapa si se desea, o bloquear solo zona panel */
+        /* Si queremos bloquear interacción con el mapa pero verlo claro: */
+        /* pointer-events: auto; */
+    }
+}
+
 #map-overlay.visible {
     display: block;
 }
@@ -264,6 +274,19 @@ html, body {
 /* Fix "will-change" warning */
 .leaflet-marker-icon, .leaflet-marker-shadow {
     will-change: unset !important;
+}
+
+/* Estilo para el marcador seleccionado (halo blanco) */
+.marker-selected-halo {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    pointer-events: none; /* Para que no interfiera con clicks */
+    z-index: 900; /* Debajo del marcador pero encima del mapa */
+    /* Leaflet ya posiciona el divIcon, no necesitamos position absolute ni transform aquí si usamos iconAnchor correctamente */
+    /* Pero para asegurar centrado visual si el icono es irregular: */
+    box-sizing: border-box;
 }
 
 /* --- High Contrast Mode --- */

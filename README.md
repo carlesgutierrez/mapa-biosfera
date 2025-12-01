@@ -65,7 +65,32 @@ El proyecto ha sido refactorizado para mejorar su mantenibilidad y escalabilidad
   - Habilitar/deshabilitar popups en municipios.
   - Modificar estilos y colores.
 
-## 4. Integración
+## 4. Cómo Actualizar la Página (GitHub Pages)
+
+Si este proyecto está alojado en GitHub Pages, sigue estos pasos para actualizar la versión online con los últimos cambios:
+
+1.  **Guardar Cambios:** Asegúrate de haber guardado todos los archivos modificados en tu editor.
+2.  **Commit y Push:**
+    Desde tu terminal o cliente de Git, ejecuta los siguientes comandos:
+
+    ```bash
+    # Añadir todos los cambios al área de preparación
+    git add .
+
+    # Crear un commit con un mensaje descriptivo
+    git commit -m "Refactorización del mapa: nuevas capas, filtrado y alto contraste"
+
+    # Subir los cambios al repositorio remoto (GitHub)
+    git push origin main
+    ```
+    *(Nota: Si tu rama principal se llama `master`, usa `git push origin master`)*.
+
+3.  **Verificación:**
+    - Ve a la pestaña "Actions" o "Settings > Pages" en tu repositorio de GitHub para ver el estado del despliegue.
+    - Una vez completado, los cambios estarán visibles en la URL de tu GitHub Pages (ej. `https://tu-usuario.github.io/mapa-biosfera/`).
+    - **Importante:** Puede tardar unos minutos en actualizarse. Si no ves los cambios, prueba a limpiar la caché de tu navegador (Ctrl+F5 o Cmd+Shift+R).
+
+## 5. Integración
 
 Para insertar este mapa en otra web:
 

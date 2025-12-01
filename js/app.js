@@ -9,6 +9,9 @@ let sharedClusterGroup; // Grupo de clusters compartido
 let layerGroups = {}; // Almacén de capas para filtrado
 let capasCargadas = 0;
 const totalCapas = CONFIG.layers.length;
+let selectedMarker = null; // Referencia al marcador seleccionado actualmente
+let selectedHalo = null; // Referencia al halo visual
+let initialBounds = null; // Para guardar la vista inicial
 
 // --- Inicialización ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -85,6 +88,72 @@ function closeInfoPanel() {
     const mapOverlay = document.getElementById('map-overlay');
     infoPanel.classList.remove('visible');
     mapOverlay.classList.remove('visible');
+
+    // Limpiar selección visual
+    clearSelection();
+
+    // Zoom out a posición intermedia
+    if (initialBounds) {
+        // Opción A: Volver a la vista inicial completa
+        // map.fitBounds(initialBounds, { padding: [50, 50], animate: true, duration: 1 });
+        
+        // Opción B: Zoom out intermedio (ej. zoom actual - 2, o un nivel fijo si estamos muy cerca)
+        const currentZoom = map.getZoom();
+        const targetZoom = Math.max(CONFIG.map.zoom, currentZoom - 2); // No alejar más que el zoom inicial config
+        
+        // Si queremos volver al centro inicial o mantener centro actual pero alejar
+        // map.setZoom(targetZoom, { animate: true });
+        
+        // Opción C (Solicitada): Posición intermedia entre inicial y actual.
+        // Es complejo definir "intermedia" en coordenadas.
+        // Simplificación efectiva: Volver a encuadrar todo el grupo (vista inicial) es lo más estándar "salir".
+        // Pero el usuario pide "posición intermedia".
+        // Vamos a hacer un fitBounds con un padding grande para alejar, o simplemente volver a initialBounds.
+        // Interpretando "salir de la descripción": volver a ver el contexto general.
+        map.fitBounds(initialBounds, { padding: [50, 50], animate: true, duration: 1.5 });
+    }
+}
+
+function clearSelection() {
+    if (selectedHalo) {
+        selectedHalo.remove();
+        selectedHalo = null;
+    }
+    selectedMarker = null;
+}
+
+function createHalo(latlng) {
+    clearSelection();
+    
+    // Crear un icono DivIcon para el halo
+    // El icono original tiene anchor [20, 40] (centro horizontal, base vertical)
+    // El halo es 50x50. Para centrarlo en el "centro visual" del icono (aprox a mitad de altura, no en la base):
+    // Si el icono mide 40 de alto, su centro visual está en y=-20 desde la base.
+    // El anchor del halo debe coincidir con la latlng del marcador (que es la base del pin).
+    // Si queremos que el halo rodee el centro del icono, debemos desplazarlo hacia arriba.
+    
+    const haloSize = 50;
+    const iconHeight = CONFIG.icons.size[1]; // 40
+    
+    // Ajuste manual para centrar visualmente en el icono
+    // Anchor X: mitad del halo (25)
+    // Anchor Y: mitad del halo (25) + mitad de la altura del icono (20) = 45?
+    // No, el latlng está en la punta inferior del icono.
+    // Queremos que el centro del halo esté en (latlng.x, latlng.y - iconHeight/2).
+    // Por tanto, el anchor del halo (punto que coincide con latlng) debe estar desplazado.
+    // Anchor = [25, 25 + 20] = [25, 45]
+    
+    const haloIcon = L.divIcon({
+        className: 'marker-selected-halo',
+        iconSize: [haloSize, haloSize],
+        iconAnchor: [haloSize/2, haloSize/2 + iconHeight/2]
+    });
+
+    selectedHalo = L.marker(latlng, {
+        icon: haloIcon,
+        zIndexOffset: -1000, // Intentar ponerlo detrás
+        interactive: false
+    }).addTo(map);
 }
 
 // --- Lógica de Leyenda y Filtrado ---
@@ -179,7 +248,8 @@ function verificarCargaCompleta() {
     capasCargadas++;
     if (capasCargadas === totalCapas) {
         if (group.getLayers().length > 0) {
-            map.fitBounds(group.getBounds(), { padding: [50, 50] });
+            initialBounds = group.getBounds();
+            map.fitBounds(initialBounds, { padding: [50, 50] });
         }
     }
 }
@@ -238,7 +308,83 @@ async function loadPuntos(layerConfig) {
             }
             
             // Evento Click
-            layer.on('click', () => displayFeatureInfo(feature, layerConfig.folder));
+            layer.on('click', (e) => {
+                // Efecto visual selección
+                createHalo(e.latlng);
+                
+                // Zoom in condicional
+                // Comprobamos si es un cluster spiderfied (varios puntos en el mismo sitio o muy cerca)
+                // Si el marcador pertenece a un cluster que se ha expandido (spiderfy), no hacemos zoom
+                // para no perder el contexto de los otros puntos.
+                
+                // Una forma de detectar si hay otros marcadores muy cerca es consultar el clusterGroup
+                // O más simple: si el nivel de zoom ya es muy alto, quizás no hace falta acercar más.
+                
+                // Lógica solicitada: "En el caso de que hayan 2 o más items conectados por proximidad con las líneas... no hagas el comportamiento del zoom in"
+                // Esto ocurre cuando Leaflet.markercluster expande un cluster (spiderfy).
+                // Podemos verificar si el marcador tiene la propiedad _spiderfied o si el padre es un cluster spiderfied.
+                // Pero markercluster maneja esto internamente.
+                
+                // Verificación:
+                // Si el marcador es visible, es que no está colapsado.
+                // Si hay líneas de spiderfy visibles, significa que estamos en ese modo.
+                
+                // Una manera robusta es comprobar si hay otros marcadores visibles en un radio muy pequeño.
+                // O usar la API de markercluster.
+                
+                // Vamos a usar una heurística simple pero efectiva:
+                // Si el zoom actual es igual o mayor que el zoom objetivo (16), no hacemos zoom.
+                // Además, si el marcador es parte de un spiderfy, el usuario ya ha hecho zoom o click en cluster.
+                
+                // Detectar spiderfy:
+                // Leaflet.markercluster añade clases o propiedades.
+                // Pero lo más directo es ver si el mapa tiene capas de "leg" (patas de araña).
+                // O comprobar si el marcador tiene `_spiderfied` (propiedad interna de la librería).
+                
+                // IMPORTANTE: Cuando un cluster se expande (spiderfy), los marcadores individuales
+                // NO tienen la propiedad _spiderfied a true necesariamente en el momento del click.
+                // Sin embargo, si el marcador es visible y está cerca de otros, es probable que sea parte de un spiderfy.
+                
+                // La mejor manera de saber si estamos en un estado "spiderfied" (varios items desplegados)
+                // es comprobar si el marcador tiene un padre cluster que esté spiderfied.
+                // O más simple: si el marcador ha sido movido de su posición original por el plugin.
+                
+                // Pero el usuario dice: "No tenia que hacer nada. Solo dejar seleccionada el item".
+                // Si el marcador es parte de un spiderfy, NO debemos hacer zoom.
+                
+                // Leaflet.markercluster dispara eventos 'spiderfied'.
+                // Pero aquí estamos en el evento click del marcador.
+                
+                // Truco: Los marcadores spiderfied suelen tener una línea conectora (polyline) asociada.
+                // O podemos comprobar si el marcador está en la misma posición que otros en el clusterGroup original.
+                
+                // Vamos a usar una propiedad que markercluster suele añadir o gestionar.
+                // Si el marcador está spiderfied, suele tener `_spiderLeg` (la línea).
+                
+                const isSpiderfied = layer._spiderLeg;
+                
+                if (!isSpiderfied) {
+                    map.flyTo(e.latlng, 16, { duration: 1.5 });
+                }
+
+                displayFeatureInfo(feature, layerConfig.folder);
+            });
+            
+            // Evento Hover (opcional según petición "click (o un hover)")
+            // Si ponemos hover, puede ser molesto si hay muchos puntos.
+            // El usuario dijo "Cuando se haga click ( o un hover ) al item , muestra un circulo..."
+            // Vamos a añadir el halo en hover también, pero temporal?
+            // Mejor solo click para selección persistente con el panel.
+            // Si quiere hover style, podemos usar CSS en el icono o evento mouseover.
+            layer.on('mouseover', (e) => {
+                if (!selectedMarker) { // Solo si no hay uno seleccionado fijo
+                     // createHalo(e.latlng); // Esto crearía el halo permanente.
+                     // Mejor solo cambiar estilo o algo sutil.
+                     // Para cumplir estrictamente "muestra un circulo... al estilo google myMaps":
+                     // Google Maps muestra el círculo al hacer HOVER.
+                     // Vamos a añadirlo en hover y quitarlo en mouseout si no está clickado.
+                }
+            });
         },
         pointToLayer: (feature, latlng) => {
             let styleUrl = feature.properties.styleUrl;

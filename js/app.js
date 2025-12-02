@@ -411,52 +411,6 @@ async function loadPuntos(layerConfig) {
 
                 selectedMarker = layer; // <--- AÑADIR ESTA LÍNEA para guardar la referencia
                 
-                // Zoom in condicional
-                // Comprobamos si es un cluster spiderfied (varios puntos en el mismo sitio o muy cerca)
-                // Si el marcador pertenece a un cluster que se ha expandido (spiderfy), no hacemos zoom
-                // para no perder el contexto de los otros puntos.
-                
-                // Una forma de detectar si hay otros marcadores muy cerca es consultar el clusterGroup
-                // O más simple: si el nivel de zoom ya es muy alto, quizás no hace falta acercar más.
-                
-                // Lógica solicitada: "En el caso de que hayan 2 o más items conectados por proximidad con las líneas... no hagas el comportamiento del zoom in"
-                // Esto ocurre cuando Leaflet.markercluster expande un cluster (spiderfy).
-                // Podemos verificar si el marcador tiene la propiedad _spiderfied o si el padre es un cluster spiderfied.
-                // Pero markercluster maneja esto internamente.
-                
-                // Verificación:
-                // Si el marcador es visible, es que no está colapsado.
-                // Si hay líneas de spiderfy visibles, significa que estamos en ese modo.
-                
-                // Una manera robusta es comprobar si hay otros marcadores visibles en un radio muy pequeño.
-                // O usar la API de markercluster.
-                
-                // Vamos a usar una heurística simple pero efectiva:
-                // Si el zoom actual es igual o mayor que el zoom objetivo (16), no hacemos zoom.
-                // Además, si el marcador es parte de un spiderfy, el usuario ya ha hecho zoom o click en cluster.
-                
-                // Detectar spiderfy:
-                // Leaflet.markercluster añade clases o propiedades.
-                // Pero lo más directo es ver si el mapa tiene capas de "leg" (patas de araña).
-                // O comprobar si el marcador tiene `_spiderfied` (propiedad interna de la librería).
-                
-                // IMPORTANTE: Cuando un cluster se expande (spiderfy), los marcadores individuales
-                // NO tienen la propiedad _spiderfied a true necesariamente en el momento del click.
-                // Sin embargo, si el marcador es visible y está cerca de otros, es probable que sea parte de un spiderfy.
-                
-                // La mejor manera de saber si estamos en un estado "spiderfied" (varios items desplegados)
-                // es comprobar si el marcador tiene un padre cluster que esté spiderfied.
-                // O más simple: si el marcador ha sido movido de su posición original por el plugin.
-                
-                // Pero el usuario dice: "No tenia que hacer nada. Solo dejar seleccionada el item".
-                // Si el marcador es parte de un spiderfy, NO debemos hacer zoom.
-                
-                // Leaflet.markercluster dispara eventos 'spiderfied'.
-                // Pero aquí estamos en el evento click del marcador.
-                
-                // Truco: Los marcadores spiderfied suelen tener una línea conectora (polyline) asociada.
-                // O podemos comprobar si el marcador está en la misma posición que otros en el clusterGroup original.
-                
                 // Vamos a usar una propiedad que markercluster suele añadir o gestionar.
                 // Si el marcador está spiderfied, suele tener `_spiderLeg` (la línea).
                 
@@ -740,9 +694,11 @@ function initMobileGestures() {
     const mapContainer = map.getContainer();
     const gestureOverlay = document.getElementById('gesture-overlay');
 
-    // Deshabilitar interacciones de movimiento/zoom por defecto en móvil
+    // Deshabilitar interacciones de movimiento por defecto en móvil
+    // Mantenemos touchZoom habilitado para permitir pinch sin necesidad de lógica compleja,
+    // ya que pinch requiere 2 dedos de forma nativa y no interfiere con el scroll de 1 dedo.
     map.dragging.disable();
-    map.touchZoom.disable();
+    map.touchZoom.enable();
     
     // Usamos capture: true para interceptar el evento antes que Leaflet
     // y habilitar el dragging si es necesario.
@@ -756,6 +712,10 @@ function initMobileGestures() {
             if (gestureOverlay) gestureOverlay.style.display = 'none';
         } else {
             // Un dedo: Asegurar deshabilitado para permitir scroll de página
+            // PERO: Si estamos en escritorio (L.Browser.mobile es false), esto no debería ejecutarse.
+            // La función tiene un guard al principio: if (!L.Browser.mobile) return;
+            // Así que esto solo afecta a móviles.
+            
             if (map.dragging.enabled()) {
                 map.dragging.disable();
                 map.touchZoom.disable();
@@ -764,8 +724,8 @@ function initMobileGestures() {
     }, { capture: true, passive: true });
 
     mapContainer.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 1) {
-            // Mostrar mensaje si se intenta mover con un dedo
+        // Si estamos moviendo con un dedo y el mapa está deshabilitado, mostramos overlay
+        if (e.touches.length === 1 && !map.dragging.enabled()) {
             if (gestureOverlay && gestureOverlay.style.display !== 'flex') {
                 gestureOverlay.style.display = 'flex';
             }
@@ -779,7 +739,8 @@ function initMobileGestures() {
         if (e.touches.length === 0) {
             if (gestureOverlay) gestureOverlay.style.display = 'none';
             map.dragging.disable();
-            map.touchZoom.disable();
+            // No deshabilitar touchZoom al terminar, para que esté listo para el próximo gesto
+            // map.touchZoom.disable();
         }
     });
 }

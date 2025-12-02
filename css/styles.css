@@ -45,11 +45,17 @@ html, body {
 }
 
 .popup-details-table td {
-    padding: 4px 0;
-    border-top: 1px solid #eee;
+    /*padding: 4px 0;*/
+    padding: 8px 0; /* más espacio arriba y abajo */
+    /*border-top: 1px solid #eee;*/
+    border-top: none; /* quitar todas las líneas */
     vertical-align: top;
     word-wrap: break-word; /* Romper palabras largas */
     overflow-wrap: break-word;
+}
+
+.popup-details-table tr:first-child td {
+    border-top: none;
 }
 
 .popup-details-table td:first-child {
@@ -268,6 +274,7 @@ html, body {
     justify-content: center;
     align-items: center;
     pointer-events: none; /* Permitir que los toques pasen al mapa/página */
+    display: none; /* Asegurar oculto por defecto */
 }
 
 .gesture-msg {

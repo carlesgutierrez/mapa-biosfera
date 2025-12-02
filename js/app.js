@@ -19,12 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initUI();
     initLegend();
     loadLayers();
+    initMobileGestures();
 });
 
 // --- Inicialización del Mapa ---
 function initMap() {
-    map = L.map('map').setView(CONFIG.map.center, CONFIG.map.zoom);
+    map = L.map('map', {
+        zoomControl: false // Desactivamos el control de zoom por defecto para moverlo
+    }).setView(CONFIG.map.center, CONFIG.map.zoom);
     
+    // Añadir control de zoom en la posición deseada (topleft, pero centrado por CSS)
+    L.control.zoom({
+        position: 'topleft'
+    }).addTo(map);
+
     // Guardar zoom anterior para detectar dirección del zoom
     let lastZoom = map.getZoom();
     map.on('zoomend', () => {
@@ -141,10 +149,10 @@ function initUI() {
         contrastBtn.addEventListener('click', toggleContrastMode);
     }
 
-    // Botón Reset Filtros
-    const resetBtn = document.getElementById('reset-filter-btn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetFilters);
+    // Botón Reset Vista (Centrar Mapa)
+    const resetViewBtn = document.getElementById('reset-view-btn');
+    if (resetViewBtn) {
+        resetViewBtn.addEventListener('click', () => resetMapView(1)); // Zoom extra por defecto
     }
 }
 
@@ -185,16 +193,34 @@ function closeInfoPanel() {
     }
 }
 
-function clearSelection() {
+let hoverHalo = null; // Halo temporal para hover
+
+function clearSelection(onlyHover = false) {
+    if (onlyHover) {
+        if (hoverHalo) {
+            hoverHalo.remove();
+            hoverHalo = null;
+        }
+        return;
+    }
+
     if (selectedHalo) {
         selectedHalo.remove();
         selectedHalo = null;
     }
+    if (hoverHalo) {
+        hoverHalo.remove();
+        hoverHalo = null;
+    }
     selectedMarker = null;
 }
 
-function createHalo(latlng) {
-    clearSelection();
+function createHalo(latlng, isHover = false) {
+    if (!isHover) {
+        clearSelection(); // Limpiar todo si es selección fija
+    } else {
+        if (hoverHalo) hoverHalo.remove(); // Limpiar anterior hover
+    }
     
     // Crear un icono DivIcon para el halo
     // El icono original tiene anchor [20, 40] (centro horizontal, base vertical)
@@ -220,11 +246,17 @@ function createHalo(latlng) {
         iconAnchor: [haloSize/2, haloSize/2 + iconHeight/2]
     });
 
-    selectedHalo = L.marker(latlng, {
+    const haloMarker = L.marker(latlng, {
         icon: haloIcon,
         zIndexOffset: -1000, // Intentar ponerlo detrás
         interactive: false
     }).addTo(map);
+
+    if (isHover) {
+        hoverHalo = haloMarker;
+    } else {
+        selectedHalo = haloMarker;
+    }
 }
 
 // --- Lógica de Leyenda y Filtrado ---
@@ -240,68 +272,58 @@ function initLegend() {
             element.classList.add('active');
             
             element.addEventListener('click', () => {
-                toggleLayerExclusive(key, element, legendItems);
+                toggleLayer(key, element);
             });
         }
     });
 }
 
-function resetFilters() {
-    const legendItems = {
-        'actividades': document.getElementById('legend-actividades'),
-        'productores': document.getElementById('legend-productores')
-    };
-
-    Object.entries(legendItems).forEach(([key, element]) => {
-        const layer = layerGroups[key];
+function resetMapView(zoomOffset = 0) {
+    if (initialBounds) {
+        // Ajustar bounds con padding
+        map.fitBounds(initialBounds, { padding: [50, 50] });
         
-        // Activar visualmente
-        element.classList.remove('inactive');
-        element.classList.add('active');
-        
-        // Activar capa
-        if (layer && !sharedClusterGroup.hasLayer(layer)) {
-            sharedClusterGroup.addLayer(layer);
+        // Si hay offset de zoom, aplicarlo después del fitBounds
+        if (zoomOffset !== 0) {
+            // Usamos un timeout pequeño o el evento moveend para asegurar que fitBounds terminó
+            // Pero fitBounds es asíncrono en animación.
+            // Una forma más directa es calcular el zoom resultante y sumarle el offset.
+            
+            // Opción simple: setZoom después de un breve retardo o usar setView con el centro de bounds
+            // map.setZoom(map.getBoundsZoom(initialBounds) + zoomOffset);
+            
+            // Mejor: fitBounds y luego zoomIn
+            // Pero fitBounds ya ajusta el zoom.
+            
+            // Vamos a usar setView con el centro de los bounds y un zoom calculado manualmente
+            const targetZoom = map.getBoundsZoom(initialBounds) + zoomOffset;
+            map.setView(initialBounds.getCenter(), targetZoom, { animate: true });
         }
-    });
+    } else {
+        // Fallback a config inicial
+        map.setView(CONFIG.map.center, CONFIG.map.zoom + zoomOffset, { animate: true });
+    }
 }
 
-function toggleLayerExclusive(selectedType, selectedElement, allElements) {
-    const selectedLayer = layerGroups[selectedType];
-    if (!selectedLayer) {
-        console.warn(`Capa no encontrada para: ${selectedType}`);
-        return;
-    }
+function toggleLayer(type, element) {
+    const layer = layerGroups[type];
+    if (!layer) return;
 
-    const allTypes = Object.keys(allElements);
+    const isActive = element.classList.contains('active');
 
-    allTypes.forEach(type => {
-        const el = allElements[type];
-        const lay = layerGroups[type];
-        
-        if (!lay) return;
-
-        if (type === selectedType) {
-            // Activar el seleccionado
-            el.classList.remove('inactive');
-            el.classList.add('active');
-            
-            // Forzamos añadir sin comprobar hasLayer para asegurar,
-            // aunque MarkerClusterGroup debería manejarlo.
-            // Si ya está, no pasa nada (o se puede comprobar).
-            // Nota: hasLayer en MarkerClusterGroup con GeoJSON a veces es confuso.
-            if (!sharedClusterGroup.hasLayer(lay)) {
-                sharedClusterGroup.addLayer(lay);
-            }
-        } else {
-            // Desactivar los demás
-            el.classList.remove('active');
-            el.classList.add('inactive');
-            
-            // Intentamos remover siempre
-            sharedClusterGroup.removeLayer(lay);
+    if (isActive) {
+        // Desactivar
+        element.classList.remove('active');
+        element.classList.add('inactive');
+        sharedClusterGroup.removeLayer(layer);
+    } else {
+        // Activar
+        element.classList.remove('inactive');
+        element.classList.add('active');
+        if (!sharedClusterGroup.hasLayer(layer)) {
+            sharedClusterGroup.addLayer(layer);
         }
-    });
+    }
 }
 
 // --- Carga de Capas ---
@@ -320,7 +342,8 @@ function verificarCargaCompleta() {
     if (capasCargadas === totalCapas) {
         if (group.getLayers().length > 0) {
             initialBounds = group.getBounds();
-            map.fitBounds(initialBounds, { padding: [50, 50] });
+            // Usar la nueva función de reset para aplicar el zoom inicial con offset
+            resetMapView(1); // Zoom extra inicial
         }
     }
 }
@@ -474,13 +497,28 @@ async function loadPuntos(layerConfig) {
             // Mejor solo click para selección persistente con el panel.
             // Si quiere hover style, podemos usar CSS en el icono o evento mouseover.
             layer.on('mouseover', (e) => {
-                if (!selectedMarker) { // Solo si no hay uno seleccionado fijo
-                     // createHalo(e.latlng); // Esto crearía el halo permanente.
-                     // Mejor solo cambiar estilo o algo sutil.
-                     // Para cumplir estrictamente "muestra un circulo... al estilo google myMaps":
-                     // Google Maps muestra el círculo al hacer HOVER.
-                     // Vamos a añadirlo en hover y quitarlo en mouseout si no está clickado.
+                // Mostrar halo en hover si no es el seleccionado
+                if (selectedMarker !== layer) {
+                    createHalo(e.latlng, true); // true = isHover
                 }
+                
+                // Mostrar tooltip con nombre
+                if (feature.properties.name) {
+                    layer.bindTooltip(feature.properties.name, {
+                        permanent: false,
+                        direction: 'top',
+                        className: 'marker-hover-tooltip',
+                        offset: [0, -40] // Ajustar para que salga encima del icono
+                    }).openTooltip();
+                }
+            });
+
+            layer.on('mouseout', (e) => {
+                // Quitar halo de hover
+                if (selectedMarker !== layer) {
+                    clearSelection(true); // true = onlyHover
+                }
+                layer.closeTooltip();
             });
         },
         pointToLayer: (feature, latlng) => {
@@ -583,16 +621,86 @@ function displayFeatureInfo(feature, carpetaBase) {
         iconHtml = `<img src="${iconPath}" class="popup-icon" onerror="this.style.display='none'">`;
     }
 
+    // Mapeo de claves a iconos
+    const keyIcons = {
+        'telefono': '📞',
+        'teléfono': '📞',
+        'email': '✉️',
+        'correo': '✉️',
+        'web': '🌐',
+        'Google Maps': '🗺️',
+        'dirección': '📍',
+        'direccion': '📍',
+        'horario': '🕒',
+        'estado': '⚪',                // estado genérico
+        'descripcion': '📝',           // descripción / nota
+        'detalle': '📝',                // alias
+        'info': '📝',                   // alias
+        'persona referencia': '👤',    // persona / contacto
+        'referencia': '👤',             // alias más corto
+        'pueblo': '🏘️',                // pueblo / localidad
+        'localidad': '🏘️',             // alias
+        'red social': '📡',             // enlace a redes sociales
+        'social': '📡'                  // alias alternativo
+    };
+
     // Detalles
     let detailsHtml = '';
     const details = Object.entries(properties)
         .filter(([key, value]) => value && !CONFIG.excludedDataFields.includes(key.toLowerCase()))
         .map(([key, value]) => {
             let displayValue = value;
+            let displayKey = key;
+
+            // Formatear Teléfono
+            if (key.toLowerCase().includes('telefono') || key.toLowerCase().includes('teléfono')) {
+                // Limpiar caracteres no numéricos excepto +
+                const cleanPhone = value.toString().replace(/[^\d+]/g, '');
+                // Formatear visualmente (opcional, aquí solo aseguramos entero limpio)
+                displayValue = `<a href="tel:${cleanPhone}" class="phone-link">${value}</a>`;
+            }
+
+            // Formatear Email
+            if (key.toLowerCase().includes('email') || key.toLowerCase().includes('correo')) {
+                // En móvil clickable, en escritorio texto (según petición: "En escritorio prefiero que no se haga nada")
+                // Detectamos móvil con L.Browser.mobile
+                if (L.Browser.mobile) {
+                    displayValue = `<a href="mailto:${value}">${value}</a>`;
+                } else {
+                    displayValue = value;
+                }
+            }
+
+            // Formatear Web
             if (typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'))) {
                 displayValue = `<a href="${value}" target="_blank" rel="noopener noreferrer">${value}</a>`;
             }
-            return `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
+
+            // Iconos para claves
+            // Normalizar clave para búsqueda (quitar acentos y minúsculas)
+            const normalizedKey = key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            
+            let icon = '';
+            for (const [k, i] of Object.entries(keyIcons)) {
+                // Normalizar también la clave del mapa
+                const normalizedMapKey = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                if (normalizedKey.includes(normalizedMapKey)) {
+                    icon = `<span class="popup-key-icon">${i}</span>`;
+                    break;
+                }
+            }
+            
+            // Si hay icono, ocultamos el texto de la clave o lo ponemos al lado?
+            // "cambiar los conceptos por iconos" -> Solo icono
+            if (icon) {
+                displayKey = icon;
+            } else {
+                // Capitalizar primera letra si es texto
+                displayKey = key.charAt(0).toUpperCase() + key.slice(1);
+            }
+
+            return `<tr><td>${displayKey}</td><td>${displayValue}</td></tr>`;
         })
         .join('');
     
@@ -622,4 +730,56 @@ function displayFeatureInfo(feature, carpetaBase) {
     // Mostrar
     infoPanel.classList.add('visible');
     mapOverlay.classList.add('visible');
+}
+
+// --- Gestión de Gestos Móviles (Google Maps style) ---
+function initMobileGestures() {
+    // Solo aplicar en dispositivos móviles
+    if (!L.Browser.mobile) return;
+
+    const mapContainer = map.getContainer();
+    const gestureOverlay = document.getElementById('gesture-overlay');
+
+    // Deshabilitar interacciones de movimiento/zoom por defecto en móvil
+    map.dragging.disable();
+    map.touchZoom.disable();
+    
+    // Usamos capture: true para interceptar el evento antes que Leaflet
+    // y habilitar el dragging si es necesario.
+    mapContainer.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+            // Dos o más dedos: Habilitar mapa
+            if (!map.dragging.enabled()) {
+                map.dragging.enable();
+                map.touchZoom.enable();
+            }
+            if (gestureOverlay) gestureOverlay.style.display = 'none';
+        } else {
+            // Un dedo: Asegurar deshabilitado para permitir scroll de página
+            if (map.dragging.enabled()) {
+                map.dragging.disable();
+                map.touchZoom.disable();
+            }
+        }
+    }, { capture: true, passive: true });
+
+    mapContainer.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1) {
+            // Mostrar mensaje si se intenta mover con un dedo
+            if (gestureOverlay && gestureOverlay.style.display !== 'flex') {
+                gestureOverlay.style.display = 'flex';
+            }
+        } else {
+             if (gestureOverlay) gestureOverlay.style.display = 'none';
+        }
+    }, { passive: true });
+
+    mapContainer.addEventListener('touchend', (e) => {
+        // Si no quedan dedos, ocultar overlay y resetear
+        if (e.touches.length === 0) {
+            if (gestureOverlay) gestureOverlay.style.display = 'none';
+            map.dragging.disable();
+            map.touchZoom.disable();
+        }
+    });
 }

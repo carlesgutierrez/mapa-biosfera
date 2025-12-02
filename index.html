@@ -17,6 +17,9 @@
 </head>
 <body>
     <div id="map-overlay"></div>
+    <div id="gesture-overlay">
+        <div class="gesture-msg">Usa dos dedos para mover el mapa</div>
+    </div>
     <div id="map"></div>
 
     <div class="map-header">
@@ -30,9 +33,9 @@
                 <img src="actividades/iconoDoc.png" alt="Icono Actividades">
                 <span>Actividades</span>
             </div>
-            <button id="reset-filter-btn" class="contrast-btn" title="Mostrar Todo">
+            <button id="reset-view-btn" class="contrast-btn" title="Centrar Mapa">
                 <svg viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                    <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
                     <path d="M0 0h24v24H0z" fill="none"/>
                 </svg>
             </button>

@@ -41,18 +41,33 @@ html, body {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    table-layout: fixed; /* Forzar ajuste de ancho */
 }
 
 .popup-details-table td {
     padding: 4px 0;
     border-top: 1px solid #eee;
     vertical-align: top;
+    word-wrap: break-word; /* Romper palabras largas */
+    overflow-wrap: break-word;
 }
 
 .popup-details-table td:first-child {
     font-weight: bold;
     padding-right: 10px;
     color: #555;
+    width: 40px; /* Ancho fijo reducido para iconos */
+    text-align: center;
+    vertical-align: top;
+}
+
+/* Iconos en lugar de texto para claves */
+.popup-key-icon {
+    font-size: 1.2em;
+    margin-right: 5px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
 }
 
 .popup-nav-link {
@@ -240,6 +255,29 @@ html, body {
     display: block;
 }
 
+/* --- Gesture Overlay (Mobile) --- */
+#gesture-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1500; /* Encima del mapa pero debajo de controles/paneles */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* Permitir que los toques pasen al mapa/página */
+}
+
+.gesture-msg {
+    color: white;
+    font-size: 1.4em;
+    font-weight: 500;
+    text-align: center;
+    padding: 0 20px;
+}
+
 /* --- Footer Credits --- */
 .footer-credits {
     position: absolute;
@@ -266,6 +304,17 @@ html, body {
 }
 
 /* --- Leaflet Overrides --- */
+
+/* Posicionar Zoom Control centrado verticalmente a la izquierda */
+.leaflet-left .leaflet-control-zoom {
+    margin-left: 10px;
+    margin-top: 0;
+    position: absolute;
+    top: 50vh; /* Mitad de la altura del viewport */
+    transform: translateY(-50%); /* Centrar exactamente */
+    left: 0;
+}
+
 /* Ocultar atribución por defecto de Leaflet para unificarla en el footer */
 .leaflet-control-attribution {
     display: none !important;
@@ -287,6 +336,23 @@ html, body {
     /* Leaflet ya posiciona el divIcon, no necesitamos position absolute ni transform aquí si usamos iconAnchor correctamente */
     /* Pero para asegurar centrado visual si el icono es irregular: */
     box-sizing: border-box;
+}
+
+/* Tooltip personalizado para hover */
+.marker-hover-tooltip {
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.marker-hover-tooltip::before {
+    border-top-color: rgba(0, 0, 0, 0.8);
 }
 
 /* --- High Contrast Mode --- */
@@ -343,7 +409,9 @@ body.high-contrast .popup-details-table td {
 }
 
 @media (max-width: 600px) and (orientation: portrait) {
+    /*
     .leaflet-control-zoom {
         display: none;
     }
+    */
 }

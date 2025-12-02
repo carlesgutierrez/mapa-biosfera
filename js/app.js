@@ -410,7 +410,7 @@ async function loadPuntos(layerConfig) {
                 createHalo(e.latlng);
 
                 selectedMarker = layer; // <--- AÑADIR ESTA LÍNEA para guardar la referencia
-                
+                  
                 // Vamos a usar una propiedad que markercluster suele añadir o gestionar.
                 // Si el marcador está spiderfied, suele tener `_spiderLeg` (la línea).
                 

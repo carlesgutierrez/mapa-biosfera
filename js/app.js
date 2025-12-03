@@ -25,13 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Inicialización del Mapa ---
 function initMap() {
     map = L.map('map', {
-        zoomControl: false // Desactivamos el control de zoom por defecto para moverlo
+        zoomControl: false // Desactivamos el control de zoom por defecto
     }).setView(CONFIG.map.center, CONFIG.map.zoom);
-    
-    // Añadir control de zoom en la posición deseada (topleft, pero centrado por CSS)
-    L.control.zoom({
-        position: 'topleft'
-    }).addTo(map);
 
     // Guardar zoom anterior para detectar dirección del zoom
     let lastZoom = map.getZoom();
@@ -139,7 +134,7 @@ function initUI() {
     // Panel Lateral
     const closePanelBtn = document.getElementById('close-panel-btn');
     const mapOverlay = document.getElementById('map-overlay');
-    
+
     if (closePanelBtn) closePanelBtn.addEventListener('click', closeInfoPanel);
     if (mapOverlay) mapOverlay.addEventListener('click', closeInfoPanel);
 
@@ -154,12 +149,97 @@ function initUI() {
     if (resetViewBtn) {
         resetViewBtn.addEventListener('click', () => resetMapView(1)); // Zoom extra por defecto
     }
+
+    // Botones de Zoom Personalizados
+    const zoomInBtn = document.getElementById('zoom-in-btn');
+    const zoomOutBtn = document.getElementById('zoom-out-btn');
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => map.zoomIn());
+    }
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener('click', () => map.zoomOut());
+    }
+
+    // Botón Fullscreen
+    const fullscreenBtn = document.getElementById('fullscreen-toggle');
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+    }
+
+    // Event listeners para detectar cambios de fullscreen (ej. ESC key)
+    document.addEventListener('fullscreenchange', updateFullscreenIcon);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+    document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
 }
 
 function toggleContrastMode() {
     document.body.classList.toggle('high-contrast');
     const btn = document.getElementById('contrast-btn');
     if (btn) btn.classList.toggle('active');
+}
+
+// --- Fullscreen Functionality ---
+function toggleFullscreen() {
+    const container = document.documentElement; // Usar todo el documento para mejor soporte móvil
+
+    if (!document.fullscreenElement &&
+        !document.mozFullScreenElement &&
+        !document.webkitFullscreenElement &&
+        !document.msFullscreenElement) {
+
+        // Entrar en fullscreen
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+            container.mozRequestFullScreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        }
+    } else {
+        // Salir de fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+}
+
+function updateFullscreenIcon() {
+    const btn = document.getElementById('fullscreen-toggle');
+    const svg = btn ? btn.querySelector('svg') : null;
+    if (!btn || !svg) return;
+
+    const isFullscreen = document.fullscreenElement ||
+                        document.webkitIsFullScreen ||
+                        document.mozFullScreen ||
+                        document.msFullscreenElement;
+
+    if (isFullscreen) {
+        // Icono de salir fullscreen (compress)
+        svg.innerHTML = '<path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>';
+        btn.setAttribute('title', 'Salir de Pantalla Completa');
+        btn.setAttribute('aria-label', 'Salir de Pantalla Completa');
+    } else {
+        // Icono de entrar fullscreen (expand)
+        svg.innerHTML = '<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>';
+        btn.setAttribute('title', 'Pantalla Completa');
+        btn.setAttribute('aria-label', 'Pantalla Completa');
+    }
+
+    // Forzar actualización del tamaño del mapa para evitar áreas grises
+    setTimeout(() => {
+        if (map) {
+            map.invalidateSize();
+        }
+    }, 200);
 }
 
 function closeInfoPanel() {

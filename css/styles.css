@@ -187,6 +187,60 @@ html, body {
     fill: currentColor;
 }
 
+/* --- Fullscreen Button --- */
+.fullscreen-btn {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #333;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.fullscreen-btn:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.fullscreen-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.fullscreen-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .fullscreen-btn {
+        right: 15px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .fullscreen-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 /* --- Side Panel --- */
 #info-panel {
     position: fixed;
@@ -310,16 +364,73 @@ html, body {
     text-decoration: underline;
 }
 
+/* --- Custom Zoom Controls --- */
+.custom-zoom-controls {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #333;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.zoom-btn:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.zoom-btn:active {
+    transform: scale(0.95);
+}
+
+.zoom-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .custom-zoom-controls {
+        left: 15px;
+    }
+
+    .zoom-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .zoom-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
 /* --- Leaflet Overrides --- */
 
-/* Posicionar Zoom Control centrado verticalmente a la izquierda */
-.leaflet-left .leaflet-control-zoom {
-    margin-left: 10px;
-    margin-top: 0;
-    position: absolute;
-    top: 50vh; /* Mitad de la altura del viewport */
-    transform: translateY(-50%); /* Centrar exactamente */
-    left: 0;
+/* Ocultar el control de zoom por defecto de Leaflet */
+.leaflet-control-zoom {
+    display: none !important;
 }
 
 /* Ocultar atribución por defecto de Leaflet para unificarla en el footer */

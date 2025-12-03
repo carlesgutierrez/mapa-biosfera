@@ -164,6 +164,14 @@ function initUI() {
     const fullscreenBtn = document.getElementById('fullscreen-toggle');
     if (fullscreenBtn) {
         fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Si estamos en iframe, deshabilitar visualmente el botón
+        if (isInIframe()) {
+            fullscreenBtn.style.opacity = '0.5';
+            fullscreenBtn.style.cursor = 'not-allowed';
+            fullscreenBtn.title = 'Pantalla completa no disponible en iframe';
+            fullscreenBtn.setAttribute('aria-label', 'Pantalla completa no disponible en iframe');
+        }
     }
 
     // Event listeners para detectar cambios de fullscreen (ej. ESC key)
@@ -180,7 +188,22 @@ function toggleContrastMode() {
 }
 
 // --- Fullscreen Functionality ---
+function isInIframe() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true; // Si hay error de cross-origin, probablemente estamos en iframe
+    }
+}
+
 function toggleFullscreen() {
+    // Verificar si estamos en un iframe
+    if (isInIframe()) {
+        // En iframe, mostrar mensaje informativo
+        alert('La función de pantalla completa no está disponible cuando la aplicación está integrada en otra página. Por favor, abre la aplicación directamente en una nueva pestaña para usar esta función.');
+        return;
+    }
+
     const container = document.documentElement; // Usar todo el documento para mejor soporte móvil
 
     if (!document.fullscreenElement &&

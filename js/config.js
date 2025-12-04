@@ -27,7 +27,7 @@ const CONFIG = {
             }
         },
         // Capa activa por defecto
-        defaultLayer: 'voyager'
+        defaultLayer: 'gray'
     },
 
     // Configuración de iconos

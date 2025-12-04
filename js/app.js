@@ -60,7 +60,7 @@ function initMap() {
     });
 
     // Control de capas
-    L.control.layers(baseLayers).addTo(map);
+    // L.control.layers(baseLayers).addTo(map);
 
     // Grupo para ajustar límites
     group = new L.FeatureGroup();
@@ -76,22 +76,38 @@ function initMap() {
     // Detectar cuando se reagrupan los clusters (zoom out)
     // Si un marcador seleccionado se agrupa en un cluster, debemos cerrar el panel y limpiar selección.
     sharedClusterGroup.on('animationend', function() {
-        if (selectedMarker) {
-                // Comprobamos quién es el "padre visible" del marcador seleccionado
-                const visibleParent = sharedClusterGroup.getVisibleParent(selectedMarker);
-
-                // Si el padre visible NO es el marcador mismo, significa que está dentro de un cluster
-                if (visibleParent !== selectedMarker) {
-                    console.log("El marcador seleccionado se ha agrupado en un cluster.");
-                    
-                    // Ejecutar la acción deseada
-                    clearSelection(); 
-                    
-                    // Probablemente también quieras cerrar el panel:
-                    // closeInfoPanel(); 
-                }
-            }
+        console.log('♻️ Clusters reagrupados (animationend)');
+        checkSelectionVisibility();
     });
+
+    // Asegurar comprobación al terminar zoom (por si animationend no salta o es insuficiente)
+    map.on('zoomend', function() {
+        checkSelectionVisibility();
+    });
+
+    // También cuando se cierra un spiderfy
+    sharedClusterGroup.on('unspiderfied', function(e) {
+        console.log('🕸️ Spiderfy cerrado (agrupado de nuevo)');
+        // e.markers contiene los marcadores que se acaban de reagrupar (ocultar)
+        if (selectedMarker && e.markers.includes(selectedMarker)) {
+            clearSelection();
+        }
+    });
+
+    function checkSelectionVisibility() {
+        if (selectedMarker && sharedClusterGroup.hasLayer(selectedMarker)) {
+            // Comprobamos quién es el "padre visible" del marcador seleccionado
+            const visibleParent = sharedClusterGroup.getVisibleParent(selectedMarker);
+
+            // Si visibleParent existe y NO es el marcador mismo, significa que está dentro de un cluster
+            // Si visibleParent es null, puede estar fuera de pantalla (no limpiamos) o no añadido
+            if (visibleParent && visibleParent !== selectedMarker) {
+                // El marcador ha sido agrupado y ocultado
+                console.log('🔒 Marcador seleccionado ha sido agrupado en un cluster - Limpiando selección');
+                clearSelection();
+            }
+        }
+    }
 
     map.addLayer(sharedClusterGroup);
     
@@ -101,32 +117,12 @@ function initMap() {
     });
 
     // Evento click en el mapa para deseleccionar
-    map.on('click', function(e) {
-        // Si se hace click en el mapa (no en un marcador ni control), cerrar panel
-        // Leaflet propaga el click del marcador al mapa a menos que se use L.DomEvent.stopPropagation
-        // Pero markercluster y nuestros marcadores dejan pasar el evento a veces.
-        // Sin embargo, el evento click del marcador se ejecuta antes.
-        
-        // Si hacemos click en el mapa "vacío", queremos cerrar.
-        // Pero si hacemos click en un marcador, se abre el panel.
-        // El problema es que el evento click del mapa se dispara TAMBIÉN al hacer click en un marcador si no se para la propagación.
-        
-        // Afortunadamente, Leaflet maneja esto bien si comprobamos el target original o si usamos un flag.
-        // Pero una forma más sencilla en Leaflet:
-        // El evento 'click' del mapa se dispara cuando se hace click en el fondo.
-        
-        // Vamos a cerrar el panel.
-        // PERO: Si acabamos de hacer click en un marcador, no queremos cerrarlo inmediatamente.
-        // El evento click del marcador ocurre antes o después?
-        // En Leaflet, el click del marcador se dispara, y si no se para, sube al mapa.
-        
-        // Vamos a añadir stopPropagation en el click del marcador para evitar que llegue aquí.
-        // O simplemente comprobar si el click fue en algo interactivo.
-        
-        // En la función loadPuntos, añadiremos L.DomEvent.stopPropagation(e) en el click del marcador.
-        
-        //closeInfoPanel();
-    });
+    map.on('click', onMapClick);
+}
+
+function onMapClick(e) {
+    console.log('🗺️ Click en mapa detectado - Limpiando selección');
+    closeInfoPanel();
 }
 
 // --- Inicialización de UI ---
@@ -186,6 +182,7 @@ function closeInfoPanel() {
     clearSelection();
 
     // Zoom out a posición intermedia
+    /*
     if (initialBounds) {
         // Opción A: Volver a la vista inicial completa
         // map.fitBounds(initialBounds, { padding: [50, 50], animate: true, duration: 1 });
@@ -205,6 +202,7 @@ function closeInfoPanel() {
         // Interpretando "salir de la descripción": volver a ver el contexto general.
         map.fitBounds(initialBounds, { padding: [50, 50], animate: true, duration: 1.5 });
     }
+    */
 }
 
 let hoverHalo = null; // Halo temporal para hover
@@ -226,7 +224,12 @@ function clearSelection(onlyHover = false) {
         hoverHalo.remove();
         hoverHalo = null;
     }
-    selectedMarker = null;
+    
+    // Restaurar marcador al cluster si estaba seleccionado
+    if (selectedMarker) {
+        // Ya no extraemos del cluster, así que solo limpiamos la referencia
+        selectedMarker = null;
+    }
 }
 
 function createHalo(latlng, isHover = false) {
@@ -420,39 +423,59 @@ async function loadPuntos(layerConfig) {
                 // Evitar que el click se propague al mapa y cierre el panel inmediatamente
                 L.DomEvent.stopPropagation(e);
 
+                // Si ya hay uno seleccionado, restaurarlo al cluster
+                if (selectedMarker && selectedMarker !== layer) {
+                    clearSelection();
+                }
+
+                // Comprobar si es parte de un spiderfy (varios nodos conectados)
+                const isSpiderfied = !!layer._spiderLeg;
+
+                selectedMarker = layer;
+                
                 // Efecto visual selección
                 createHalo(e.latlng);
 
-                selectedMarker = layer; // <--- AÑADIR ESTA LÍNEA para guardar la referencia
-                  
-                // Vamos a usar una propiedad que markercluster suele añadir o gestionar.
-                // Si el marcador está spiderfied, suele tener `_spiderLeg` (la línea).
-                
-                const isSpiderfied = layer._spiderLeg;
-                
-                if (!isSpiderfied) {
-                    // Calcular centro ajustado si el panel lateral está abierto en escritorio
+                if (isSpiderfied) {
+                    // Excepción: Si está spiderfied, NO movemos la cámara
+                    // para evitar vibraciones o cierres inesperados.
+                    console.log("Marker spiderfied: Manteniendo posición.");
+                } else {
+                    // Comportamiento normal: Mover cámara si es necesario
+                    // Ya NO sacamos del cluster (sharedClusterGroup.removeLayer) para permitir
+                    // que se agrupe naturalmente al hacer zoom out, y entonces limpiar la selección.
+
+                    // Calcular centro ajustado
                     let targetLatLng = e.latlng;
+                    let shouldMove = true;
                     
                     // Comprobar si estamos en modo escritorio (ancho > 600px)
                     if (window.innerWidth > 600) {
-                        // El panel ocupa 400px a la derecha.
-                        // Queremos centrar el punto en el espacio restante (width - 400px).
-                        // El centro de ese espacio está desplazado a la izquierda respecto al centro del mapa total.
-                        // Desplazamiento necesario en píxeles: -200px (mitad del panel) en X.
+                        const targetZoom = Math.max(map.getZoom(), 16);
+                        const point = map.project(e.latlng, targetZoom);
+                        const newPoint = point.add([200, 0]); // Desplazar 200px a la derecha
+                        targetLatLng = map.unproject(newPoint, targetZoom);
                         
-                        // Convertir latlng a punto contenedor, desplazar, y volver a latlng
-                        const point = map.project(e.latlng, 16); // Proyectar al zoom destino
-                        const newPoint = point.add([200, 0]); // Desplazar el centro objetivo a la derecha para que el punto quede a la izquierda
-                        // Espera, si el panel está a la derecha, el área visible es la izquierda.
-                        // El centro del área visible está a la izquierda del centro del mapa.
-                        // Queremos que el marcador (e.latlng) quede en ese centro visual.
-                        // Por tanto, el centro del mapa debe estar a la DERECHA del marcador.
-                        // Así que el target del flyTo debe ser un punto a la derecha del marcador.
-                        targetLatLng = map.unproject(newPoint, 16);
-                    }
+                        // Evitar vibración: Si la distancia es muy pequeña, no mover
+                        if (map.getCenter().distanceTo(targetLatLng) < 50) { // 50 metros umbral
+                            shouldMove = false;
+                        }
+                        
+                        if (shouldMove) {
+                            map.flyTo(targetLatLng, targetZoom, { duration: 1.5 });
+                        }
+                    } else {
+                        const targetZoom = Math.max(map.getZoom(), 16);
+                        
+                        // Evitar vibración en móvil también
+                        if (map.getCenter().distanceTo(targetLatLng) < 50) {
+                            shouldMove = false;
+                        }
 
-                    map.flyTo(targetLatLng, 16, { duration: 1.5 });
+                        if (shouldMove) {
+                            map.flyTo(targetLatLng, targetZoom, { duration: 1.5 });
+                        }
+                    }
                 }
 
                 displayFeatureInfo(feature, layerConfig.folder);

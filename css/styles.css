@@ -97,16 +97,17 @@ html, body {
     z-index: 1000;
     background-color: rgba(50, 50, 50, 0.8);
     color: white;
-    padding: 10px;
+    padding: 10px 15px; /* Padding ajustado */
     border-radius: 8px;
     text-align: center;
-    max-width: 360px;
-    width: 100%;
+    max-width: 95vw; /* Permitir casi todo el ancho en móviles */
+    width: max-content; /* Ajustar al contenido */
+    min-width: auto; /* Quitar min-width fijo que causaba problemas */
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .map-header h1 {
@@ -121,6 +122,7 @@ html, body {
     gap: 8px;
     font-size: 0.9em;
     width: 100%;
+    flex-wrap: wrap; /* Permitir que bajen si no caben */
 }
 
 .legend-item {
@@ -135,6 +137,8 @@ html, body {
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid transparent;
     flex-grow: 1;
+    min-width: 110px; /* Ancho mínimo para igualar tamaños */
+    flex-basis: 0; /* Para que flex-grow funcione equitativamente */
 }
 
 .legend-item:hover {
@@ -329,6 +333,16 @@ html, body {
     gap: 8px;
 }
 
+.bottom-left-controls {
+    position: absolute;
+    bottom: 30px; /* Espacio desde abajo */
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .zoom-btn {
     width: 40px;
     height: 40px;
@@ -366,6 +380,11 @@ html, body {
 @media (max-width: 768px) {
     .custom-zoom-controls {
         left: 15px;
+    }
+    
+    .bottom-left-controls {
+        left: 15px;
+        bottom: 25px;
     }
 
     .zoom-btn {
@@ -456,27 +475,37 @@ body.high-contrast .popup-details-table td {
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header {
-        top: 10px; /* Mantener arriba */
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%; /* Un poco de margen */
-        max-width: 360px;
+        top: 10px;
+        left: 10px; /* Margen izquierdo */
+        right: 10px; /* Margen derecho */
+        transform: none; /* Quitar centrado transform */
+        width: auto; /* Ocupar espacio disponible */
+        max-width: none; /* Quitar restricción */
         border-radius: 8px;
-        flex-direction: column;
-        padding: 10px;
+        flex-direction: row; /* Intentar fila primero */
+        flex-wrap: wrap; /* Permitir wrap */
+        padding: 8px;
         background-color: rgba(50, 50, 50, 0.95);
         box-sizing: border-box;
+        justify-content: center;
     }
     
     .map-header h1 {
-        font-size: 1em;
-        margin-bottom: 8px;
+        display: none; /* Ocultar título en móvil para ahorrar espacio si es necesario, o ajustar */
     }
 
-    #info-panel {
-        max-width: 100%;
-        z-index: 2001;
+    .map-legend {
+        gap: 8px;
+        justify-content: space-between; /* Distribuir espacio */
     }
+
+    .legend-item {
+        padding: 8px 4px;
+        font-size: 0.85em;
+        min-width: 100px; /* Un poco menos en móvil pero igualados */
+        flex: 1 1 40%; /* Crecer y ocupar espacio, base 40% para que quepan 2 */
+    }
+
 }
 
 @media (max-width: 600px) and (orientation: portrait) {

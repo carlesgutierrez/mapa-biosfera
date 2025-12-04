@@ -24,12 +24,6 @@
 
     <!-- Custom Zoom Controls -->
     <div class="custom-zoom-controls">
-        <!-- Fullscreen Toggle Button (New Tab) -->
-        <button id="fullscreen-toggle" class="zoom-btn" aria-label="Abrir en nueva pestaña" title="Abrir en nueva pestaña">
-            <svg viewBox="0 0 24 24" width="20" height="20">
-                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-            </svg>
-        </button>
         <button id="zoom-in-btn" class="zoom-btn" aria-label="Acercar" title="Acercar">
             <svg viewBox="0 0 24 24" width="20" height="20">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
@@ -38,6 +32,27 @@
         <button id="zoom-out-btn" class="zoom-btn" aria-label="Alejar" title="Alejar">
             <svg viewBox="0 0 24 24" width="20" height="20">
                 <path d="M19 13H5v-2h14v2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Bottom Left Controls -->
+    <div class="bottom-left-controls">
+        <button id="reset-view-btn" class="zoom-btn" title="Centrar Mapa">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+        <button id="contrast-btn" class="zoom-btn" title="Modo Alto Contraste / Edición">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+        </button>
+        <button id="fullscreen-toggle" class="zoom-btn" aria-label="Abrir en nueva pestaña" title="Abrir en nueva pestaña">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
             </svg>
         </button>
     </div>
@@ -53,18 +68,6 @@
                 <img src="actividades/iconoDoc.png" alt="Icono Actividades">
                 <span>Actividades</span>
             </div>
-            <button id="reset-view-btn" class="contrast-btn" title="Centrar Mapa">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                </svg>
-            </button>
-            <button id="contrast-btn" class="contrast-btn" title="Modo Alto Contraste / Edición">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                </svg>
-            </button>
         </div>
     </div>
 
@@ -78,9 +81,11 @@
         </div>
     </div>
     
+    <!--
     <div class="footer-credits">
         <a href="https://www.sierradelrincon.org/productos-y-actividades/" target="_blank" rel="noopener noreferrer">‹ Reserva de la Biosfera Sierra del Rincón</a>
     </div>
+    -->
 
     <!-- Leaflet.js -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>

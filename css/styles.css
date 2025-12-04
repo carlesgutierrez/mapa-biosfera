@@ -456,8 +456,7 @@ body.high-contrast .popup-details-table td {
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header {
-        bottom: 30px; /* Mantener abajo en móvil también */
-        top: auto; /* Resetear top */
+        top: 10px; /* Mantener arriba */
         left: 50%;
         transform: translateX(-50%);
         width: 90%; /* Un poco de margen */

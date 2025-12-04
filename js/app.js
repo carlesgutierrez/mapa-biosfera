@@ -125,6 +125,137 @@ function onMapClick(e) {
     closeInfoPanel();
 }
 
+// --- Gestión del Menú Interactivo de Items ---
+
+// Inicializar estructura del menú (solo una vez)
+function initItemsMenuStructure() {
+    const menuContainer = document.getElementById('items-menu');
+    if (!menuContainer || menuContainer.children.length > 0) return;
+
+    // Crear contenedores fijos para grupos
+    const grupos = ['productores', 'actividades'];
+    grupos.forEach(key => {
+        const div = document.createElement('div');
+        div.id = `group-${key}`; // ID para acceso rápido
+        div.className = `items-group group-${key}`;
+        div.style.display = 'none'; // Oculto por defecto hasta que haya datos
+        menuContainer.appendChild(div);
+    });
+}
+
+// Actualizar un grupo específico
+function updateItemsGroup(type, isActive) {
+    const groupContainer = document.getElementById(`group-${type}`);
+    if (!groupContainer) return;
+
+    if (!isActive) {
+        groupContainer.style.display = 'none';
+        return;
+    }
+
+    groupContainer.style.display = 'flex';
+    
+    // Si ya tiene contenido, no regenerar (optimización)
+    // PERO: Si los datos cambian dinámicamente, habría que regenerar.
+    // Asumimos datos estáticos por ahora. Si ya tiene hijos, solo mostramos.
+    if (groupContainer.children.length > 0) return;
+
+    const layerGroup = layerGroups[type];
+    if (!layerGroup) return;
+
+    layerGroup.eachLayer(layer => {
+        const props = layer.feature.properties;
+        const name = props.name || 'Sin nombre';
+        
+        const btn = document.createElement('button');
+        btn.className = `menu-item-btn type-${type}`;
+        
+        // Icono
+        if (props.iconUrl) {
+            const fullIconPath = `${type}/${props.iconUrl}`;
+            const img = document.createElement('img');
+            img.src = fullIconPath;
+            btn.appendChild(img);
+        }
+
+        const span = document.createElement('span');
+        span.textContent = name;
+        btn.appendChild(span);
+
+        // Añadir delay para animación escalonada
+        btn.style.animationDelay = `${Math.random() * 0.3}s`;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar click en mapa
+            zoomToFeature(layer);
+        });
+
+        groupContainer.appendChild(btn);
+    });
+}
+
+// Función global para inicializar todo (llamada al inicio)
+function updateItemsMenu() {
+    initItemsMenuStructure();
+    // Actualizar todos los grupos según estado inicial
+    Object.keys(layerGroups).forEach(type => {
+        const legendItem = document.getElementById(`legend-${type}`);
+        const isActive = legendItem && legendItem.classList.contains('active');
+        updateItemsGroup(type, isActive);
+    });
+}
+
+function zoomToFeature(layer) {
+    // Lógica mejorada para zoom profundo y selección directa
+    
+    // 1. Comprobar si está visible directamente (no agrupado)
+    const visibleParent = sharedClusterGroup.getVisibleParent(layer);
+    
+    if (visibleParent === layer) {
+        // CASO A: Marcador visible -> Selección directa
+        console.log('📍 Item visible -> Selección directa');
+        layer.fireEvent('click', { latlng: layer.getLatLng() });
+        
+    } else if (visibleParent instanceof L.MarkerCluster) {
+        // CASO B: Agrupado en cluster
+        console.log('🔍 Item en cluster -> Zoom profundo');
+        
+        // Estrategia: Hacer zoom hasta que el marcador sea visible o spiderfied
+        // Usamos zoomToShowLayer de MarkerClusterGroup que hace exactamente esto:
+        // Hace zoom y spiderfy si es necesario para mostrar el marcador.
+        
+        sharedClusterGroup.zoomToShowLayer(layer, () => {
+            // Callback cuando el marcador ya es visible (después de zoom/spiderfy)
+            console.log('✅ Marcador revelado -> Seleccionando');
+            
+            // Pequeño delay para asegurar que la animación de spiderfy terminó visualmente
+            setTimeout(() => {
+                layer.fireEvent('click', { latlng: layer.getLatLng() });
+            }, 200);
+        });
+    } else {
+        // Fallback por si acaso (ej. fuera de pantalla pero no en cluster?)
+        // Simplemente volar a su posición con zoom alto
+        // Animación más lenta en móvil para dar tiempo a ver el viaje
+        const duration = L.Browser.mobile ? 2.5 : 1.5;
+        map.flyTo(layer.getLatLng(), 18, { duration: duration });
+        
+        // En móvil, esperar a que termine la animación para mostrar info
+        if (L.Browser.mobile) {
+             map.once('moveend', () => {
+                 // Pausa de 1 segundo antes de abrir la descripción
+                 setTimeout(() => {
+                     layer.fireEvent('click', { latlng: layer.getLatLng() });
+                 }, 1000);
+             });
+        } else {
+             setTimeout(() => {
+                 layer.fireEvent('click', { latlng: layer.getLatLng() });
+             }, duration * 1000 + 100);
+        }
+    }
+}
+
 // --- Inicialización de UI ---
 function initUI() {
     // Panel Lateral
@@ -164,6 +295,37 @@ function initUI() {
             window.open(window.location.href, '_blank');
         });
     }
+
+    // Botón Toggle Menú Items
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', toggleItemsMenu);
+    }
+}
+
+function toggleItemsMenu() {
+    const menu = document.getElementById('items-menu');
+    const btn = document.getElementById('menu-toggle-btn');
+    const headerContainer = document.querySelector('.map-header-container'); // O body
+    
+    if (menu) {
+        const isVisible = menu.classList.toggle('visible');
+        
+        if (btn) {
+            if (isVisible) {
+                btn.classList.add('active');
+                document.body.classList.add('menu-open'); // Añadir clase global para estilos dependientes
+            } else {
+                btn.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        }
+
+        // Actualizar items si se abre y estaba vacío (opcional, ya se actualiza al cargar/filtrar)
+        if (isVisible && menu.children.length === 0) {
+            updateItemsMenu();
+        }
+    }
 }
 
 function toggleContrastMode() {
@@ -175,11 +337,20 @@ function toggleContrastMode() {
 function closeInfoPanel() {
     const infoPanel = document.getElementById('info-panel');
     const mapOverlay = document.getElementById('map-overlay');
-    infoPanel.classList.remove('visible');
-    mapOverlay.classList.remove('visible');
+    
+    if (infoPanel.classList.contains('visible')) {
+        infoPanel.classList.remove('visible');
+        mapOverlay.classList.remove('visible');
 
-    // Limpiar selección visual
-    clearSelection();
+        // Limpiar selección visual
+        clearSelection();
+        
+        // Limpiar historial si estamos en móvil y el estado es panelOpen
+        // Esto evita que el usuario tenga que dar atrás dos veces si cerró con la X
+        if (L.Browser.mobile && history.state && history.state.panelOpen) {
+            history.back();
+        }
+    }
 
     // Zoom out a posición intermedia
     /*
@@ -341,6 +512,8 @@ function toggleLayer(type, element) {
             sharedClusterGroup.addLayer(layer);
         }
     }
+    // Actualizar solo el grupo afectado en el menú
+    updateItemsGroup(type, !isActive);
 }
 
 // --- Carga de Capas ---
@@ -547,6 +720,7 @@ async function loadPuntos(layerConfig) {
             
             this.eachLayer(layer => group.addLayer(layer));
             verificarCargaCompleta();
+            updateItemsMenu(); // Actualizar menú al cargar
         })
         .on('error', function(error) {
             console.error(`Error al cargar ${layerConfig.url}:`, error);
@@ -721,6 +895,23 @@ function displayFeatureInfo(feature, carpetaBase) {
     // Mostrar
     infoPanel.classList.add('visible');
     mapOverlay.classList.add('visible');
+
+    // Gestión del historial para botón "Atrás" en móvil
+    if (L.Browser.mobile) {
+        // Añadir estado al historial
+        history.pushState({ panelOpen: true }, null, "");
+        
+        // Escuchar evento popstate (botón atrás)
+        // Usamos una función nombrada para poder removerla después y evitar duplicados
+        window.onpopstate = function(event) {
+            if (infoPanel.classList.contains('visible')) {
+                closeInfoPanel();
+                // Si el evento fue por el botón atrás, no hacemos nada más.
+                // Si cerramos el panel manualmente, deberíamos hacer history.back() para limpiar el estado?
+                // Mejor: Si cerramos manualmente, hacemos history.back() si el estado actual es panelOpen.
+            }
+        };
+    }
 }
 
 // --- Gestión de Gestos Móviles (Google Maps style) ---

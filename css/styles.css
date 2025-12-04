@@ -88,26 +88,40 @@ html, body {
     text-decoration: underline;
 }
 
-/* --- Map Header & Legend --- */
-.map-header {
+/* --- Map Header Container --- */
+.map-header-container {
     position: absolute;
-    top: 10px; /* Header arriba */
-    left: 50%;
-    transform: translateX(-50%);
+    top: 10px;
+    left: 0; /* Ocupar todo el ancho */
+    width: 100%;
+    /* transform: translateX(-50%);  Ya no centramos con transform */
     z-index: 1000;
-    background-color: rgba(50, 50, 50, 0.8);
-    color: white;
-    padding: 10px 15px; /* Padding ajustado */
-    border-radius: 8px;
-    text-align: center;
-    max-width: 95vw; /* Permitir casi todo el ancho en móviles */
-    width: max-content; /* Ajustar al contenido */
-    min-width: auto; /* Quitar min-width fijo que causaba problemas */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    /* width: 95%; */
+    /* max-width: 800px;  Quitar restricción de ancho máximo para que los botones se expandan */
+    pointer-events: none;
+}
+
+/* --- Map Header & Legend --- */
+.map-header {
+    pointer-events: auto;
+    background-color: rgba(50, 50, 50, 0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: max-content;
+    max-width: 100%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: row; /* Alinear horizontalmente siempre */
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espacio entre leyenda y hamburguesa */
+    transition: all 0.3s ease;
 }
 
 .map-header h1 {
@@ -117,12 +131,12 @@ html, body {
 
 .map-legend {
     display: flex;
-    justify-content: center; /* Centrar elementos */
+    justify-content: center;
     align-items: center;
     gap: 8px;
     font-size: 0.9em;
-    width: 100%;
-    flex-wrap: wrap; /* Permitir que bajen si no caben */
+    /* width: 100%;  Quitar width 100 para que no fuerce salto */
+    flex-wrap: nowrap; /* Intentar no envolver */
 }
 
 .legend-item {
@@ -296,17 +310,21 @@ html, body {
 .footer-credits {
     position: absolute;
     bottom: 0;
-    left: 50%; /* Centrar */
-    transform: translateX(-50%); /* Centrar */
-    z-index: 1000;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1200; /* Encima de todo */
     background: rgba(50, 50, 50, 0.95);
-    padding: 5px 10px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px; /* Añadir borde redondeado a la derecha también */
+    padding: 5px 15px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     font-size: 11px;
     color: #ccc;
-    width: auto; /* Ajustar al contenido */
+    width: auto;
     text-align: center;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .footer-credits a {
@@ -321,6 +339,15 @@ html, body {
     text-decoration: underline;
 }
 
+.footer-credits .separator {
+    color: #666;
+}
+
+.footer-credits .powered-by {
+    font-style: italic;
+    opacity: 0.8;
+}
+
 /* --- Custom Zoom Controls --- */
 .custom-zoom-controls {
     position: absolute;
@@ -333,10 +360,11 @@ html, body {
     gap: 8px;
 }
 
-.bottom-left-controls {
+.right-center-controls {
     position: absolute;
-    bottom: 30px; /* Espacio desde abajo */
-    left: 20px;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -382,9 +410,8 @@ html, body {
         left: 15px;
     }
     
-    .bottom-left-controls {
-        left: 15px;
-        bottom: 25px;
+    .right-center-controls {
+        right: 15px;
     }
 
     .zoom-btn {
@@ -457,37 +484,175 @@ body.high-contrast .leaflet-tile-pane {
 }
 
 body.high-contrast .leaflet-tooltip {
-    font-size: 1.5em !important; /* Aún más grande en alto contraste */
+    font-size: 1.5em !important;
     font-weight: bold !important;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #333;
+    background-color: #fff !important; /* Fondo blanco sólido */
+    color: #000 !important; /* Texto negro forzado */
+    border: 2px solid #000 !important; /* Borde negro */
+    box-shadow: 0 0 0 2px #fff; /* Doble borde para contraste */
 }
 
 body.high-contrast .popup-title,
 body.high-contrast .panel-header h2 {
     font-size: 1.5em;
+    color: #000; /* Texto negro puro */
+}
+
+body.high-contrast .panel-content {
+    color: #000;
+    background-color: #fff;
 }
 
 body.high-contrast .popup-details-table td {
+    font-size: 1.2em; /* Un poco más grande */
+    color: #000;
+    font-weight: 500;
+}
+
+/* Botones en alto contraste */
+body.high-contrast .menu-item-btn {
+    font-size: 0.85em; /* Restaurar tamaño original */
+    font-weight: bold;
+    background-color: #000; /* Fondo negro */
+    color: #fff; /* Texto blanco */
+    border: 2px solid #fff; /* Borde blanco fuerte */
+    padding: 6px 12px; /* Padding original */
+}
+
+/* Ocultar iconos en botones de items en alto contraste */
+body.high-contrast .menu-item-btn img {
+    display: none;
+}
+
+/* Ajustar botones de leyenda en alto contraste */
+body.high-contrast .legend-item {
     font-size: 1.1em;
+    font-weight: bold;
+}
+
+body.high-contrast .legend-item img {
+    display: none; /* Ocultar iconos también en leyenda */
 }
 
 /* --- Media Queries --- */
 @media (max-width: 600px) {
+    .map-header-container {
+        top: 0; /* Pegado arriba */
+        left: 0;
+        right: 0;
+        width: 100%;
+        transform: none;
+        max-width: none;
+        padding: 0; /* Sin padding externo */
+    }
+
     .map-header {
-        top: 10px;
-        left: 10px; /* Margen izquierdo */
-        right: 10px; /* Margen derecho */
-        transform: none; /* Quitar centrado transform */
-        width: auto; /* Ocupar espacio disponible */
-        max-width: none; /* Quitar restricción */
-        border-radius: 8px;
-        flex-direction: row; /* Intentar fila primero */
-        flex-wrap: wrap; /* Permitir wrap */
-        padding: 8px;
+        width: 100%; /* Full width */
+        border-radius: 0; /* Rectángulo a sangre */
+        border-bottom-left-radius: 12px; /* Opcional: redondear solo abajo */
+        border-bottom-right-radius: 12px;
+        flex-direction: row;
+        flex-wrap: nowrap; /* No envolver en móvil si es posible */
+        padding: 10px 5px; /* Padding interno ajustado */
         background-color: rgba(50, 50, 50, 0.95);
         box-sizing: border-box;
+        justify-content: space-evenly; /* Distribuir espacio */
+        gap: 5px;
+        margin: 0; /* Sin margen */
+    }
+
+    /* Separar grupos en el menú de items (Móvil y Escritorio ahora igual) */
+    .items-menu {
+        position: static;
+        width: 100%;
+        height: 0;
+    }
+    
+    .items-group {
+        display: flex;
+        flex-wrap: wrap;
         justify-content: center;
+        gap: 8px;
+        width: 100%;
+        /* Asegurar que no se recorten */
+        overflow: visible;
+        pointer-events: none;
+        /* Permitir que ocupen todo el ancho disponible */
+        max-width: 100vw;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .items-group button {
+        pointer-events: auto;
+    }
+
+    /* Grupo Productos: Pegado arriba (debajo del header) */
+    .items-group.group-productores {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 1100;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        visibility: hidden;
+        /* Asegurar que no se recorten en escritorio */
+        max-height: 40vh; /* Limitar altura si hay muchos */
+        overflow-y: visible; /* Permitir que se vean fuera si es necesario, o auto si queremos scroll */
+        /* Si usamos auto, necesitamos asegurar que el contenedor padre no limite el ancho */
+        /* En la imagen parece que el contenedor map-header-container limita el ancho */
+    }
+    .items-group.group-productores::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Grupo Actividades: Pegado abajo (Footer) */
+    .items-group.group-actividades {
+        position: fixed;
+        bottom: 40px; /* Un poco más arriba para dejar espacio al footer real */
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 1100;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        visibility: hidden;
+        background: none;
+        /* Asegurar que no se recorten en escritorio */
+        max-height: 30vh;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        /* Alinear abajo */
+        align-items: flex-end; /* Para que crezca hacia arriba visualmente si usamos flex column, pero es row wrap */
+        /* En row wrap, align-items es vertical de la línea. */
+        /* Queremos que esté pegado abajo. bottom: 40px ya lo hace. */
+    }
+    .items-group.group-actividades::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Mostrar cuando visible */
+    .items-menu.visible .items-group {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .items-group-title {
+        width: 100%;
+        text-align: center;
+        color: #ccc;
+        font-size: 0.8em;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
     .map-header h1 {
@@ -507,6 +672,153 @@ body.high-contrast .popup-details-table td {
     }
 
 }
+
+/* --- Items Menu --- */
+.items-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    pointer-events: auto;
+    max-height: 0; /* Oculto por defecto */
+    opacity: 0;
+    overflow-y: hidden; /* Ocultar scroll cuando está cerrado */
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease;
+    /* Ocultar scrollbar pero permitir scroll */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    margin-top: 0; /* Sin margen cuando está cerrado */
+}
+
+.items-menu.visible {
+    max-height: 40vh; /* Altura máxima al abrir */
+    opacity: 1;
+    overflow-y: auto; /* Permitir scroll al abrir */
+    margin-top: 10px; /* Espacio al abrir */
+    padding-bottom: 10px; /* Espacio inferior para scroll */
+}
+
+.items-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-item-btn {
+    background-color: rgba(50, 50, 50, 0.8); /* Fondo oscuro semitransparente base */
+    color: white;
+    border: 2px solid transparent; /* Borde transparente por defecto */
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(4px);
+    
+    /* Animación de entrada */
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item-btn:hover {
+    background-color: rgba(50, 50, 50, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Estilos específicos por tipo (Bordes de color) */
+.menu-item-btn.type-productores {
+    border-color: #ffcc00; /* Amarillo para productores */
+}
+
+.menu-item-btn.type-actividades {
+    border-color: #00ccff; /* Azul para actividades */
+}
+
+/* Asociar colores a los botones principales de la leyenda también */
+/* Solo mostrar borde de color si el menú está abierto (controlado por clase en body o header) */
+/* O simplemente quitamos el borde activo por defecto y lo ponemos solo si .menu-open */
+
+#legend-productores {
+    border: 2px solid transparent;
+}
+/* Solo si el menú está abierto, mostramos la asociación de color */
+.menu-open #legend-productores.active {
+    border-color: #ffcc00;
+}
+
+#legend-actividades {
+    border: 2px solid transparent;
+}
+.menu-open #legend-actividades.active {
+    border-color: #00ccff;
+}
+
+/* Botón Toggle Menú */
+.menu-toggle-btn {
+    background: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.2s;
+    margin-left: 0; /* Quitar margen extra */
+    position: relative;
+    overflow: hidden;
+    height: 36px; /* Igualar altura botones leyenda aprox */
+    width: 36px;
+}
+
+.menu-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-toggle-btn.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    border-color: transparent; /* Sin borde animado cuando está activo/abierto */
+}
+
+/* Animación de borde cuando NO está activo */
+@keyframes borderRotate {
+    0% { border-color: #ffcc00; }
+    50% { border-color: #00ccff; }
+    100% { border-color: #ffcc00; }
+}
+
+.menu-toggle-btn:not(.active) {
+    /* Borde animado simple pulsante o rotativo de color */
+    animation: borderRotate 3s infinite linear;
+    /* Opcional: un brillo o box-shadow */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.menu-toggle-btn svg {
+    fill: currentColor;
+}
+
+.menu-item-btn img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* (Eliminado estilos antiguos de borde izquierdo) */
 
 @media (max-width: 600px) and (orientation: portrait) {
     /*

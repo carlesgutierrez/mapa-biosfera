@@ -91,7 +91,7 @@ html, body {
 /* --- Map Header & Legend --- */
 .map-header {
     position: absolute;
-    top: 10px;
+    top: 10px; /* Header arriba */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
@@ -116,7 +116,7 @@ html, body {
 
 .map-legend {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Centrar elementos */
     align-items: center;
     gap: 8px;
     font-size: 0.9em;
@@ -188,58 +188,7 @@ html, body {
 }
 
 /* --- Fullscreen Button --- */
-.fullscreen-btn {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-    z-index: 1000;
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    color: #333;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.fullscreen-btn:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-}
-
-.fullscreen-btn:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-.fullscreen-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-    transition: transform 0.3s ease;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .fullscreen-btn {
-        right: 15px;
-        width: 45px;
-        height: 45px;
-    }
-
-    .fullscreen-btn svg {
-        width: 20px;
-        height: 20px;
-    }
-}
+/* Fullscreen button styles removed as it is now part of zoom controls */
 
 /* --- Side Panel --- */
 #info-panel {
@@ -343,13 +292,17 @@ html, body {
 .footer-credits {
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: 50%; /* Centrar */
+    transform: translateX(-50%); /* Centrar */
     z-index: 1000;
     background: rgba(50, 50, 50, 0.95);
     padding: 5px 10px;
     border-top-left-radius: 5px;
+    border-top-right-radius: 5px; /* Añadir borde redondeado a la derecha también */
     font-size: 11px;
     color: #ccc;
+    width: auto; /* Ajustar al contenido */
+    text-align: center;
 }
 
 .footer-credits a {
@@ -503,12 +456,13 @@ body.high-contrast .popup-details-table td {
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header {
-        top: 0;
-        left: 0;
-        transform: none;
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
+        bottom: 30px; /* Mantener abajo en móvil también */
+        top: auto; /* Resetear top */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%; /* Un poco de margen */
+        max-width: 360px;
+        border-radius: 8px;
         flex-direction: column;
         padding: 10px;
         background-color: rgba(50, 50, 50, 0.95);

@@ -160,109 +160,20 @@ function initUI() {
         zoomOutBtn.addEventListener('click', () => map.zoomOut());
     }
 
-    // Botón Fullscreen
+    // Botón Fullscreen (Nueva Pestaña)
     const fullscreenBtn = document.getElementById('fullscreen-toggle');
     if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-        // Si estamos en iframe, deshabilitar visualmente el botón
-        if (isInIframe()) {
-            fullscreenBtn.style.opacity = '0.5';
-            fullscreenBtn.style.cursor = 'not-allowed';
-            fullscreenBtn.title = 'Pantalla completa no disponible en iframe';
-            fullscreenBtn.setAttribute('aria-label', 'Pantalla completa no disponible en iframe');
-        }
+        fullscreenBtn.addEventListener('click', () => {
+            // Abrir la misma URL en una nueva pestaña
+            window.open(window.location.href, '_blank');
+        });
     }
-
-    // Event listeners para detectar cambios de fullscreen (ej. ESC key)
-    document.addEventListener('fullscreenchange', updateFullscreenIcon);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
-    document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
-    document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
 }
 
 function toggleContrastMode() {
     document.body.classList.toggle('high-contrast');
     const btn = document.getElementById('contrast-btn');
     if (btn) btn.classList.toggle('active');
-}
-
-// --- Fullscreen Functionality ---
-function isInIframe() {
-    try {
-        return window.self !== window.top;
-    } catch (e) {
-        return true; // Si hay error de cross-origin, probablemente estamos en iframe
-    }
-}
-
-function toggleFullscreen() {
-    // Verificar si estamos en un iframe
-    if (isInIframe()) {
-        // En iframe, mostrar mensaje informativo
-        alert('La función de pantalla completa no está disponible cuando la aplicación está integrada en otra página. Por favor, abre la aplicación directamente en una nueva pestaña para usar esta función.');
-        return;
-    }
-
-    const container = document.documentElement; // Usar todo el documento para mejor soporte móvil
-
-    if (!document.fullscreenElement &&
-        !document.mozFullScreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.msFullscreenElement) {
-
-        // Entrar en fullscreen
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } else if (container.msRequestFullscreen) {
-            container.msRequestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-            container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        }
-    } else {
-        // Salir de fullscreen
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
-}
-
-function updateFullscreenIcon() {
-    const btn = document.getElementById('fullscreen-toggle');
-    const svg = btn ? btn.querySelector('svg') : null;
-    if (!btn || !svg) return;
-
-    const isFullscreen = document.fullscreenElement ||
-                        document.webkitIsFullScreen ||
-                        document.mozFullScreen ||
-                        document.msFullscreenElement;
-
-    if (isFullscreen) {
-        // Icono de salir fullscreen (compress)
-        svg.innerHTML = '<path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>';
-        btn.setAttribute('title', 'Salir de Pantalla Completa');
-        btn.setAttribute('aria-label', 'Salir de Pantalla Completa');
-    } else {
-        // Icono de entrar fullscreen (expand)
-        svg.innerHTML = '<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>';
-        btn.setAttribute('title', 'Pantalla Completa');
-        btn.setAttribute('aria-label', 'Pantalla Completa');
-    }
-
-    // Forzar actualización del tamaño del mapa para evitar áreas grises
-    setTimeout(() => {
-        if (map) {
-            map.invalidateSize();
-        }
-    }, 200);
 }
 
 function closeInfoPanel() {

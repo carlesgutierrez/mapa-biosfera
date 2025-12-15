@@ -8,14 +8,6 @@ html, body {
 #map {
     width: 100%;
     height: 100%;
-
-    /* Mobile responsiveness: ensure gestures are handled by Leaflet, not the browser */
-    touch-action: none;
-    -ms-touch-action: none;
-    overscroll-behavior: none;
-
-    /* Encourage GPU compositing (helps on some mobile browsers) */
-    transform: translateZ(0);
 }
 
 /* --- Popup Styles --- */
@@ -434,15 +426,6 @@ html, body {
 }
 
 /* --- Leaflet Overrides --- */
-
-/* Performance: hint that Leaflet panes/layers will be transformed frequently */
-.leaflet-pane,
-.leaflet-layer,
-.leaflet-tile-container,
-.leaflet-zoom-animated {
-    will-change: transform;
-    backface-visibility: hidden;
-}
 
 /* Ocultar el control de zoom por defecto de Leaflet */
 .leaflet-control-zoom {

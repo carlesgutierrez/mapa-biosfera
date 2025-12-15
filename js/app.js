@@ -25,17 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Inicialización del Mapa ---
 function initMap() {
     map = L.map('map', {
-        zoomControl: false, // Desactivamos el control de zoom por defecto
-
-        // Performance (mobile): render vector layers using Canvas when possible
-        preferCanvas: true,
-
-        // Gesture feel: keep inertia enabled and tune deceleration slightly
-        inertia: true,
-        inertiaDeceleration: 3000,
-
-        // Keep animations enabled (Leaflet may still disable some on low-end devices)
-        zoomAnimation: true
+        zoomControl: false // Desactivamos el control de zoom por defecto
     }).setView(CONFIG.map.center, CONFIG.map.zoom);
 
     // Guardar zoom anterior para detectar dirección del zoom

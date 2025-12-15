@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>👩‍🌾 Actividades</name>
+    <Style id="icon-1899-DB4436-labelson">
+      <IconStyle>
+        <color>ff3644db</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+    </Style>
+    <Placemark>
+      <name>Escuela de Hostelería de Madarcos</name>
+      <description><![CDATA[lat: 41.04768086536504<br>long: -3.580615228175472<br>media_url: https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing<br>icon: 👨‍🍳<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.<br>Persona referencia: Juan Carlos <br>Pueblo: Madarcos<br>Web: https://www.ehmadarcos.es/<br>Email: info@ehmadarcos.es<br>Teléfono: 653304612<br>Red social: https://www.instagram.com/delganaderoatucasa/<br>Google Maps: https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7<br>logo: https://files.catbox.moe/zv6coq.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.04768086536504</value>
+        </Data>
+        <Data name="long">
+          <value>-3.580615228175472</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>👨‍🍳</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Juan Carlos </value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Madarcos</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.ehmadarcos.es/</value>
+        </Data>
+        <Data name="Email">
+          <value>info@ehmadarcos.es</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>6.53304612E8</value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/delganaderoatucasa/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/zv6coq.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.58061522817547,41.047680865365,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Jarama animación</name>
+      <description><![CDATA[lat: 41.06053095065975<br>long: -3.529678832147319<br>media_url: <br>icon: 🚴‍♂️<br>color: pink<br>visible: no<br>Estado: parada<br>Descripción: Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴‍♂️🌲⚡<br>Persona referencia: Jesús y Marian<br>Pueblo: Montejo de la Sierra<br>Web: <br>Email: jaramaanimacion@gmail.com<br>Teléfono: <br>Red social: <br>Google Maps: https://maps.app.goo.gl/UnzoeeeCCBfoxHt89<br>logo: https://files.catbox.moe/6dto3i.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.06053095065975</value>
+        </Data>
+        <Data name="long">
+          <value>-3.529678832147319</value>
+        </Data>
+        <Data name="media_url">
+          <value/>
+        </Data>
+        <Data name="icon">
+          <value>🚴‍♂️</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>no</value>
+        </Data>
+        <Data name="Estado">
+          <value>parada</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴‍♂️🌲⚡</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Jesús y Marian</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Montejo de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value>jaramaanimacion@gmail.com</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value/>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/UnzoeeeCCBfoxHt89</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/6dto3i.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.52967883214732,41.0605309506597,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Cabras la Barda</name>
+      <description><![CDATA[lat: 41.013625884796596<br>long: -3.444881403304612<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: cabraslabarda@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: https://maps.app.goo.gl/bAU3hWxvNcPuH25Z8<br>logo: https://files.catbox.moe/1zk059.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.013625884796596</value>
+        </Data>
+        <Data name="long">
+          <value>-3.444881403304612</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐐</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Rebecca</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Puebla de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value/>
+        </Data>
+        <Data name="Email">
+          <value>cabraslabarda@gmail.com</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/cabraslabarda/</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/bAU3hWxvNcPuH25Z8</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/1zk059.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.44488140330461,41.0136258847966,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Granja Prados Montes</name>
+      <description><![CDATA[lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Vive un día como granjero participando en las tareas de una granja ecológica: cuidar y alimentar animales, pastorear, cosechar y descubrir el trabajo diario que une a las personas con la tierra y la naturaleza. 🌾🐑<br>También organizamos sesiones de teambuilding para empresas y grupos. 👩‍🌾<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/granjapradosmontes/?hl=es<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96<br>logo: https://files.catbox.moe/4z40go.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.0615574712286</value>
+        </Data>
+        <Data name="long">
+          <value>-3.5300623033116296</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🐑</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Vive un día como granjero participando en las tareas de una granja ecológica: cuidar y alimentar animales, pastorear, cosechar y descubrir el trabajo diario que une a las personas con la tierra y la naturaleza. 🌾🐑
+También organizamos sesiones de teambuilding para empresas y grupos. 👩‍🌾</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Ana y Guille</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Montejo de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.granjapradosmontes.com/</value>
+        </Data>
+        <Data name="Email">
+          <value>proyectopradosmontes@gmail.com</value>
+        </Data>
+        <Data name="Teléfono">
+          <value/>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/granjapradosmontes/?hl=es</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/X9Jg6aEMMnsdbod96</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/4z40go.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.53006230331163,41.0615574712286,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Molino de arriba</name>
+      <description><![CDATA[lat: 41.01342000726289<br>long: -3.4518413143003506<br>media_url: https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing<br>icon: 🏕️<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚<br>Persona referencia: Antonio<br>Pueblo: Puebla de la Sierra<br>Web: https://molinodearriba.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: 689432188<br>Red social: <br>Google Maps: https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8<br>logo: https://files.catbox.moe/s857f6.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.01342000726289</value>
+        </Data>
+        <Data name="long">
+          <value>-3.4518413143003506</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>🏕️</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Antonio</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Puebla de la Sierra</value>
+        </Data>
+        <Data name="Web">
+          <value>https://molinodearriba.com/</value>
+        </Data>
+        <Data name="Email">
+          <value>proyectopradosmontes@gmail.com</value>
+        </Data>
+        <Data name="Teléfono">
+          <value>6.89432188E8</value>
+        </Data>
+        <Data name="Red social">
+          <value/>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/s857f6.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.45184131430035,41.0134200072629,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Rincón Silvestre</name>
+      <description><![CDATA[lat: 41.04495887851384<br>long: -3.5417732743025305<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 👩‍🌾<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.<br><br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Teléfono: 678424305<br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA<br>logo: https://files.catbox.moe/33gf1p.png]]></description>
+      <styleUrl>#icon-1899-DB4436-labelson</styleUrl>
+      <ExtendedData>
+        <Data name="lat">
+          <value>41.04495887851384</value>
+        </Data>
+        <Data name="long">
+          <value>-3.5417732743025305</value>
+        </Data>
+        <Data name="media_url">
+          <value>https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing</value>
+        </Data>
+        <Data name="icon">
+          <value>👩‍🌾</value>
+        </Data>
+        <Data name="color">
+          <value>pink</value>
+        </Data>
+        <Data name="visible">
+          <value>yes</value>
+        </Data>
+        <Data name="Estado">
+          <value>activo</value>
+        </Data>
+        <Data name="Descripción">
+          <value>Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.
+</value>
+        </Data>
+        <Data name="Persona referencia">
+          <value>Carol</value>
+        </Data>
+        <Data name="Pueblo">
+          <value>Prádena del Rincón</value>
+        </Data>
+        <Data name="Web">
+          <value>https://www.rinconsilvestre.net/ </value>
+        </Data>
+        <Data name="Email">
+          <value>fitocosmetica@rinconsilvestre.net </value>
+        </Data>
+        <Data name="Teléfono">
+          <value>6.78424305E8</value>
+        </Data>
+        <Data name="Red social">
+          <value>https://www.instagram.com/silvestrerincon/#</value>
+        </Data>
+        <Data name="Google Maps">
+          <value>https://maps.app.goo.gl/2z1G189wiW5kdsWHA</value>
+        </Data>
+        <Data name="logo">
+          <value>https://files.catbox.moe/33gf1p.png</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -3.54177327430253,41.0449588785138,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

@@ -641,15 +641,39 @@ async function loadPuntos(layerConfig) {
                 });
             },
             pointToLayer: (feature, latlng) => {
+                // 1. Prioridad: Icono Emoji (si existe en propiedades y no es URL)
+                // Solo se aplica si NO está activada la preferencia por iconos KML en config
+                if (!CONFIG.useKmlIcons && feature.properties.icon && !feature.properties.icon.startsWith('http') && !feature.properties.icon.startsWith('/')) {
+                    return L.marker(latlng, {
+                        icon: L.divIcon({
+                            className: 'emoji-marker',
+                            html: `<div style="font-size: 28px; line-height: 1; text-align: center;">${feature.properties.icon}</div>`,
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 15],
+                            popupAnchor: [0, -15]
+                        })
+                    });
+                }
+
+                // 2. Estilo KML estándar
                 let styleUrl = feature.properties.styleUrl;
                 if (styleMaps.has(styleUrl)) {
                     styleUrl = styleMaps.get(styleUrl);
                 }
                 const iconPath = styles.get(styleUrl);
                 
-                let finalIconUrl = `${layerConfig.folder}/iconoDoc.png`;
+                let finalIconUrl = `${layerConfig.folder}/iconoDoc.png`; // Fallback
+                
                 if (iconPath) {
-                    finalIconUrl = `${layerConfig.folder}/${iconPath}`;
+                    // Detectar si es URL absoluta o relativa
+                    if (iconPath.startsWith('http') || iconPath.startsWith('//')) {
+                        // Si es la imagen genérica de Google, preferimos el fallback si no hay emoji
+                        if (!iconPath.includes('blank_maps.png')) {
+                            finalIconUrl = iconPath;
+                        }
+                    } else {
+                        finalIconUrl = `${layerConfig.folder}/${iconPath}`;
+                    }
                 }
 
                 return L.marker(latlng, {

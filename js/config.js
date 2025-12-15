@@ -31,6 +31,7 @@ const CONFIG = {
     },
 
     // Configuración de iconos
+    useKmlIcons: true, // true: usar iconos del KML (images/...), false: usar emojis del campo 'icon'
     icons: {
         size: [40, 40], // Aumentado un 25% (de 32x32)
         anchor: [20, 40],

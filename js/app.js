@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Inicialización del Mapa ---
 function initMap() {
     map = L.map('map', {
+        preferCanvas: false,
         zoomControl: false // Desactivamos el control de zoom por defecto
     }).setView(CONFIG.map.center, CONFIG.map.zoom);
 
@@ -48,7 +49,8 @@ function initMap() {
         const layerName = key.charAt(0).toUpperCase() + key.slice(1);
         
         const tileLayer = L.tileLayer(layerConfig.url, {
-            attribution: layerConfig.attribution
+            attribution: layerConfig.attribution,
+            keepBuffer: 8 // Mantener más teselas en memoria (default 2) para evitar recargas al volver atrás
         });
         
         baseLayers[layerName] = tileLayer;
@@ -66,7 +68,9 @@ function initMap() {
     group = new L.FeatureGroup();
 
     // Inicializar grupo de clusters compartido
-    sharedClusterGroup = L.markerClusterGroup();
+    sharedClusterGroup = L.markerClusterGroup({
+        chunkedLoading: true // Carga progresiva para evitar congelar la UI
+    });
     
     // Evento click en cluster (nodo verde)
     sharedClusterGroup.on('clusterclick', function (a) {
@@ -205,6 +209,61 @@ function updateItemsMenu() {
     });
 }
 
+// Función unificada para seleccionar un feature (desde mapa o menú)
+function selectFeature(layer) {
+    const feature = layer.feature;
+    const folder = feature.properties._folder; // Recuperamos la carpeta guardada
+
+    // Si ya hay uno seleccionado, restaurarlo al cluster
+    if (selectedMarker && selectedMarker !== layer) {
+        clearSelection();
+    }
+
+    // Comprobar si es parte de un spiderfy (varios nodos conectados)
+    const isSpiderfied = !!layer._spiderLeg;
+
+    selectedMarker = layer;
+    
+    // Efecto visual selección
+    createHalo(layer.getLatLng());
+
+    if (isSpiderfied) {
+        console.log("Marker spiderfied: Manteniendo posición.");
+        displayFeatureInfo(feature, folder);
+    } else {
+        // Comportamiento normal: Mover cámara si es necesario
+        let targetLatLng = layer.getLatLng();
+        let shouldMove = true;
+        const targetZoom = Math.max(map.getZoom(), 16);
+        
+        // Comprobar si estamos en modo escritorio (ancho > 600px)
+        if (window.innerWidth > 600) {
+            const point = map.project(targetLatLng, targetZoom);
+            const newPoint = point.add([200, 0]); // Desplazar 200px a la derecha
+            targetLatLng = map.unproject(newPoint, targetZoom);
+            
+            if (map.getCenter().distanceTo(targetLatLng) < 50) {
+                shouldMove = false;
+            }
+        } else {
+            if (map.getCenter().distanceTo(targetLatLng) < 50) {
+                shouldMove = false;
+            }
+        }
+
+        if (shouldMove) {
+            // Primero mover, luego mostrar info al terminar
+            map.flyTo(targetLatLng, targetZoom, { duration: 1.5 });
+            map.once('moveend', () => {
+                displayFeatureInfo(feature, folder);
+            });
+        } else {
+            // Si no hay movimiento, mostrar directamente
+            displayFeatureInfo(feature, folder);
+        }
+    }
+}
+
 function zoomToFeature(layer) {
     // Lógica mejorada para zoom profundo y selección directa
     
@@ -214,43 +273,34 @@ function zoomToFeature(layer) {
     if (visibleParent === layer) {
         // CASO A: Marcador visible -> Selección directa
         console.log('📍 Item visible -> Selección directa');
-        layer.fireEvent('click', { latlng: layer.getLatLng() });
+        selectFeature(layer);
         
     } else if (visibleParent instanceof L.MarkerCluster) {
         // CASO B: Agrupado en cluster
         console.log('🔍 Item en cluster -> Zoom profundo');
         
-        // Estrategia: Hacer zoom hasta que el marcador sea visible o spiderfied
-        // Usamos zoomToShowLayer de MarkerClusterGroup que hace exactamente esto:
-        // Hace zoom y spiderfy si es necesario para mostrar el marcador.
-        
         sharedClusterGroup.zoomToShowLayer(layer, () => {
             // Callback cuando el marcador ya es visible (después de zoom/spiderfy)
             console.log('✅ Marcador revelado -> Seleccionando');
             
-            // Pequeño delay para asegurar que la animación de spiderfy terminó visualmente
             setTimeout(() => {
-                layer.fireEvent('click', { latlng: layer.getLatLng() });
+                selectFeature(layer);
             }, 200);
         });
     } else {
-        // Fallback por si acaso (ej. fuera de pantalla pero no en cluster?)
-        // Simplemente volar a su posición con zoom alto
-        // Animación más lenta en móvil para dar tiempo a ver el viaje
+        // Fallback
         const duration = L.Browser.mobile ? 2.5 : 1.5;
         map.flyTo(layer.getLatLng(), 18, { duration: duration });
         
-        // En móvil, esperar a que termine la animación para mostrar info
         if (L.Browser.mobile) {
              map.once('moveend', () => {
-                 // Pausa de 1 segundo antes de abrir la descripción
                  setTimeout(() => {
-                     layer.fireEvent('click', { latlng: layer.getLatLng() });
+                     selectFeature(layer);
                  }, 1000);
              });
         } else {
              setTimeout(() => {
-                 layer.fireEvent('click', { latlng: layer.getLatLng() });
+                 selectFeature(layer);
              }, duration * 1000 + 100);
         }
     }
@@ -378,6 +428,42 @@ function closeInfoPanel() {
 
 let hoverHalo = null; // Halo temporal para hover
 
+// Variables para reutilizar marcadores de halo y evitar GC
+let sharedHoverHalo = null;
+let sharedSelectedHalo = null;
+
+function getHaloMarker(isHover) {
+    const haloSize = 50;
+    const iconHeight = CONFIG.icons.size[1]; // 40
+    
+    // Crear icono si no existe (es el mismo para ambos)
+    const createIcon = () => L.divIcon({
+        className: 'marker-selected-halo',
+        iconSize: [haloSize, haloSize],
+        iconAnchor: [haloSize/2, haloSize/2 + iconHeight/2]
+    });
+
+    if (isHover) {
+        if (!sharedHoverHalo) {
+            sharedHoverHalo = L.marker([0,0], {
+                icon: createIcon(),
+                zIndexOffset: -1000,
+                interactive: false
+            });
+        }
+        return sharedHoverHalo;
+    } else {
+        if (!sharedSelectedHalo) {
+            sharedSelectedHalo = L.marker([0,0], {
+                icon: createIcon(),
+                zIndexOffset: -1000,
+                interactive: false
+            });
+        }
+        return sharedSelectedHalo;
+    }
+}
+
 function clearSelection(onlyHover = false) {
     if (onlyHover) {
         if (hoverHalo) {
@@ -410,35 +496,12 @@ function createHalo(latlng, isHover = false) {
         if (hoverHalo) hoverHalo.remove(); // Limpiar anterior hover
     }
     
-    // Crear un icono DivIcon para el halo
-    // El icono original tiene anchor [20, 40] (centro horizontal, base vertical)
-    // El halo es 50x50. Para centrarlo en el "centro visual" del icono (aprox a mitad de altura, no en la base):
-    // Si el icono mide 40 de alto, su centro visual está en y=-20 desde la base.
-    // El anchor del halo debe coincidir con la latlng del marcador (que es la base del pin).
-    // Si queremos que el halo rodee el centro del icono, debemos desplazarlo hacia arriba.
+    const haloMarker = getHaloMarker(isHover);
+    haloMarker.setLatLng(latlng);
     
-    const haloSize = 50;
-    const iconHeight = CONFIG.icons.size[1]; // 40
-    
-    // Ajuste manual para centrar visualmente en el icono
-    // Anchor X: mitad del halo (25)
-    // Anchor Y: mitad del halo (25) + mitad de la altura del icono (20) = 45?
-    // No, el latlng está en la punta inferior del icono.
-    // Queremos que el centro del halo esté en (latlng.x, latlng.y - iconHeight/2).
-    // Por tanto, el anchor del halo (punto que coincide con latlng) debe estar desplazado.
-    // Anchor = [25, 25 + 20] = [25, 45]
-    
-    const haloIcon = L.divIcon({
-        className: 'marker-selected-halo',
-        iconSize: [haloSize, haloSize],
-        iconAnchor: [haloSize/2, haloSize/2 + iconHeight/2]
-    });
-
-    const haloMarker = L.marker(latlng, {
-        icon: haloIcon,
-        zIndexOffset: -1000, // Intentar ponerlo detrás
-        interactive: false
-    }).addTo(map);
+    if (!map.hasLayer(haloMarker)) {
+        haloMarker.addTo(map);
+    }
 
     if (isHover) {
         hoverHalo = haloMarker;
@@ -540,199 +603,202 @@ function verificarCargaCompleta() {
 
 // --- Lógica de Municipios ---
 function loadMunicipios(layerConfig) {
-    omnivore.kml(layerConfig.url)
-        .on('ready', function() {
-            this.eachLayer(function(layer) {
-                layer.setStyle(CONFIG.styles.municipios);
-                if (layer.feature.properties.name) {
-                    // Tooltip original (hover)
-                    layer.bindTooltip(layer.feature.properties.name, {
-                        permanent: false,
-                        direction: 'center',
-                        className: 'municipio-tooltip'
-                    });
+    // Usamos VectorGrid para renderizar los polígonos como teselas vectoriales
+    
+    fetch(layerConfig.url)
+        .then(response => response.text())
+        .then(kmlText => {
+            // 1. Parsear KML a GeoJSON usando omnivore
+            const tempLayer = omnivore.kml.parse(kmlText);
+            
+            // Pre-calcular centros para los tooltips
+            tempLayer.eachLayer(l => {
+                if (l.getBounds) {
+                    const center = l.getBounds().getCenter();
+                    // Guardamos el centro en las propiedades para usarlo en VectorGrid
+                    l.feature.properties._center = { lat: center.lat, lng: center.lng };
+                }
+            });
+
+            const geoJsonData = tempLayer.toGeoJSON();
+            
+            // 2. Crear capa VectorGrid
+            const vectorGridLayer = L.vectorGrid.slicer(geoJsonData, {
+                rendererFactory: L.canvas.tile,
+                vectorTileLayerStyles: {
+                    sliced: CONFIG.styles.municipios
+                },
+                interactive: true,
+                getFeatureId: function(f) {
+                    return f.properties.name;
+                }
+            });
+            
+            // 3. Eventos
+            const hoverTooltip = L.tooltip({
+                direction: 'center',
+                className: 'municipio-tooltip',
+                permanent: false,
+                opacity: 1
+            });
+
+            vectorGridLayer.on('mouseover', function(e) {
+                const props = e.layer.properties;
+                if (props.name) {
+                    hoverTooltip.setContent(props.name);
                     
-                    // Popup al hacer click (si está habilitado en config)
-                    if (CONFIG.enableMunicipalityPopups) {
-                        layer.on('click', function(e) {
-                            L.popup()
-                                .setLatLng(e.latlng)
-                                .setContent(`<b>${layer.feature.properties.name}</b>`)
-                                .openOn(map);
-                        });
+                    // Usar centro pre-calculado si existe, si no la posición del ratón
+                    let pos = e.latlng;
+                    if (props._center) {
+                        pos = props._center;
                     }
-                }
-                group.addLayer(layer);
-            });
-            verificarCargaCompleta();
-        })
-        .on('error', function(error) {
-            console.error(`Error al cargar ${layerConfig.url}:`, error);
-            verificarCargaCompleta();
-        })
-        .addTo(map);
-}
-
-// --- Lógica de Puntos (Productores y Actividades) ---
-async function loadPuntos(layerConfig) {
-    const { styles, styleMaps } = await parseKmlStyles(layerConfig.url);
-    // Usamos el grupo compartido en lugar de crear uno nuevo
-    // const clusterGroup = L.markerClusterGroup();
-
-    const customLayer = L.geoJson(null, {
-        onEachFeature: (feature, layer) => {
-            // Resolver icono
-            let styleUrl = feature.properties.styleUrl;
-            if (styleMaps.has(styleUrl)) {
-                styleUrl = styleMaps.get(styleUrl);
-            }
-            const iconPath = styles.get(styleUrl);
-            if (iconPath) {
-                feature.properties.iconUrl = iconPath;
-            }
-            
-            // Evento Click
-            layer.on('click', (e) => {
-                // Evitar que el click se propague al mapa y cierre el panel inmediatamente
-                L.DomEvent.stopPropagation(e);
-
-                // Si ya hay uno seleccionado, restaurarlo al cluster
-                if (selectedMarker && selectedMarker !== layer) {
-                    clearSelection();
-                }
-
-                // Comprobar si es parte de un spiderfy (varios nodos conectados)
-                const isSpiderfied = !!layer._spiderLeg;
-
-                selectedMarker = layer;
-                
-                // Efecto visual selección
-                createHalo(e.latlng);
-
-                if (isSpiderfied) {
-                    // Excepción: Si está spiderfied, NO movemos la cámara
-                    // para evitar vibraciones o cierres inesperados.
-                    console.log("Marker spiderfied: Manteniendo posición.");
-                } else {
-                    // Comportamiento normal: Mover cámara si es necesario
-                    // Ya NO sacamos del cluster (sharedClusterGroup.removeLayer) para permitir
-                    // que se agrupe naturalmente al hacer zoom out, y entonces limpiar la selección.
-
-                    // Calcular centro ajustado
-                    let targetLatLng = e.latlng;
-                    let shouldMove = true;
                     
-                    // Comprobar si estamos en modo escritorio (ancho > 600px)
-                    if (window.innerWidth > 600) {
-                        const targetZoom = Math.max(map.getZoom(), 16);
-                        const point = map.project(e.latlng, targetZoom);
-                        const newPoint = point.add([200, 0]); // Desplazar 200px a la derecha
-                        targetLatLng = map.unproject(newPoint, targetZoom);
-                        
-                        // Evitar vibración: Si la distancia es muy pequeña, no mover
-                        if (map.getCenter().distanceTo(targetLatLng) < 50) { // 50 metros umbral
-                            shouldMove = false;
-                        }
-                        
-                        if (shouldMove) {
-                            map.flyTo(targetLatLng, targetZoom, { duration: 1.5 });
-                        }
-                    } else {
-                        const targetZoom = Math.max(map.getZoom(), 16);
-                        
-                        // Evitar vibración en móvil también
-                        if (map.getCenter().distanceTo(targetLatLng) < 50) {
-                            shouldMove = false;
-                        }
-
-                        if (shouldMove) {
-                            map.flyTo(targetLatLng, targetZoom, { duration: 1.5 });
-                        }
-                    }
-                }
-
-                displayFeatureInfo(feature, layerConfig.folder);
-            });
-            
-            // Evento Hover (opcional según petición "click (o un hover)")
-            // Si ponemos hover, puede ser molesto si hay muchos puntos.
-            // El usuario dijo "Cuando se haga click ( o un hover ) al item , muestra un circulo..."
-            // Vamos a añadir el halo en hover también, pero temporal?
-            // Mejor solo click para selección persistente con el panel.
-            // Si quiere hover style, podemos usar CSS en el icono o evento mouseover.
-            layer.on('mouseover', (e) => {
-                // Mostrar halo en hover si no es el seleccionado
-                if (selectedMarker !== layer) {
-                    createHalo(e.latlng, true); // true = isHover
-                }
-                
-                // Mostrar tooltip con nombre
-                if (feature.properties.name) {
-                    layer.bindTooltip(feature.properties.name, {
-                        permanent: false,
-                        direction: 'top',
-                        className: 'marker-hover-tooltip',
-                        offset: [0, -40] // Ajustar para que salga encima del icono
-                    }).openTooltip();
+                    hoverTooltip.setLatLng(pos);
+                    map.openTooltip(hoverTooltip);
                 }
             });
 
-            layer.on('mouseout', (e) => {
-                // Quitar halo de hover
-                if (selectedMarker !== layer) {
-                    clearSelection(true); // true = onlyHover
-                }
-                layer.closeTooltip();
+            vectorGridLayer.on('mouseout', function(e) {
+                map.closeTooltip(hoverTooltip);
             });
-        },
-        pointToLayer: (feature, latlng) => {
-            let styleUrl = feature.properties.styleUrl;
-            if (styleMaps.has(styleUrl)) {
-                styleUrl = styleMaps.get(styleUrl);
+
+            if (CONFIG.enableMunicipalityPopups) {
+                vectorGridLayer.on('click', function(e) {
+                    L.popup()
+                        .setLatLng(e.latlng)
+                        .setContent(`<b>${e.layer.properties.name}</b>`)
+                        .openOn(map);
+                });
             }
-            const iconPath = styles.get(styleUrl);
             
-            let finalIconUrl = `${layerConfig.folder}/iconoDoc.png`; // Fallback
-            if (iconPath) {
-                finalIconUrl = `${layerConfig.folder}/${iconPath}`;
+            // 4. Añadir al grupo para calcular bounds
+            tempLayer.eachLayer(layer => group.addLayer(layer));
+            
+            // 5. Añadir al mapa si está habilitado
+            if (CONFIG.renderMunicipios) {
+                vectorGridLayer.addTo(map);
             }
-
-            return L.marker(latlng, {
-                icon: L.icon({
-                    iconUrl: finalIconUrl,
-                    iconSize: CONFIG.icons.size,
-                    iconAnchor: CONFIG.icons.anchor,
-                    popupAnchor: CONFIG.icons.popupAnchor
-                })
-            });
-        }
-    });
-
-    omnivore.kml(layerConfig.url, null, customLayer)
-        .on('ready', function() {
-            // Guardar referencia para filtrado
-            // Asumimos que layerConfig.folder coincide con las claves 'actividades' o 'productores'
-            // O usamos layerConfig.name normalizado
-            const key = layerConfig.folder; // 'actividades' o 'productores'
-            layerGroups[key] = this;
-
-            sharedClusterGroup.addLayer(this); // Añadir al grupo compartido
             
-            this.eachLayer(layer => group.addLayer(layer));
             verificarCargaCompleta();
-            updateItemsMenu(); // Actualizar menú al cargar
         })
-        .on('error', function(error) {
+        .catch(error => {
             console.error(`Error al cargar ${layerConfig.url}:`, error);
             verificarCargaCompleta();
         });
 }
 
-// --- Parsing de Estilos KML ---
-async function parseKmlStyles(url) {
+// --- Lógica de Puntos (Productores y Actividades) ---
+async function loadPuntos(layerConfig) {
     try {
-        const response = await fetch(url);
+        // 1. Fetch del KML (texto) una sola vez
+        const response = await fetch(layerConfig.url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const kmlText = await response.text();
+
+        // 2. Parsear estilos del texto
+        const { styles, styleMaps } = parseKmlStylesFromText(kmlText);
+
+        // Usamos el grupo compartido en lugar de crear uno nuevo
+        // const clusterGroup = L.markerClusterGroup();
+
+        const customLayer = L.geoJson(null, {
+            onEachFeature: (feature, layer) => {
+                // Guardar carpeta en propiedades para usarla en selectFeature
+                feature.properties._folder = layerConfig.folder;
+
+                // Resolver icono
+                let styleUrl = feature.properties.styleUrl;
+                if (styleMaps.has(styleUrl)) {
+                    styleUrl = styleMaps.get(styleUrl);
+                }
+                const iconPath = styles.get(styleUrl);
+                if (iconPath) {
+                    feature.properties.iconUrl = iconPath;
+                }
+                
+                // Evento Click
+                layer.on('click', (e) => {
+                    L.DomEvent.stopPropagation(e);
+                    selectFeature(layer);
+                });
+                
+                // Evento Hover (opcional según petición "click (o un hover)")
+                // Si ponemos hover, puede ser molesto si hay muchos puntos.
+                // El usuario dijo "Cuando se haga click ( o un hover ) al item , muestra un circulo..."
+                // Vamos a añadir el halo en hover también, pero temporal?
+                // Mejor solo click para selección persistente con el panel.
+                // Si quiere hover style, podemos usar CSS en el icono o evento mouseover.
+                layer.on('mouseover', (e) => {
+                    // Mostrar halo en hover si no es el seleccionado
+                    if (selectedMarker !== layer) {
+                        createHalo(e.latlng, true); // true = isHover
+                    }
+                    
+                    // Mostrar tooltip con nombre
+                    if (feature.properties.name) {
+                        layer.bindTooltip(feature.properties.name, {
+                            permanent: false,
+                            direction: 'top',
+                            className: 'marker-hover-tooltip',
+                            offset: [0, -40] // Ajustar para que salga encima del icono
+                        }).openTooltip();
+                    }
+                });
+
+                layer.on('mouseout', (e) => {
+                    // Quitar halo de hover
+                    if (selectedMarker !== layer) {
+                        clearSelection(true); // true = onlyHover
+                    }
+                    layer.closeTooltip();
+                });
+            },
+            pointToLayer: (feature, latlng) => {
+                let styleUrl = feature.properties.styleUrl;
+                if (styleMaps.has(styleUrl)) {
+                    styleUrl = styleMaps.get(styleUrl);
+                }
+                const iconPath = styles.get(styleUrl);
+                
+                let finalIconUrl = `${layerConfig.folder}/iconoDoc.png`; // Fallback
+                if (iconPath) {
+                    finalIconUrl = `${layerConfig.folder}/${iconPath}`;
+                }
+
+                return L.marker(latlng, {
+                    icon: L.icon({
+                        iconUrl: finalIconUrl,
+                        iconSize: CONFIG.icons.size,
+                        iconAnchor: CONFIG.icons.anchor,
+                        popupAnchor: CONFIG.icons.popupAnchor
+                    })
+                });
+            }
+        });
+
+        // 3. Parsear KML con omnivore usando el texto ya descargado
+        omnivore.kml.parse(kmlText, null, customLayer);
+
+        // Ejecutar lógica de carga inmediatamente (parse es síncrono y no dispara 'ready')
+        // Guardar referencia para filtrado
+        const key = layerConfig.folder; // 'actividades' o 'productores'
+        layerGroups[key] = customLayer;
+
+        sharedClusterGroup.addLayer(customLayer); // Añadir al grupo compartido
+        
+        customLayer.eachLayer(layer => group.addLayer(layer));
+        verificarCargaCompleta();
+        updateItemsMenu(); // Actualizar menú al cargar
+
+    } catch (error) {
+        console.error(`Error al cargar ${layerConfig.url}:`, error);
+        verificarCargaCompleta();
+    }
+}
+
+// --- Parsing de Estilos KML ---
+function parseKmlStylesFromText(kmlText) {
+    try {
         const parser = new DOMParser();
         const kmlDoc = parser.parseFromString(kmlText, 'application/xml');
         

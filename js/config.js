@@ -40,6 +40,9 @@ const CONFIG = {
     // Habilitar popups en municipios al hacer click
     enableMunicipalityPopups: false,
 
+    // Renderizar municipios en el mapa (desactivar para mejorar rendimiento si es necesario)
+    renderMunicipios: true,
+
     // Configuración de estilos para capas KML
     styles: {
         municipios: {

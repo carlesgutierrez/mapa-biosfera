@@ -4,7 +4,7 @@
 
 Desarrollado por **Carles Gutiérrez** ([https://carlesgutierrez.github.io](https://carlesgutierrez.github.io)).
 
-Perfil polifacético que se resume como **Creative Technologist** (programación web, Apps Interactivas, Iluminación, Videojuegos, Visualizaciones de datos, electrónicas programables, etc).
+Perfil polifacético que se resume como **Creative Technologist** (programación web, Apps Interactivas, Iluminación, Instalaciones Interactivas, Visualizaciones de datos, Electrónicas programables, etc).
 
 Para más información ver perfil de LinkedIn: [https://es.linkedin.com/in/carlesgutierrez](https://es.linkedin.com/in/carlesgutierrez)
 
@@ -55,3 +55,17 @@ Copia y pega el siguiente código HTML en tu sitio web:
 ```
 
 **Nota:** Ajusta el atributo `height` (altura) según tus necesidades para que se adapte mejor al diseño de tu página. El atributo `src` debe apuntar a la URL donde esté alojado este proyecto.
+
+## TODOS
+- **Guia interactiva inicio**
+      - Quiero un botón nuevo de tour que esté al lado de la hamburguesa que mienstras está apretado tenemos un TOUR automatizado que abre la hamburguesa y apreta el primer productor o actividad disponible en el menú. 
+      
+      Definición de movimiento y estètica del dedo o tour. Cuando se activa el modo tour una punto ancho y borroso ( del tamaño de un dedo en versión movil o una flecha de ratón en versión ratón, todo SVG) se va moviendo por la pantalla de manera automatizada pero no muy rapido. Cuando se hace un acción de apretar con el dedo o flecha se muestra en un color oscuro (con el estilo de apretado tipico). Cada vez que se ve un contenido duramos 2 segundos y apretamos a la cruz para salir e ir por el siguiente nodo disponible en el menú.
+      
+      cada 3 nodos visitados del tour, cerramos la hamburguesa y le damos al botón de zoom para centrarnos de nuevo y desactivamos el botón de tour. Ya hemos completado el tour. 
+
+- ** Desactivar el pinch zoom con dos dedos y sus mensajes.**  
+- ** Hacer el código más modular**
+
+  - Pasar a tourMapaInteractivo.js todo lo relacionado con la automatización por el mapa. 
+ 

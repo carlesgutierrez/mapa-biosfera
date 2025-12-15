@@ -916,11 +916,27 @@ function displayFeatureInfo(feature, carpetaBase) {
 
 // --- Gestión de Gestos Móviles (Google Maps style) ---
 function initMobileGestures() {
+    // Si está desactivado en config, usamos interacción nativa de Leaflet.
+    // Importante: también evitamos que aparezca el mensaje de “dos dedos”.
+    if (!CONFIG.mobileGestures || !CONFIG.mobileGestures.enableTwoFingerPanProtection) {
+        const gestureOverlay = document.getElementById('gesture-overlay');
+        if (gestureOverlay) {
+            gestureOverlay.style.display = 'none';
+            // Para asegurar que nunca aparezca por CSS/JS accidental, lo quitamos del DOM.
+            gestureOverlay.remove();
+        }
+        return;
+    }
+
     // Solo aplicar en dispositivos móviles
     if (!L.Browser.mobile) return;
 
     const mapContainer = map.getContainer();
     const gestureOverlay = document.getElementById('gesture-overlay');
+    const gestureMsg = gestureOverlay ? gestureOverlay.querySelector('.gesture-msg') : null;
+    if (gestureMsg && typeof CONFIG.mobileGestures.twoFingerMessage === 'string') {
+        gestureMsg.textContent = CONFIG.mobileGestures.twoFingerMessage;
+    }
 
     // Deshabilitar interacciones de movimiento por defecto en móvil
     // Mantenemos touchZoom habilitado para permitir pinch sin necesidad de lógica compleja,

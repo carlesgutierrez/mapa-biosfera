@@ -76,5 +76,13 @@ const CONFIG = {
             folder: 'actividades',
             name: 'Actividades'
         }
-    ]
+    ],
+
+    // Gestos en móvil
+    // - false (por defecto): usar la interacción nativa de Leaflet (1 dedo mueve el mapa)
+    // - true: activar la “protección” tipo Google Maps (solo 2 dedos mueven el mapa)
+    mobileGestures: {
+        enableTwoFingerPanProtection: false,
+        twoFingerMessage: 'Usa dos dedos para mover el mapa'
+    }
 };

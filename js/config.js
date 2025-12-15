@@ -58,8 +58,9 @@ const CONFIG = {
 
     // Campos de datos a excluir en el panel de información
     excludedDataFields: [
-        'styleurl', 'stylehash', 'name', 'description', 'icon', 'visible', 
-        'gx_media_links', 'lat', 'long', 'media_url', 'color', 'nombre', 'iconurl'
+        'styleurl', 'stylehash', 'name', 'description', 'icon', 'visible',
+        'gx_media_links', 'lat', 'long', 'media_url', 'color', 'nombre', 'iconurl',
+        '_folder'
     ],
 
     // Rutas a los archivos KML y sus carpetas de recursos

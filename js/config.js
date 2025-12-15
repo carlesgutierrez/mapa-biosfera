@@ -50,7 +50,8 @@ const CONFIG = {
             weight: 2,
             opacity: 0.6,
             fillColor: '#808080',
-            fillOpacity: 0.2
+            fillOpacity: 0.2,
+            dashArray: '5, 5' // Línea discontinua
         }
     },
 

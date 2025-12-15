@@ -108,14 +108,14 @@ html, body {
 /* --- Map Header & Legend --- */
 .map-header {
     pointer-events: auto;
-    background-color: rgba(50, 50, 50, 0.8);
+    background-color: transparent; /* Fondo transparente */
     color: white;
     padding: 10px 15px;
     border-radius: 8px;
     text-align: center;
     width: max-content;
     max-width: 100%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: none; /* Sin sombra */
     display: flex;
     flex-direction: row; /* Alinear horizontalmente siempre */
     align-items: center;
@@ -148,21 +148,34 @@ html, body {
     padding: 8px 10px;
     border-radius: 4px;
     transition: all 0.2s;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid transparent;
+    background-color: rgba(50, 50, 50, 0.8); /* Fondo gris con transparencia */
+    border: 2px solid transparent; /* Borde transparente base */
     flex-grow: 1;
     min-width: 110px; /* Ancho mínimo para igualar tamaños */
     flex-basis: 0; /* Para que flex-grow funcione equitativamente */
 }
 
 .legend-item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(50, 50, 50, 0.95);
+}
+
+/* Colores de borde específicos */
+#legend-productores {
+    border-color: #ffcc00;
+}
+
+#legend-actividades {
+    border-color: #00ccff;
+}
+
+.legend-item img {
+    opacity: 1 !important; /* Asegurar visibilidad */
 }
 
 .legend-item.active {
-    background-color: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    background-color: rgba(50, 50, 50, 0.95); /* Fondo oscuro más opaco cuando está activo */
+    /* Mantenemos el borde definido por el ID o por defecto */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .legend-item.inactive {
@@ -307,12 +320,29 @@ html, body {
 }
 
 /* --- Footer Credits --- */
-.footer-credits {
-    position: absolute;
+.footer-container {
+    position: fixed;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1200; /* Encima de todo */
+    left: 0;
+    width: 100%;
+    height: 20px; /* Zona sensible para activar el footer */
+    z-index: 1200;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    pointer-events: auto;
+}
+
+.footer-container:hover {
+    height: auto; /* Permitir interacción con los enlaces al abrirse */
+}
+
+.footer-credits {
+    /* Posicionamiento relativo al contenedor flex */
+    transform: translateY(100%); /* Oculto inicialmente */
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
     background: rgba(50, 50, 50, 0.95);
     padding: 5px 15px;
     border-top-left-radius: 8px;
@@ -325,6 +355,11 @@ html, body {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.footer-container:hover .footer-credits {
+    transform: translateY(0); /* Mostrar al hacer hover en la zona inferior */
+    opacity: 1;
 }
 
 .footer-credits a {
@@ -554,7 +589,8 @@ body.high-contrast .legend-item img {
         flex-direction: row;
         flex-wrap: nowrap; /* No envolver en móvil si es posible */
         padding: 10px 5px; /* Padding interno ajustado */
-        background-color: rgba(50, 50, 50, 0.95);
+        background-color: transparent; /* Fondo transparente también en móvil */
+        box-shadow: none;
         box-sizing: border-box;
         justify-content: space-evenly; /* Distribuir espacio */
         gap: 5px;
@@ -767,7 +803,7 @@ body.high-contrast .legend-item img {
 
 /* Botón Toggle Menú */
 .menu-toggle-btn {
-    background: none;
+    background-color: rgba(50, 50, 50, 0.8); /* Fondo gris con transparencia */
     border: 2px solid transparent;
     cursor: pointer;
     padding: 5px;
@@ -785,13 +821,13 @@ body.high-contrast .legend-item img {
 }
 
 .menu-toggle-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(50, 50, 50, 0.95);
 }
 
 .menu-toggle-btn.active {
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-    border-color: transparent; /* Sin borde animado cuando está activo/abierto */
+    background-color: rgba(50, 50, 50, 0.95); /* Fondo oscuro */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    border-color: transparent;
 }
 
 /* Animación de borde cuando NO está activo */

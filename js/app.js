@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initColors() {
     const root = document.documentElement;
     const c = CONFIG.colors;
+    const ui = CONFIG.ui;
     if (c) {
         root.style.setProperty('--color-actividades', c.actividades);
         root.style.setProperty('--color-productores', c.productores);
@@ -37,6 +38,43 @@ function initColors() {
             root.style.setProperty('--halo-weight', c.items.haloWeight + 'px');
         }
     }
+    if (ui && ui.buttonGap) {
+        root.style.setProperty('--button-gap', ui.buttonGap + 'px');
+    }
+    if (ui && ui.buttonGapMobile) {
+        root.style.setProperty('--button-gap-mobile', ui.buttonGapMobile + 'px');
+    }
+}
+
+function mostrarNotificacion(mensaje) {
+    // Eliminar notificación existente si hay
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Crear nueva notificación
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = mensaje;
+
+    // Agregar al body
+    document.body.appendChild(toast);
+
+    // Mostrar con animación
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+
+    // Ocultar y eliminar después de 3 segundos
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300); // Esperar la transición
+    }, 3000);
 }
 
 // --- Inicialización del Mapa ---
@@ -310,12 +348,12 @@ function initUI() {
         shareBtn.addEventListener('click', () => {
             const url = "https://www.sierradelrincon.org/productos-y-actividades/";
             const text = `Descubre los productos y actividades de la Sierra del Rincón en este mapa interactivo: ${url} #SierraDelRincón #ProductosLocales #Ecoturismo`;
-            
+
             navigator.clipboard.writeText(text).then(() => {
-                alert('¡Texto copiado al portapapeles!\n\n' + text);
+                mostrarNotificacion('¡Enlace copiado correctamente!');
             }).catch(err => {
                 console.error('Error al copiar: ', err);
-                alert('No se pudo copiar al portapapeles. Por favor, copia el enlace manualmente.');
+                mostrarNotificacion('No se pudo copiar al portapapeles. Por favor, copia el enlace manualmente.');
             });
         });
     }

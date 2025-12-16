@@ -67,7 +67,9 @@ const CONFIG = {
         buttonPositions: {
             zoom: 'left', // Botones + y -
             controls: 'right' // Botones Reset, Fullscreen, etc.
-        }
+        },
+        buttonGap: 12, // Espacio horizontal entre botones de items (px) - Desktop
+        buttonGapMobile: 6 // Espacio horizontal entre botones de items (px) - Mobile
     },
 
     // Configuración de estilos para capas KML (Legacy/Fallback)

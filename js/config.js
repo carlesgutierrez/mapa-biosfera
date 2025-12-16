@@ -1,8 +1,8 @@
 const CONFIG = {
     // Configuración inicial del mapa
     map: {
-        center: [40.416775, -3.703790], // Centro en España
-        zoom: 6,
+        center: [41.05, -3.5], // Centro aproximado Sierra del Rincón
+        zoom: 12, // Zoom más cercano
         // Opciones de capas base
         tileLayers: {
             standard: {
@@ -44,15 +44,42 @@ const CONFIG = {
     // Renderizar municipios en el mapa (desactivar para mejorar rendimiento si es necesario)
     renderMunicipios: true,
 
-    // Configuración de estilos para capas KML
+    // Paleta de Colores y Estilos
+    colors: {
+        municipios: {
+            borderDefault: '#72705B',
+            borderHover: '#4A493B', // Más oscuro que el default
+            fillDefault: '#8FBC8F',
+            fillOpacityDefault: 0.6,
+            fillOpacityHover: 0 // 0 para no oscurecer el relleno al hacer hover
+        },
+        actividades: '#FBAF00', // Naranja/Amarillo
+        productores: '#007CBE', // Azul
+        items: {
+            haloColor: '#ffffff',
+            haloFillColor: 'rgba(255, 255, 255, 0.2)',
+            haloWeight: 5
+        }
+    },
+
+    // Configuración de UI
+    ui: {
+        buttonPositions: {
+            zoom: 'left', // Botones + y -
+            controls: 'right' // Botones Reset, Fullscreen, etc.
+        }
+    },
+
+    // Configuración de estilos para capas KML (Legacy/Fallback)
     styles: {
         municipios: {
-            color: '#4a4a4a',
-            weight: 2,
-            opacity: 0.6,
-            fillColor: '#808080',
-            fillOpacity: 0.2,
-            dashArray: '5, 5' // Línea discontinua
+            color: '#72705B', // Se sobrescribirá con colors.municipios.borderDefault
+            weight: 4,
+            opacity: 0.9,
+            fillColor: '#8FBC8F',
+            fillOpacity: 0.6,
+            fill: true,
+            dashArray: null
         }
     },
 

@@ -15,6 +15,7 @@ let initialBounds = null; // Para guardar la vista inicial
 
 // --- Inicialización ---
 document.addEventListener('DOMContentLoaded', () => {
+    initColors();
     initMap();
     initUI();
     initLegend();
@@ -22,10 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileGestures();
 });
 
+function initColors() {
+    const root = document.documentElement;
+    const c = CONFIG.colors;
+    if (c) {
+        root.style.setProperty('--color-actividades', c.actividades);
+        root.style.setProperty('--color-productores', c.productores);
+        root.style.setProperty('--color-municipio-border', c.municipios.borderDefault);
+        root.style.setProperty('--color-municipio-border-hover', c.municipios.borderHover);
+        if (c.items) {
+            root.style.setProperty('--halo-color', c.items.haloColor);
+            root.style.setProperty('--halo-fill', c.items.haloFillColor);
+            root.style.setProperty('--halo-weight', c.items.haloWeight + 'px');
+        }
+    }
+}
+
 // --- Inicialización del Mapa ---
 function initMap() {
     map = L.map('map', {
-        zoomControl: false, // Desactivamos el control de zoom por defecto
+        zoomControl: true, // Desactivamos el control de zoom por defecto
         // Aumentamos el padding del renderizador (SVG) para que dibuje más área fuera de la vista
         renderer: L.svg({ padding: 1.0 })
     }).setView(CONFIG.map.center, CONFIG.map.zoom);
@@ -63,7 +80,29 @@ function initMap() {
 
     // Inicializar grupo de clusters compartido
     sharedClusterGroup = L.markerClusterGroup({
-        chunkedLoading: true // Carga progresiva
+        chunkedLoading: true, // Carga progresiva
+        iconCreateFunction: function(cluster) {
+            const markers = cluster.getAllChildMarkers();
+            let hasProd = false;
+            let hasAct = false;
+            
+            for (let i = 0; i < markers.length; i++) {
+                const folder = markers[i].feature.properties._folder;
+                if (folder === 'productores') hasProd = true;
+                if (folder === 'actividades') hasAct = true;
+                if (hasProd && hasAct) break;
+            }
+            
+            let className = 'cluster-mix'; // Verde musgo por defecto (mezcla)
+            if (hasProd && !hasAct) className = 'cluster-productores'; // Amarillo
+            if (!hasProd && hasAct) className = 'cluster-actividades'; // Azul
+            
+            return L.divIcon({
+                html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+                className: 'marker-cluster ' + className,
+                iconSize: new L.Point(40, 40)
+            });
+        }
     });
     
     sharedClusterGroup.on('animationend', function() {
@@ -266,9 +305,24 @@ function initUI() {
         contrastBtn.addEventListener('click', toggleContrastMode);
     }
 
+    const shareBtn = document.getElementById('share-btn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const url = "https://www.sierradelrincon.org/productos-y-actividades/";
+            const text = `Descubre los productos y actividades de la Sierra del Rincón en este mapa interactivo: ${url} #SierraDelRincón #ProductosLocales #Ecoturismo`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('¡Texto copiado al portapapeles!\n\n' + text);
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                alert('No se pudo copiar al portapapeles. Por favor, copia el enlace manualmente.');
+            });
+        });
+    }
+
     const resetViewBtn = document.getElementById('reset-view-btn');
     if (resetViewBtn) {
-        resetViewBtn.addEventListener('click', () => resetMapView(1));
+        resetViewBtn.addEventListener('click', () => toggleMapView());
     }
 
     const zoomInBtn = document.getElementById('zoom-in-btn');
@@ -280,16 +334,25 @@ function initUI() {
         zoomOutBtn.addEventListener('click', () => map.zoomOut());
     }
 
-    const fullscreenBtn = document.getElementById('fullscreen-toggle');
-    if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', () => {
-            window.open(window.location.href, '_blank');
-        });
-    }
+    // Lógica de botones Fullscreen / Nueva Pestaña
+    const fullscreenBtn = document.getElementById('fullscreen-toggle'); // Nueva pestaña
+    const fullscreenNativeBtn = document.getElementById('fullscreen-native-btn'); // Fullscreen nativo
+    
+    const isIframe = window.self !== window.top;
 
-    const fullscreenNativeBtn = document.getElementById('fullscreen-native-btn');
-    if (fullscreenNativeBtn) {
-        if (window.self === window.top) {
+    if (isIframe) {
+        // Estamos en iframe: Mostrar "Nueva Pestaña", Ocultar "Fullscreen"
+        if (fullscreenBtn) {
+            fullscreenBtn.style.display = 'flex';
+            fullscreenBtn.addEventListener('click', () => {
+                window.open(window.location.href, '_blank');
+            });
+        }
+        if (fullscreenNativeBtn) fullscreenNativeBtn.style.display = 'none';
+    } else {
+        // NO estamos en iframe: Ocultar "Nueva Pestaña", Mostrar "Fullscreen"
+        if (fullscreenBtn) fullscreenBtn.style.display = 'none';
+        if (fullscreenNativeBtn) {
             fullscreenNativeBtn.style.display = 'flex';
             fullscreenNativeBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -302,6 +365,43 @@ function initUI() {
                     }
                 }
             });
+        }
+    }
+
+    // Posicionamiento de botones
+    if (CONFIG.ui && CONFIG.ui.buttonPositions) {
+        const controlsContainer = document.querySelector('.right-center-controls');
+        const zoomContainer = document.querySelector('.custom-zoom-controls');
+        
+        if (controlsContainer && CONFIG.ui.buttonPositions.controls === 'left') {
+            controlsContainer.classList.remove('right-center-controls');
+            controlsContainer.classList.add('left-center-controls');
+            
+            // Reordenar: Share -> Center -> Contrast -> Fullscreen/NewTab
+            // El usuario pidió: Primero "centrar mapa" y ultimos "abrir en nueva pestaña" o "fullscreen"
+            // Share estaba "el primero de todo".
+            // Vamos a asumir orden visual de arriba a abajo:
+            // 1. Share
+            // 2. Center (Reset)
+            // 3. Contrast
+            // 4. Fullscreen/NewTab
+            
+            const shareBtn = document.getElementById('share-btn');
+            const contrastBtn = document.getElementById('contrast-btn');
+            
+            // Append en orden (appendChild mueve el elemento si ya existe)
+            if (shareBtn) controlsContainer.appendChild(shareBtn);
+            if (resetViewBtn) controlsContainer.appendChild(resetViewBtn);
+            if (contrastBtn) controlsContainer.appendChild(contrastBtn);
+            if (fullscreenBtn) controlsContainer.appendChild(fullscreenBtn);
+            if (fullscreenNativeBtn) controlsContainer.appendChild(fullscreenNativeBtn);
+        }
+        
+        // Zoom container ya está a la izquierda por defecto en CSS (.custom-zoom-controls left: 20px)
+        // Si quisiéramos moverlo a la derecha:
+        if (zoomContainer && CONFIG.ui.buttonPositions.zoom === 'right') {
+            zoomContainer.style.left = 'auto';
+            zoomContainer.style.right = '20px';
         }
     }
 
@@ -452,17 +552,35 @@ function initLegend() {
     });
 }
 
-function resetMapView(zoomOffset = 0) {
-    if (initialBounds) {
-        map.fitBounds(initialBounds, { padding: [50, 50] });
-        
-        if (zoomOffset !== 0) {
-            const targetZoom = map.getBoundsZoom(initialBounds) + zoomOffset;
-            map.setView(initialBounds.getCenter(), targetZoom, { animate: true });
-        }
+let savedView = null;
+
+function toggleMapView() {
+    const currentCenter = map.getCenter();
+    const currentZoom = map.getZoom();
+    const initialCenter = L.latLng(CONFIG.map.center);
+    const initialZoom = CONFIG.map.zoom;
+
+    // Comprobar si estamos en la vista inicial (con margen de error)
+    const dist = currentCenter.distanceTo(initialCenter);
+    const isAtInitial = dist < 500 && currentZoom === initialZoom;
+
+    if (isAtInitial && savedView) {
+        // Volver a la vista guardada
+        map.setView(savedView.center, savedView.zoom, { animate: true });
+        // Opcional: limpiar savedView si queremos que el siguiente click vuelva a inicial
+        // savedView = null;
     } else {
-        map.setView(CONFIG.map.center, CONFIG.map.zoom + zoomOffset, { animate: true });
+        // Guardar vista actual y volver a inicial
+        if (!isAtInitial) {
+            savedView = { center: currentCenter, zoom: currentZoom };
+        }
+        map.setView(initialCenter, initialZoom, { animate: true });
     }
+}
+
+function resetMapView(zoomOffset = 0) {
+    // Legacy support or fallback
+    toggleMapView();
 }
 
 function toggleLayer(type, element) {
@@ -533,39 +651,57 @@ function loadMunicipios(layerConfig) {
                 }
             });
             
-            const hoverTooltip = L.tooltip({
-                direction: 'center',
-                className: 'municipio-tooltip',
-                permanent: false,
-                opacity: 1
+            // Etiquetas fijas para municipios
+            geoJsonData.features.forEach(feature => {
+                if (feature.properties && feature.properties.name && feature.properties._center) {
+                    const center = feature.properties._center;
+                    L.marker(center, {
+                        icon: L.divIcon({
+                            className: 'municipio-label-icon',
+                            html: `<div class="municipio-label-content">${feature.properties.name}</div>`,
+                            iconSize: [120, 20],
+                            iconAnchor: [60, 10]
+                        }),
+                        interactive: false,
+                        zIndexOffset: -500
+                    }).addTo(map);
+                }
             });
 
+            let highlightLayer = null;
+
             vectorGridLayer.on('mouseover', function(e) {
-                const props = e.layer.properties;
-                if (props.name) {
-                    hoverTooltip.setContent(props.name);
-                    
-                    let pos = e.latlng;
-                    if (props._center) {
-                        pos = props._center;
-                    }
-                    
-                    hoverTooltip.setLatLng(pos);
-                    map.openTooltip(hoverTooltip);
+                const featureName = e.layer.properties.name;
+                
+                // Limpiar highlight anterior si existe
+                if (highlightLayer) {
+                    map.removeLayer(highlightLayer);
                 }
 
-                vectorGridLayer.setFeatureStyle(e.layer.properties.name, {
-                    color: '#4a4a4a',
-                    weight: 3,
-                    opacity: 1,
-                    fillOpacity: 0.4,
-                    dashArray: null
-                });
+                // Buscar el feature correspondiente
+                const feature = geoJsonData.features.find(f => f.properties.name === featureName);
+                
+                if (feature) {
+                    highlightLayer = L.geoJson(feature, {
+                        style: {
+                            color: CONFIG.colors.municipios.borderHover,
+                            weight: 5,
+                            opacity: 1,
+                            fillColor: CONFIG.colors.municipios.fillDefault,
+                            fillOpacity: CONFIG.colors.municipios.fillOpacityHover,
+                            fill: true,
+                            dashArray: null
+                        },
+                        interactive: false
+                    }).addTo(map);
+                }
             });
 
             vectorGridLayer.on('mouseout', function(e) {
-                map.closeTooltip(hoverTooltip);
-                vectorGridLayer.resetFeatureStyle(e.layer.properties.name);
+                if (highlightLayer) {
+                    map.removeLayer(highlightLayer);
+                    highlightLayer = null;
+                }
             });
 
             if (CONFIG.enableMunicipalityPopups) {

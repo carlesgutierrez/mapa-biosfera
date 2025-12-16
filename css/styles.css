@@ -5,6 +5,16 @@ html, body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+:root {
+    --color-actividades: #FBAF00;
+    --color-productores: #007CBE;
+    --color-municipio-border: #72705B;
+    --color-municipio-border-hover: #4A493B;
+    --halo-color: #ffffff;
+    --halo-fill: rgba(255, 255, 255, 0.2);
+    --halo-weight: 5px;
+}
+
 #map {
     width: 100%;
     height: 100%;
@@ -161,11 +171,11 @@ html, body {
 
 /* Colores de borde específicos */
 #legend-productores {
-    border-color: #ffcc00;
+    border-color: var(--color-productores);
 }
 
 #legend-actividades {
-    border-color: #00ccff;
+    border-color: var(--color-actividades);
 }
 
 .legend-item img {
@@ -406,6 +416,17 @@ html, body {
     gap: 8px;
 }
 
+.left-center-controls {
+    position: absolute;
+    top: 50%;
+    left: 70px; /* Offset to avoid overlap with zoom controls */
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .zoom-btn {
     width: 40px;
     height: 40px;
@@ -480,9 +501,9 @@ html, body {
 /* Estilo para el marcador seleccionado (halo blanco) */
 .marker-selected-halo {
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid #ffffff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    background-color: var(--halo-fill);
+    border: var(--halo-weight) solid var(--halo-color);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
     pointer-events: none; /* Para que no interfiera con clicks */
     z-index: 900; /* Debajo del marcador pero encima del mapa */
     /* Leaflet ya posiciona el divIcon, no necesitamos position absolute ni transform aquí si usamos iconAnchor correctamente */
@@ -512,10 +533,56 @@ body.high-contrast .leaflet-tile-pane {
     filter: contrast(1.2) saturate(1.2);
 }
 
-/* Tooltip de municipio */
+/* Tooltip de municipio (Legacy - ahora usamos etiquetas fijas) */
 .municipio-tooltip {
-    font-size: 1.25em !important; /* Aumentado 25% (base suele ser 1em o 12px) */
+    font-size: 1.25em !important;
     font-weight: bold;
+}
+
+/* Etiquetas fijas de municipios */
+.municipio-label-icon {
+    background: transparent;
+    border: none;
+}
+
+.municipio-label-content {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    text-shadow:
+        -2px -2px 0 rgba(255,255,255,0.8),
+         2px -2px 0 rgba(255,255,255,0.8),
+        -2px  2px 0 rgba(255,255,255,0.8),
+         2px  2px 0 rgba(255,255,255,0.8);
+    white-space: nowrap;
+    pointer-events: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilos para Clusters Personalizados */
+.marker-cluster.cluster-productores {
+    background-color: rgba(0, 124, 190, 0.6); /* Base on --color-productores #007CBE */
+}
+.marker-cluster.cluster-productores div {
+    background-color: rgba(0, 124, 190, 0.9);
+    color: white;
+}
+
+.marker-cluster.cluster-actividades {
+    background-color: rgba(251, 175, 0, 0.6); /* Base on --color-actividades #FBAF00 */
+}
+.marker-cluster.cluster-actividades div {
+    background-color: rgba(251, 175, 0, 0.9);
+    color: #333;
+}
+
+.marker-cluster.cluster-mix {
+    background-color: rgba(85, 107, 47, 0.6);
+}
+.marker-cluster.cluster-mix div {
+    background-color: rgba(85, 107, 47, 0.9);
+    color: white;
 }
 
 body.high-contrast .leaflet-tooltip {
@@ -775,11 +842,11 @@ body.high-contrast .legend-item img {
 
 /* Estilos específicos por tipo (Bordes de color) */
 .menu-item-btn.type-productores {
-    border-color: #ffcc00; /* Amarillo para productores */
+    border-color: var(--color-productores);
 }
 
 .menu-item-btn.type-actividades {
-    border-color: #00ccff; /* Azul para actividades */
+    border-color: var(--color-actividades);
 }
 
 /* Asociar colores a los botones principales de la leyenda también */
@@ -791,14 +858,14 @@ body.high-contrast .legend-item img {
 }
 /* Solo si el menú está abierto, mostramos la asociación de color */
 .menu-open #legend-productores.active {
-    border-color: #ffcc00;
+    border-color: var(--color-productores);
 }
 
 #legend-actividades {
     border: 2px solid transparent;
 }
 .menu-open #legend-actividades.active {
-    border-color: #00ccff;
+    border-color: var(--color-actividades);
 }
 
 /* Botón Toggle Menú */
@@ -832,9 +899,9 @@ body.high-contrast .legend-item img {
 
 /* Animación de borde cuando NO está activo */
 @keyframes borderRotate {
-    0% { border-color: #ffcc00; }
-    50% { border-color: #00ccff; }
-    100% { border-color: #ffcc00; }
+    0% { border-color: #FBAF00; }
+    50% { border-color: #007CBE; }
+    100% { border-color: #FBAF00; }
 }
 
 .menu-toggle-btn:not(.active) {

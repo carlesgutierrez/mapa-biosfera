@@ -82,7 +82,8 @@ function initMap() {
     map = L.map('map', {
         zoomControl: true, // Desactivamos el control de zoom por defecto
         // Aumentamos el padding del renderizador (SVG) para que dibuje más área fuera de la vista
-        renderer: L.svg({ padding: 1.0 })
+        renderer: L.svg({ padding: 1.0 }),
+        tap: false
     }).setView(CONFIG.map.center, CONFIG.map.zoom);
 
     // Guardar zoom anterior para detectar dirección del zoom

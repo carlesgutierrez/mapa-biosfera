@@ -52,10 +52,10 @@
     </Style>
     <Placemark>
       <name>Escuela de Hostelería de Madarcos</name>
-      <description><![CDATA[title: Escuela de Hostelería de Madarcos<br>lat: 41.04768086536504<br>long: -3.580615228175472<br>media_url: https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing<br>icon: 👨‍🍳<br>color: pink<br>visible: yes<br>Estado: activo?<br>Descripción: Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.<br>Persona referencia: Juan Carlos <br>Pueblo: Madarcos<br>Web: https://www.ehmadarcos.es/<br>Email: info@ehmadarcos.es<br>Teléfono: 653304612<br>Red social: https://www.instagram.com/delganaderoatucasa/<br>Google Maps: https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7]]></description>
+      <description><![CDATA[Nombre: Escuela de Hostelería de Madarcos<br>lat: 41.04768086536504<br>long: -3.580615228175472<br>media_url: https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing<br>icon: 👨‍🍳<br>color: pink<br>visible: yes<br>Estado: activo?<br>Descripción: Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.<br>Persona referencia: Juan Carlos <br>Pueblo: Madarcos<br>Web: https://www.ehmadarcos.es/<br>Email: info@ehmadarcos.es<br>Teléfono: 653304612<br>Red social: https://www.instagram.com/delganaderoatucasa/<br>Google Maps: https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7]]></description>
       <styleUrl>#icon-ci-1-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Escuela de Hostelería de Madarcos</value>
         </Data>
         <Data name="lat">
@@ -112,10 +112,10 @@
     </Placemark>
     <Placemark>
       <name>Jarama animación</name>
-      <description><![CDATA[title: Jarama animación<br>lat: 41.06053095065975<br>long: -3.529678832147319<br>media_url: <br>icon: 🚴‍♂️<br>color: pink<br>visible: no<br>Estado: Cerrado permanentemente<br>Descripción: Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴‍♂️🌲⚡<br>Persona referencia: Jesús y Marian<br>Pueblo: Montejo de la Sierra<br>Web: <br>Email: jaramaanimacion@gmail.com<br>Teléfono: <br>Red social: <br>Google Maps: https://maps.app.goo.gl/UnzoeeeCCBfoxHt89]]></description>
+      <description><![CDATA[Nombre: Jarama animación<br>lat: 41.06053095065975<br>long: -3.529678832147319<br>media_url: <br>icon: 🚴‍♂️<br>color: pink<br>visible: no<br>Estado: Cerrado permanentemente<br>Descripción: Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴‍♂️🌲⚡<br>Persona referencia: Jesús y Marian<br>Pueblo: Montejo de la Sierra<br>Web: <br>Email: jaramaanimacion@gmail.com<br>Teléfono: <br>Red social: <br>Google Maps: https://maps.app.goo.gl/UnzoeeeCCBfoxHt89]]></description>
       <styleUrl>#icon-ci-2-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Jarama animación</value>
         </Data>
         <Data name="lat">
@@ -172,10 +172,10 @@
     </Placemark>
     <Placemark>
       <name>Cabras la Barda</name>
-      <description><![CDATA[title: Cabras la Barda<br>lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: pink<br>visible: yes<br>Estado: cerrado temporalemente?<br>Descripción: Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: cabraslabarda@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: ]]></description>
+      <description><![CDATA[Nombre: Cabras la Barda<br>lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: pink<br>visible: yes<br>Estado: cerrado temporalemente?<br>Descripción: Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: cabraslabarda@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: ]]></description>
       <styleUrl>#icon-ci-3-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Cabras la Barda</value>
         </Data>
         <Data name="lat">
@@ -232,10 +232,10 @@
     </Placemark>
     <Placemark>
       <name>Granja Prados Montes</name>
-      <description><![CDATA[title: Granja Prados Montes<br>lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Vive un día como granjero participando en las tareas de una granja ecológica: cuidar y alimentar animales, pastorear, cosechar y descubrir el trabajo diario que une a las personas con la tierra y la naturaleza. 🌾🐑<br>También organizamos sesiones de teambuilding para empresas y grupos. 👩‍🌾<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/granjapradosmontes/?hl=es<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96]]></description>
+      <description><![CDATA[Nombre: Granja Prados Montes<br>lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Vive un día como granjero participando en las tareas de una granja ecológica: cuidar y alimentar animales, pastorear, cosechar y descubrir el trabajo diario que une a las personas con la tierra y la naturaleza. 🌾🐑<br>También organizamos sesiones de teambuilding para empresas y grupos. 👩‍🌾<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/granjapradosmontes/?hl=es<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96]]></description>
       <styleUrl>#icon-ci-4-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Granja Prados Montes</value>
         </Data>
         <Data name="lat">
@@ -293,10 +293,10 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
     </Placemark>
     <Placemark>
       <name>Molino de arriba</name>
-      <description><![CDATA[title: Molino de arriba<br>lat: 41.01342000726289<br>long: -3.4518413143003506<br>media_url: https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing<br>icon: 🏕️<br>color: pink<br>visible: yes<br>Estado: activo?<br>Descripción: Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚<br>Persona referencia: Antonio<br>Pueblo: Puebla de la Sierra<br>Web: https://molinodearriba.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: 689432188<br>Red social: <br>Google Maps: https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8]]></description>
+      <description><![CDATA[Nombre: Molino de arriba<br>lat: 41.01342000726289<br>long: -3.4518413143003506<br>media_url: https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing<br>icon: 🏕️<br>color: pink<br>visible: yes<br>Estado: activo?<br>Descripción: Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚<br>Persona referencia: Antonio<br>Pueblo: Puebla de la Sierra<br>Web: https://molinodearriba.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: 689432188<br>Red social: <br>Google Maps: https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8]]></description>
       <styleUrl>#icon-ci-5-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Molino de arriba</value>
         </Data>
         <Data name="lat">
@@ -353,10 +353,10 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
     </Placemark>
     <Placemark>
       <name>Rincon Silvestre</name>
-      <description><![CDATA[title: Rincon Silvestre<br>lat: 41.04495887851384<br>long: -3.5417732743025305<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 👩‍🌾<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Teléfono: 678424305<br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA]]></description>
+      <description><![CDATA[Nombre: Rincon Silvestre<br>lat: 41.04495887851384<br>long: -3.5417732743025305<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 👩‍🌾<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Teléfono: 678424305<br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA]]></description>
       <styleUrl>#icon-ci-6-labelson</styleUrl>
       <ExtendedData>
-        <Data name="title">
+        <Data name="Nombre">
           <value>Rincon Silvestre</value>
         </Data>
         <Data name="lat">

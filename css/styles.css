@@ -916,7 +916,7 @@ body.high-contrast .legend-item img {
 /* Botón Toggle Menú */
 .menu-toggle-btn {
     background-color: rgba(50, 50, 50, 0.8); /* Fondo gris con transparencia */
-    border: 2px solid transparent;
+    border: 4px solid transparent;
     cursor: pointer;
     padding: 5px;
     border-radius: 4px;
@@ -928,8 +928,8 @@ body.high-contrast .legend-item img {
     margin-left: 0; /* Quitar margen extra */
     position: relative;
     overflow: hidden;
-    height: 36px; /* Igualar altura botones leyenda aprox */
-    width: 36px;
+    height: 40px; /* Igualar altura botones leyenda aprox */
+    width: 40px;
 }
 
 .menu-toggle-btn:hover {

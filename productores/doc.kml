@@ -448,10 +448,10 @@
       <styleUrl>#icon-ci-3</styleUrl>
       <ExtendedData>
         <Data name="lat">
-          <value>41.01210558438804</value>
+          <value>41.01364699119555</value>
         </Data>
         <Data name="long">
-          <value>-3.4450128837411294</value>
+          <value>-3.444879635385272</value>
         </Data>
         <Data name="media_url">
           <value>https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing</value>
@@ -498,7 +498,7 @@
       </ExtendedData>
       <Point>
         <coordinates>
-          -3.44501288374113,41.012105584388,0
+          -3.444879635385272,41.01364699119555,0
         </coordinates>
       </Point>
     </Placemark>

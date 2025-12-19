@@ -164,7 +164,7 @@ html, body {
     border-radius: 4px;
     transition: all 0.2s;
     background-color: rgba(50, 50, 50, 0.8); /* Fondo gris con transparencia */
-    border: 2px solid transparent; /* Borde transparente base */
+    border: 3px solid transparent; /* Borde transparente base */
     flex-grow: 1;
     min-width: 110px; /* Ancho mínimo para igualar tamaños */
     flex-basis: 0; /* Para que flex-grow funcione equitativamente */

@@ -113,6 +113,30 @@ const CONFIG = {
         }
     ],
 
+    // Mapeo de iconos de productores a sus logos circulares
+    producerLogos: {
+        '1': '1_logo_circular_ahumadero.png',
+        '2': '2_logo_circular_briznas.png',
+        '3': '3_logo_circular_cabraslaBarda.png',
+        '4': '4_logo_circular_pradosMontes.png',
+        '5': '5_logo_circular_jardasca.png',
+        '6': '6_logo_circular_LasMatosas.png',
+        '7': '7_logo_circular_panyrosas.png',
+        '8': '8_logo_circular_rinconSilvestre.png',
+        '9': '9_logo_circular_Apisquillos.png',
+        '10': '10_logo_circular_ganademad.png'
+    },
+
+    // Mapeo de iconos de actividades a sus logos circulares
+    actividadesLogos: {
+        '1': '1_logo_circular_hosteleria.png',
+        '2': '2_logo_circular_jarama.png',
+        '3': '3_logo_circular_cabraslaBarda.png',
+        '4': '4_logo_circular_pradosMontes.png',
+        '5': '5_logo_circular_molinoArribaPuebla.png',
+        '6': '6_logo_circular_rinconSilvestre.png'
+    },
+
     // Gestos en móvil
     // - false (por defecto): usar la interacción nativa de Leaflet (1 dedo mueve el mapa)
     // - true: activar la “protección” tipo Google Maps (solo 2 dedos mueven el mapa)

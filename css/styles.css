@@ -45,6 +45,19 @@ html, body {
     object-fit: contain;
 }
 
+.popup-icon-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.popup-secondary-icon {
+    /* Mismo tamaño que el principal */
+    width: 48px;
+    height: 48px;
+}
+
 .popup-desc img {
     max-width: 100%;
     height: auto;

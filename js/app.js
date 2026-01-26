@@ -98,15 +98,15 @@ function initMap() {
 
     // Configurar capas base dinámicamente desde CONFIG
     const baseLayers = {};
-    
+
     Object.entries(CONFIG.map.tileLayers).forEach(([key, layerConfig]) => {
         const layerName = key.charAt(0).toUpperCase() + key.slice(1);
-        
+
         const tileLayer = L.tileLayer(layerConfig.url, {
             attribution: layerConfig.attribution,
             keepBuffer: 8 // Mantener más teselas en memoria
         });
-        
+
         baseLayers[layerName] = tileLayer;
 
         if (key === CONFIG.map.defaultLayer) {
@@ -120,22 +120,22 @@ function initMap() {
     // Inicializar grupo de clusters compartido
     sharedClusterGroup = L.markerClusterGroup({
         chunkedLoading: true, // Carga progresiva
-        iconCreateFunction: function(cluster) {
+        iconCreateFunction: function (cluster) {
             const markers = cluster.getAllChildMarkers();
             let hasProd = false;
             let hasAct = false;
-            
+
             for (let i = 0; i < markers.length; i++) {
                 const folder = markers[i].feature.properties._folder;
                 if (folder === 'productores') hasProd = true;
                 if (folder === 'actividades') hasAct = true;
                 if (hasProd && hasAct) break;
             }
-            
+
             let className = 'cluster-mix'; // Verde musgo por defecto (mezcla)
             if (hasProd && !hasAct) className = 'cluster-productores'; // Amarillo
             if (!hasProd && hasAct) className = 'cluster-actividades'; // Azul
-            
+
             return L.divIcon({
                 html: '<div><span>' + cluster.getChildCount() + '</span></div>',
                 className: 'marker-cluster ' + className,
@@ -143,17 +143,17 @@ function initMap() {
             });
         }
     });
-    
-    sharedClusterGroup.on('animationend', function() {
+
+    sharedClusterGroup.on('animationend', function () {
         console.log('♻️ Clusters reagrupados (animationend)');
         checkSelectionVisibility();
     });
 
-    map.on('zoomend', function() {
+    map.on('zoomend', function () {
         checkSelectionVisibility();
     });
 
-    sharedClusterGroup.on('unspiderfied', function(e) {
+    sharedClusterGroup.on('unspiderfied', function (e) {
         console.log('🕸️ Spiderfy cerrado (agrupado de nuevo)');
         if (selectedMarker && e.markers.includes(selectedMarker)) {
             clearSelection();
@@ -171,7 +171,7 @@ function initMap() {
     }
 
     map.addLayer(sharedClusterGroup);
-    
+
     map.on('click', onMapClick);
 }
 
@@ -206,7 +206,7 @@ function updateItemsGroup(type, isActive) {
     }
 
     groupContainer.style.display = 'flex';
-    
+
     if (groupContainer.children.length > 0) return;
 
     const layerGroup = layerGroups[type];
@@ -215,10 +215,10 @@ function updateItemsGroup(type, isActive) {
     layerGroup.eachLayer(layer => {
         const props = layer.feature.properties;
         const name = props.name || 'Sin nombre';
-        
+
         const btn = document.createElement('button');
         btn.className = `menu-item-btn type-${type}`;
-        
+
         if (props.iconUrl) {
             const fullIconPath = `${type}/${props.iconUrl}`;
             const img = document.createElement('img');
@@ -271,12 +271,12 @@ function selectFeature(layer) {
         let targetLatLng = layer.getLatLng();
         let shouldMove = true;
         const targetZoom = Math.max(map.getZoom(), 16);
-        
+
         if (window.innerWidth > 600) {
             const point = map.project(targetLatLng, targetZoom);
             const newPoint = point.add([200, 0]);
             targetLatLng = map.unproject(newPoint, targetZoom);
-            
+
             if (map.getCenter().distanceTo(targetLatLng) < 50) {
                 shouldMove = false;
             }
@@ -299,14 +299,14 @@ function selectFeature(layer) {
 
 function zoomToFeature(layer) {
     const visibleParent = sharedClusterGroup.getVisibleParent(layer);
-    
+
     if (visibleParent === layer) {
         console.log('📍 Item visible -> Selección directa');
         selectFeature(layer);
-        
+
     } else if (visibleParent instanceof L.MarkerCluster) {
         console.log('🔍 Item en cluster -> Zoom profundo');
-        
+
         sharedClusterGroup.zoomToShowLayer(layer, () => {
             console.log('✅ Marcador revelado -> Seleccionando');
             setTimeout(() => {
@@ -316,17 +316,17 @@ function zoomToFeature(layer) {
     } else {
         const duration = L.Browser.mobile ? 2.5 : 1.5;
         map.flyTo(layer.getLatLng(), 18, { duration: duration });
-        
+
         if (L.Browser.mobile) {
-             map.once('moveend', () => {
-                 setTimeout(() => {
-                     selectFeature(layer);
-                 }, 1000);
-             });
+            map.once('moveend', () => {
+                setTimeout(() => {
+                    selectFeature(layer);
+                }, 1000);
+            });
         } else {
-             setTimeout(() => {
-                 selectFeature(layer);
-             }, duration * 1000 + 100);
+            setTimeout(() => {
+                selectFeature(layer);
+            }, duration * 1000 + 100);
         }
     }
 }
@@ -376,7 +376,7 @@ function initUI() {
     // Lógica de botones Fullscreen / Nueva Pestaña
     const fullscreenBtn = document.getElementById('fullscreen-toggle'); // Nueva pestaña
     const fullscreenNativeBtn = document.getElementById('fullscreen-native-btn'); // Fullscreen nativo
-    
+
     const isIframe = window.self !== window.top;
 
     if (isIframe) {
@@ -411,11 +411,11 @@ function initUI() {
     if (CONFIG.ui && CONFIG.ui.buttonPositions) {
         const controlsContainer = document.querySelector('.right-center-controls');
         const zoomContainer = document.querySelector('.custom-zoom-controls');
-        
+
         if (controlsContainer && CONFIG.ui.buttonPositions.controls === 'left') {
             controlsContainer.classList.remove('right-center-controls');
             controlsContainer.classList.add('left-center-controls');
-            
+
             // Reordenar: Share -> Center -> Contrast -> Fullscreen/NewTab
             // El usuario pidió: Primero "centrar mapa" y ultimos "abrir en nueva pestaña" o "fullscreen"
             // Share estaba "el primero de todo".
@@ -424,10 +424,10 @@ function initUI() {
             // 2. Center (Reset)
             // 3. Contrast
             // 4. Fullscreen/NewTab
-            
+
             const shareBtn = document.getElementById('share-btn');
             const contrastBtn = document.getElementById('contrast-btn');
-            
+
             // Append en orden (appendChild mueve el elemento si ya existe)
             if (shareBtn) controlsContainer.appendChild(shareBtn);
             if (resetViewBtn) controlsContainer.appendChild(resetViewBtn);
@@ -435,7 +435,7 @@ function initUI() {
             if (fullscreenBtn) controlsContainer.appendChild(fullscreenBtn);
             if (fullscreenNativeBtn) controlsContainer.appendChild(fullscreenNativeBtn);
         }
-        
+
         // Zoom container ya está a la izquierda por defecto en CSS (.custom-zoom-controls left: 20px)
         // Si quisiéramos moverlo a la derecha:
         if (zoomContainer && CONFIG.ui.buttonPositions.zoom === 'right') {
@@ -453,10 +453,10 @@ function initUI() {
 function toggleItemsMenu() {
     const menu = document.getElementById('items-menu');
     const btn = document.getElementById('menu-toggle-btn');
-    
+
     if (menu) {
         const isVisible = menu.classList.toggle('visible');
-        
+
         if (btn) {
             if (isVisible) {
                 btn.classList.add('active');
@@ -482,12 +482,12 @@ function toggleContrastMode() {
 function closeInfoPanel() {
     const infoPanel = document.getElementById('info-panel');
     const mapOverlay = document.getElementById('map-overlay');
-    
+
     if (infoPanel.classList.contains('visible')) {
         infoPanel.classList.remove('visible');
         mapOverlay.classList.remove('visible');
         clearSelection();
-        
+
         if (L.Browser.mobile && history.state && history.state.panelOpen) {
             history.back();
         }
@@ -501,16 +501,16 @@ let sharedSelectedHalo = null;
 function getHaloMarker(isHover) {
     const haloSize = 50;
     const iconHeight = CONFIG.icons.size[1];
-    
+
     const createIcon = () => L.divIcon({
         className: 'marker-selected-halo',
         iconSize: [haloSize, haloSize],
-        iconAnchor: [haloSize/2, haloSize/2 + iconHeight/2]
+        iconAnchor: [haloSize / 2, haloSize / 2 + iconHeight / 2]
     });
 
     if (isHover) {
         if (!sharedHoverHalo) {
-            sharedHoverHalo = L.marker([0,0], {
+            sharedHoverHalo = L.marker([0, 0], {
                 icon: createIcon(),
                 zIndexOffset: -1000,
                 interactive: false
@@ -519,7 +519,7 @@ function getHaloMarker(isHover) {
         return sharedHoverHalo;
     } else {
         if (!sharedSelectedHalo) {
-            sharedSelectedHalo = L.marker([0,0], {
+            sharedSelectedHalo = L.marker([0, 0], {
                 icon: createIcon(),
                 zIndexOffset: -1000,
                 interactive: false
@@ -546,7 +546,7 @@ function clearSelection(onlyHover = false) {
         hoverHalo.remove();
         hoverHalo = null;
     }
-    
+
     if (selectedMarker) {
         selectedMarker = null;
     }
@@ -558,10 +558,10 @@ function createHalo(latlng, isHover = false) {
     } else {
         if (hoverHalo) hoverHalo.remove();
     }
-    
+
     const haloMarker = getHaloMarker(isHover);
     haloMarker.setLatLng(latlng);
-    
+
     if (!map.hasLayer(haloMarker)) {
         haloMarker.addTo(map);
     }
@@ -583,7 +583,7 @@ function initLegend() {
     Object.entries(legendItems).forEach(([key, element]) => {
         if (element) {
             element.classList.add('active');
-            
+
             element.addEventListener('click', () => {
                 toggleLayer(key, element);
             });
@@ -669,7 +669,7 @@ function loadMunicipios(layerConfig) {
         .then(response => response.text())
         .then(kmlText => {
             const tempLayer = omnivore.kml.parse(kmlText);
-            
+
             tempLayer.eachLayer(l => {
                 if (l.getBounds) {
                     const center = l.getBounds().getCenter();
@@ -678,18 +678,18 @@ function loadMunicipios(layerConfig) {
             });
 
             const geoJsonData = tempLayer.toGeoJSON();
-            
+
             const vectorGridLayer = L.vectorGrid.slicer(geoJsonData, {
                 rendererFactory: L.canvas.tile,
                 vectorTileLayerStyles: {
                     sliced: CONFIG.styles.municipios
                 },
                 interactive: true,
-                getFeatureId: function(f) {
+                getFeatureId: function (f) {
                     return f.properties.name;
                 }
             });
-            
+
             // Etiquetas fijas para municipios
             geoJsonData.features.forEach(feature => {
                 if (feature.properties && feature.properties.name && feature.properties._center) {
@@ -709,9 +709,9 @@ function loadMunicipios(layerConfig) {
 
             let highlightLayer = null;
 
-            vectorGridLayer.on('mouseover', function(e) {
+            vectorGridLayer.on('mouseover', function (e) {
                 const featureName = e.layer.properties.name;
-                
+
                 // Limpiar highlight anterior si existe
                 if (highlightLayer) {
                     map.removeLayer(highlightLayer);
@@ -719,7 +719,7 @@ function loadMunicipios(layerConfig) {
 
                 // Buscar el feature correspondiente
                 const feature = geoJsonData.features.find(f => f.properties.name === featureName);
-                
+
                 if (feature) {
                     highlightLayer = L.geoJson(feature, {
                         style: {
@@ -736,7 +736,7 @@ function loadMunicipios(layerConfig) {
                 }
             });
 
-            vectorGridLayer.on('mouseout', function(e) {
+            vectorGridLayer.on('mouseout', function (e) {
                 if (highlightLayer) {
                     map.removeLayer(highlightLayer);
                     highlightLayer = null;
@@ -744,20 +744,20 @@ function loadMunicipios(layerConfig) {
             });
 
             if (CONFIG.enableMunicipalityPopups) {
-                vectorGridLayer.on('click', function(e) {
+                vectorGridLayer.on('click', function (e) {
                     L.popup()
                         .setLatLng(e.latlng)
                         .setContent(`<b>${e.layer.properties.name}</b>`)
                         .openOn(map);
                 });
             }
-            
+
             tempLayer.eachLayer(layer => group.addLayer(layer));
-            
+
             if (CONFIG.renderMunicipios) {
                 vectorGridLayer.addTo(map);
             }
-            
+
             verificarCargaCompleta();
         })
         .catch(error => {
@@ -788,12 +788,12 @@ async function loadPuntos(layerConfig) {
                 if (iconPath) {
                     feature.properties.iconUrl = iconPath;
                 }
-                
+
                 layer.on('click', (e) => {
                     L.DomEvent.stopPropagation(e);
                     selectFeature(layer);
                 });
-                
+
                 layer.on('mouseover', (e) => {
                     if (selectedMarker !== layer) {
                         createHalo(e.latlng, true);
@@ -836,9 +836,9 @@ async function loadPuntos(layerConfig) {
                     styleUrl = styleMaps.get(styleUrl);
                 }
                 const iconPath = styles.get(styleUrl);
-                
+
                 let finalIconUrl = `${layerConfig.folder}/iconoDoc.png`; // Fallback
-                
+
                 if (iconPath) {
                     // Detectar si es URL absoluta o relativa
                     if (iconPath.startsWith('http') || iconPath.startsWith('//')) {
@@ -864,17 +864,17 @@ async function loadPuntos(layerConfig) {
 
         // Usar omnivore.kml(url) estándar para asegurar carga correcta de iconos
         omnivore.kml(layerConfig.url, null, customLayer)
-            .on('ready', function() {
+            .on('ready', function () {
                 const key = layerConfig.folder;
                 layerGroups[key] = this;
 
                 sharedClusterGroup.addLayer(this);
-                
+
                 this.eachLayer(layer => group.addLayer(layer));
                 verificarCargaCompleta();
                 updateItemsMenu();
             })
-            .on('error', function(error) {
+            .on('error', function (error) {
                 console.error(`Error al cargar ${layerConfig.url}:`, error);
                 verificarCargaCompleta();
             });
@@ -890,7 +890,7 @@ function parseKmlStylesFromText(kmlText) {
     try {
         const parser = new DOMParser();
         const kmlDoc = parser.parseFromString(kmlText, 'application/xml');
-        
+
         const styles = new Map();
         const styleMaps = new Map();
 
@@ -935,13 +935,43 @@ function displayFeatureInfo(feature, carpetaBase) {
     let iconHtml = '';
     if (properties.iconUrl) {
         const iconPath = `${carpetaBase}/${properties.iconUrl}`;
-        iconHtml = `<img src="${iconPath}" class="popup-icon" onerror="this.style.display='none'">`;
+        let secondaryIconHtml = '';
+
+        // Lógica para logos circulares (en Productores y Actividades)
+        if (properties.iconUrl && properties.iconUrl.includes('icon-')) {
+            const iconIndexMatch = properties.iconUrl.match(/icon-(\d+)\.png/);
+            if (iconIndexMatch) {
+                const iconIndex = iconIndexMatch[1];
+                let logoFilename = null;
+
+                if (carpetaBase === 'productores' && CONFIG.producerLogos) {
+                    logoFilename = CONFIG.producerLogos[iconIndex];
+                } else if (carpetaBase === 'actividades' && CONFIG.actividadesLogos) {
+                    logoFilename = CONFIG.actividadesLogos[iconIndex];
+                }
+
+                if (logoFilename) {
+                    const logoPath = `${carpetaBase}/images/${logoFilename}`;
+                    secondaryIconHtml = `<img src="${logoPath}" class="popup-icon popup-secondary-icon" onerror="this.style.display='none'">`;
+                }
+            }
+        }
+
+        if (secondaryIconHtml) {
+            iconHtml = `
+                <div class="popup-icon-container">
+                    ${secondaryIconHtml}
+                    <img src="${iconPath}" class="popup-icon" onerror="this.style.display='none'">
+                </div>`;
+        } else {
+            iconHtml = `<img src="${iconPath}" class="popup-icon" onerror="this.style.display='none'">`;
+        }
     }
 
     const keyIcons = {
         'telefono': '📞', 'teléfono': '📞', 'email': '✉️', 'correo': '✉️',
         'web': '🌐', 'Google Maps': '🗺️', 'dirección': '📍', 'direccion': '📍',
-        'horario': '🕒', 'estado': '⚪', 'descripcion': '📝', 'detalle': '📝',
+        'horario': '🕒', 'descripcion': '📝', 'detalle': '📝',
         'info': '📝', 'persona referencia': '👤', 'referencia': '👤',
         'pueblo': '🏘️', 'localidad': '🏘️', 'red social': '📡', 'social': '📡'
     };
@@ -972,14 +1002,20 @@ function displayFeatureInfo(feature, carpetaBase) {
 
             const normalizedKey = key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let icon = '';
-            for (const [k, i] of Object.entries(keyIcons)) {
-                const normalizedMapKey = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                if (normalizedKey.includes(normalizedMapKey)) {
-                    icon = `<span class="popup-key-icon">${i}</span>`;
-                    break;
+
+            if (normalizedKey === 'estado') {
+                const isActivo = value.toString().toLowerCase().trim() === 'activo';
+                icon = `<span class="popup-key-icon">${isActivo ? '🟢' : '🟡'}</span>`;
+            } else {
+                for (const [k, i] of Object.entries(keyIcons)) {
+                    const normalizedMapKey = k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    if (normalizedKey.includes(normalizedMapKey)) {
+                        icon = `<span class="popup-key-icon">${i}</span>`;
+                        break;
+                    }
                 }
             }
-            
+
             if (icon) {
                 displayKey = icon;
             } else {
@@ -989,7 +1025,7 @@ function displayFeatureInfo(feature, carpetaBase) {
             return `<tr><td>${displayKey}</td><td>${displayValue}</td></tr>`;
         })
         .join('');
-    
+
     if (details) {
         detailsHtml = `<table class="popup-details-table">${details}</table>`;
     }
@@ -1002,12 +1038,12 @@ function displayFeatureInfo(feature, carpetaBase) {
     const panelBody = `
         ${detailsHtml}
         ${navLinkHtml}`;
-    
+
     panelTitle.textContent = name;
     panelContent.innerHTML = panelBody;
-    
-    const oldIcon = panelTitle.parentElement.querySelector('.popup-icon');
-    if (oldIcon) oldIcon.remove();
+
+    const oldIcons = panelTitle.parentElement.querySelectorAll('.popup-icon, .popup-icon-container');
+    oldIcons.forEach(icon => icon.remove());
     if (iconHtml) panelTitle.insertAdjacentHTML('afterend', iconHtml);
 
     infoPanel.classList.add('visible');
@@ -1015,7 +1051,7 @@ function displayFeatureInfo(feature, carpetaBase) {
 
     if (L.Browser.mobile) {
         history.pushState({ panelOpen: true }, null, "");
-        window.onpopstate = function(event) {
+        window.onpopstate = function (event) {
             if (infoPanel.classList.contains('visible')) {
                 closeInfoPanel();
             }
@@ -1044,7 +1080,7 @@ function initMobileGestures() {
 
     map.dragging.disable();
     map.touchZoom.enable();
-    
+
     mapContainer.addEventListener('touchstart', (e) => {
         if (e.touches.length > 1) {
             if (!map.dragging.enabled()) {
@@ -1066,7 +1102,7 @@ function initMobileGestures() {
                 gestureOverlay.style.display = 'flex';
             }
         } else {
-             if (gestureOverlay) gestureOverlay.style.display = 'none';
+            if (gestureOverlay) gestureOverlay.style.display = 'none';
         }
     }, { passive: true });
 

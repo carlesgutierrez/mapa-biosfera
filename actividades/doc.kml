@@ -293,7 +293,7 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
     </Placemark>
     <Placemark>
       <name>Molino de arriba</name>
-      <description><![CDATA[Nombre: Molino de arriba<br>lat: 41.01342000726289<br>long: -3.4518413143003506<br>media_url: https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing<br>icon: 🏕️<br>color: pink<br>visible: yes<br>Estado: <br>Descripción: Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚<br>Persona referencia: Antonio<br>Pueblo: Puebla de la Sierra<br>Web: https://molinodearriba.com/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: 689432188<br>Red social: <br>Google Maps: https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8]]></description>
+      <description><![CDATA[Nombre: Molino de arriba<br>lat: 41.01342000726289<br>long: -3.4518413143003506<br>media_url: https://drive.google.com/file/d/1yOLOzMGFDPJBLoRxiTVVT48T3Zg119Jm/view?usp=sharing<br>icon: 🏕️<br>color: pink<br>visible: yes<br>Estado: <br>Descripción: Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚<br>Persona referencia: Antonio Ruiz<br>Pueblo: Puebla de la Sierra<br>Web: https://molinodearriba.org/<br>Email: proyectopradosmontes@gmail.com<br>Teléfono: 689432188<br>Red social: <br>Google Maps: https://maps.app.goo.gl/qG3pPYxYcFvPw2vW8]]></description>
       <styleUrl>#icon-ci-5-labelson</styleUrl>
       <ExtendedData>
         <Data name="Nombre">
@@ -324,16 +324,16 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
           <value>Centro de educación ambiental pionero en Madrid que ofrece talleres naturalistas, acampadas y campamentos para escolares. 🌿🏕️📚</value>
         </Data>
         <Data name="Persona referencia">
-          <value>Antonio</value>
+          <value>Antonio Ruiz</value>
         </Data>
         <Data name="Pueblo">
           <value>Puebla de la Sierra</value>
         </Data>
         <Data name="Web">
-          <value>https://molinodearriba.com/</value>
+          <value>https://molinodearriba.org/</value>
         </Data>
         <Data name="Email">
-          <value>proyectopradosmontes@gmail.com</value>
+          <value>huertodelmolinodearriba@gmail.com</value>
         </Data>
         <Data name="Teléfono">
           <value>689432188</value>
@@ -353,7 +353,7 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
     </Placemark>
     <Placemark>
       <name>Rincon Silvestre</name>
-      <description><![CDATA[Nombre: Rincon Silvestre<br>lat: 41.04495887851384<br>long: -3.5417732743025305<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 👩‍🌾<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Teléfono: 678424305<br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA]]></description>
+      <description><![CDATA[Nombre: Rincon Silvestre<br>lat: 41.04495887851384<br>long: -3.5417732743025305<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 👩‍🌾<br>color: pink<br>visible: yes<br>Estado: activo<br>Descripción: Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: escuela@rinconsilvestre.net <br>Teléfono: 678424305<br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA]]></description>
       <styleUrl>#icon-ci-6-labelson</styleUrl>
       <ExtendedData>
         <Data name="Nombre">
@@ -384,7 +384,7 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
           <value>Talleres y cursos sobre plantas medicinales y cosmética natural, donde aprender a elaborar productos ecológicos y sostenibles de forma artesanal.</value>
         </Data>
         <Data name="Persona referencia">
-          <value>Carol</value>
+          <value>Carolina Díaz Bueno</value>
         </Data>
         <Data name="Pueblo">
           <value>Prádena del Rincón</value>
@@ -393,7 +393,7 @@ También organizamos sesiones de teambuilding para empresas y grupos. 👩‍�
           <value>https://www.rinconsilvestre.net/ </value>
         </Data>
         <Data name="Email">
-          <value>fitocosmetica@rinconsilvestre.net </value>
+          <value>escuela@rinconsilvestre.net</value>
         </Data>
         <Data name="Teléfono">
           <value>678424305</value>

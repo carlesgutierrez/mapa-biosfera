@@ -683,66 +683,6 @@
       </Point>
     </Placemark>
     <Placemark>
-      <name>Pan y rosas</name>
-      <description><![CDATA[lat: 41.0584558020886<br>long: -3.53620123122489<br>media_url: https://drive.google.com/file/d/1aN8XbYtGhRXv-4LJD_JLV3RiBwuYcv2K/view?usp=sharing<br>icon: 🍞<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Elaboran pan artesanal de masa madre y repostería ecológica con ingredientes locales, ofreciendo sabores auténticos y sostenibles de la Sierra del Rincón. 🍞🌰🌾<br>Persona referencia: Mariluz<br>Pueblo: Montejo de la Sierra<br>Web: https://sites.google.com/view/panyrosas/inicio<br>Email: mariluzrubioiglesias@hotmail.com <br>Red social: https://www.instagram.com/panyrosas/<br>Google Maps: https://maps.app.goo.gl/AUKXF6mceYWtTMc9A<br>Nombre: Pan y rosas<br>Teléfono: 616434846]]></description>
-      <styleUrl>#icon-ci-7</styleUrl>
-      <ExtendedData>
-        <Data name="lat">
-          <value>41.0584558020886</value>
-        </Data>
-        <Data name="long">
-          <value>-3.53620123122489</value>
-        </Data>
-        <Data name="media_url">
-          <value>https://drive.google.com/file/d/1aN8XbYtGhRXv-4LJD_JLV3RiBwuYcv2K/view?usp=sharing</value>
-        </Data>
-        <Data name="icon">
-          <value>🍞</value>
-        </Data>
-        <Data name="color">
-          <value>blue</value>
-        </Data>
-        <Data name="visible">
-          <value>yes</value>
-        </Data>
-        <Data name="Estado">
-          <value>De mudanza a Puebla de la Sierra</value>
-        </Data>
-        <Data name="Descripción">
-          <value>Elaboran pan artesanal de masa madre y repostería ecológica con ingredientes locales, ofreciendo sabores auténticos y sostenibles de la Sierra del Rincón. 🍞🌰🌾</value>
-        </Data>
-        <Data name="Persona referencia">
-          <value>Mariluz</value>
-        </Data>
-        <Data name="Pueblo">
-          <value>Montejo de la Sierra</value>
-        </Data>
-        <Data name="Web">
-          <value>https://sites.google.com/view/panyrosas/inicio</value>
-        </Data>
-        <Data name="Email">
-          <value>mariluzrubioiglesias@hotmail.com </value>
-        </Data>
-        <Data name="Red social">
-          <value>https://www.instagram.com/panyrosas/</value>
-        </Data>
-        <Data name="Google Maps">
-          <value>https://maps.app.goo.gl/AUKXF6mceYWtTMc9A</value>
-        </Data>
-        <Data name="Nombre">
-          <value>Pan y rosas</value>
-        </Data>
-        <Data name="Teléfono">
-          <value>616434846</value>
-        </Data>
-      </ExtendedData>
-      <Point>
-        <coordinates>
-          -3.53620123122489,41.0584558020886,0
-        </coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
       <name>Rincon Silvestre</name>
       <description><![CDATA[lat: 41.0450479<br>long: -3.5417813<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 🌿<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA<br>Nombre: Rincon Silvestre<br>Teléfono: 678424305]]></description>
       <styleUrl>#icon-ci-8</styleUrl>
@@ -841,7 +781,7 @@
           <value/>
         </Data>
         <Data name="Email">
-          <value/>
+          <value>pedidosapisquillos@hotmail.com</value> 
         </Data>
         <Data name="Red social">
           <value>https://www.facebook.com/losapisquillos/</value>

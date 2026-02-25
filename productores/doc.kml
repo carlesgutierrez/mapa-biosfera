@@ -444,7 +444,7 @@
     </Placemark>
     <Placemark>
       <name>Cabras la Barda</name>
-      <description><![CDATA[lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Piezas artesanas, técnicas tradicionales en paja y centeno.<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: https://socarrual.es/productos/<br>Email: cabraslabarda@gmail.com<br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: <br>Nombre: Cabras la Barda<br>Teléfono: ]]></description>
+      <description><![CDATA[lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Carne de cabritos lechales, criados con pastos naturales. Alimento sostenible, responsable y de alta calidad, fruto del territorio de Puebla de la Sierra. <br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Email: cabraslabarda@gmail.com<br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: <br>Nombre: Cabras la Barda<br>Teléfono: ]]></description>
       <styleUrl>#icon-ci-3</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -469,7 +469,7 @@
           <value>activo</value>
         </Data>
         <Data name="Descripción">
-          <value>Piezas artesanas, técnicas tradicionales en paja y centeno.</value>
+          <value>Carne de cabritos lechales, criados con pastos naturales. Alimento sostenible, responsable y de alta calidad, fruto del territorio de Puebla de la Sierra. </value>
         </Data>
         <Data name="Persona referencia">
           <value>Rebecca</value>
@@ -478,7 +478,7 @@
           <value>Puebla de la Sierra</value>
         </Data>
         <Data name="Web">
-          <value>https://socarrual.es/productos/</value>
+          <value></value>
         </Data>
         <Data name="Email">
           <value>cabraslabarda@gmail.com</value>

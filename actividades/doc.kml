@@ -52,7 +52,7 @@
     </Style>
     <Placemark>
       <name>Escuela de Hostelería de Madarcos</name>
-      <description><![CDATA[Nombre: Escuela de Hostelería de Madarcos<br>lat: 41.04768086536504<br>long: -3.580615228175472<br>media_url: https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing<br>icon: 👨‍🍳<br>color: pink<br>visible: yes<br>Estado: <br>Descripción: Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.<br>Persona referencia: Juan Carlos <br>Pueblo: Madarcos<br>Web: https://www.ehmadarcos.es/<br>Email: info@ehmadarcos.es<br>Teléfono: 653304612<br>Red social: https://www.instagram.com/delganaderoatucasa/<br>Google Maps: https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7]]></description>
+      <description><![CDATA[Nombre: Escuela de Hostelería de Madarcos<br>lat: 41.04768086536504<br>long: -3.580615228175472<br>media_url: https://drive.google.com/file/d/1mqwDJzJkLbwBBaWtqyaUclIvPmMacvUH/view?usp=sharing<br>icon: 👨‍🍳<br>color: pink<br>visible: yes<br>Estado: <br>Descripción: Escuela de hostelería que ofrece formación en cocina sostenible y de temporada, utilizando productos locales. Sus talleres y actividades conectan gastronomía, territorio y respeto por el entorno natural de la Sierra del Rincón.<br>Persona referencia: Juan Carlos <br>Pueblo: Madarcos<br>Web: https://www.ehmadarcos.es/<br>Email: info@ehmadarcos.es<br>Teléfono: 653304612<br>Red social: https://www.instagram.com/eh_madarcos/<br>Google Maps: https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7]]></description>
       <styleUrl>#icon-ci-1-labelson</styleUrl>
       <ExtendedData>
         <Data name="Nombre">
@@ -98,7 +98,7 @@
           <value>653304612</value>
         </Data>
         <Data name="Red social">
-          <value>https://www.instagram.com/delganaderoatucasa/</value>
+          <value>https://www.instagram.com/eh_madarcos/</value>
         </Data>
         <Data name="Google Maps">
           <value>https://maps.app.goo.gl/7iJ2rMs9cbhwZjRV7</value>
@@ -112,7 +112,7 @@
     </Placemark>
     <Placemark>
       <name>Jarama animación</name>
-      <description><![CDATA[Nombre: Jarama animación<br>lat: 41.06053095065975<br>long: -3.529678832147319<br>media_url: <br>icon: 🚴‍♂️<br>color: pink<br>visible: no<br>Estado: Cerrado permanentemente<br>Descripción: Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴‍♂️🌲⚡<br>Persona referencia: Jesús y Marian<br>Pueblo: Montejo de la Sierra<br>Web: <br>Email: jaramaanimacion@gmail.com<br>Teléfono: <br>Red social: <br>Google Maps: https://maps.app.goo.gl/UnzoeeeCCBfoxHt89]]></description>
+      <description><![CDATA[Nombre: Jarama animación<br>lat: 41.06053095065975<br>long: -3.529678832147319<br>media_url: <br>icon: 🚴♂️<br>color: pink<br>visible: no<br>Estado: Cerrado permanentemente<br>Descripción: Alquiler de bicicletas eléctricas para recorrer la Sierra del Rincón y disfrutar de sus paisajes y senderos de forma activa y sostenible. 🚴♂️🌲⚡<br>Persona referencia: Jesús y Marian<br>Pueblo: Montejo de la Sierra<br>Web: https://cyclemadrid.com/es/entidad/jarama-animacion/<br>Email: jaramaanimacion@gmail.com<br>Teléfono: <br>Red social: <br>Google Maps: https://maps.app.goo.gl/UnzoeeeCCBfoxHt89]]></description>
       <styleUrl>#icon-ci-2-labelson</styleUrl>
       <ExtendedData>
         <Data name="Nombre">
@@ -149,7 +149,7 @@
           <value>Montejo de la Sierra</value>
         </Data>
         <Data name="Web">
-          <value/>
+          <value>https://cyclemadrid.com/es/entidad/jarama-animacion/</value>
         </Data>
         <Data name="Email">
           <value>jaramaanimacion@gmail.com</value>

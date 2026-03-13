@@ -324,7 +324,7 @@
     </StyleMap>
     <Placemark>
       <name>Ahumadero de Madarcos</name>
-      <description><![CDATA[lat: 41.04809808874536<br>long: -3.583806332147842<br>media_url: https://drive.google.com/file/d/1HEF82xY5SVDNZTg_KtSt9JCGwBYzJ34f/view?usp=sharing<br>icon: 🐟<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Ahumados artesanales, salmón, arroz, aceite, salsa, etc.<br>Persona referencia: Jorge<br>Pueblo: Madarcos<br>Web: https://www.elahumadero.com/<br>Email: <br>Red social: https://www.instagram.com/elahumadero/<br>Google Maps: https://maps.app.goo.gl/vWUv7ykkTRg34GUW9<br>Nombre: Ahumadero de Madarcos<br>Teléfono: 618239870]]></description>
+      <description><![CDATA[lat: 41.04809808874536<br>long: -3.583806332147842<br>media_url: https://drive.google.com/file/d/1HEF82xY5SVDNZTg_KtSt9JCGwBYzJ34f/view?usp=sharing<br>icon: 🐟<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Ahumados artesanales, salmón, arroz, aceite, salsa, etc.<br>Persona referencia: Jorge<br>Pueblo: Madarcos<br>Web: https://www.elahumadero.com/<br>Email: <br>Red social: https://www.instagram.com/_elahumaderodemadarcos/<br>Google Maps: https://maps.app.goo.gl/vWUv7ykkTRg34GUW9<br>Nombre: Ahumadero de Madarcos<br>Teléfono: 618239870]]></description>
       <styleUrl>#icon-ci-1</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -358,7 +358,7 @@
           <value>Madarcos</value>
         </Data>
         <Data name="Web">
-          <value>https://www.elahumadero.com/</value>
+          <value>https://www.instagram.com/_elahumaderodemadarcos/</value>
         </Data>
         <Data name="Email">
           <value/>
@@ -433,7 +433,7 @@
           <value>Colectivo Briznas</value>
         </Data>
         <Data name="Teléfono">
-          <value/>
+          <value>604942036</value>
         </Data>
       </ExtendedData>
       <Point>
@@ -504,7 +504,7 @@
     </Placemark>
     <Placemark>
       <name>Granja Prados Montes</name>
-      <description><![CDATA[lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Granja Prados Montes: Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Red social: https://www.instagram.com/granjapradosmontes/<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96<br>Nombre: Granja Prados Montes<br>Teléfono: ]]></description>
+      <description><![CDATA[lat: 41.0615574712286<br>long: -3.5300623033116296<br>media_url: https://drive.google.com/file/d/1FOzEf9prjRQq0VknIc4gttr6kOEVCPfr/view?usp=sharing<br>icon: 🐑<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino<br>Persona referencia: Ana y Guille<br>Pueblo: Montejo de la Sierra<br>Web: https://www.granjapradosmontes.com/<br>Email: proyectopradosmontes@gmail.com<br>Red social: https://www.instagram.com/granjapradosmontes/<br>Google Maps: https://maps.app.goo.gl/X9Jg6aEMMnsdbod96<br>Nombre: Granja Prados Montes<br>Teléfono: ]]></description>
       <styleUrl>#icon-ci-4</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -529,7 +529,7 @@
           <value>activo</value>
         </Data>
         <Data name="Descripción">
-          <value>Granja Prados Montes: Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino</value>
+          <value>Apicultura, ganadería y agricultura ecológica en Montejo de la Sierra, Madrid. Miel, lana, frutas y verduras ecológicas, y carne de ovino y caprino</value>
         </Data>
         <Data name="Persona referencia">
           <value>Ana y Guille</value>
@@ -684,7 +684,7 @@
     </Placemark>
     <Placemark>
       <name>Rincon Silvestre</name>
-      <description><![CDATA[lat: 41.0450479<br>long: -3.5417813<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 🌿<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.<br>Persona referencia: Carol<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA<br>Nombre: Rincon Silvestre<br>Teléfono: 678424305]]></description>
+      <description><![CDATA[lat: 41.0450479<br>long: -3.5417813<br>media_url: https://drive.google.com/file/d/1oRwDb-2vKr7kd00oCp2iLU0DPaSktlZj/view?usp=sharing<br>icon: 🌿<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.<br>Persona referencia: Carolina Díaz Bueno<br>Pueblo: Prádena del Rincón<br>Web: https://www.rinconsilvestre.net/ <br>Email: fitocosmetica@rinconsilvestre.net <br>Red social: https://www.instagram.com/silvestrerincon/#<br>Google Maps: https://maps.app.goo.gl/2z1G189wiW5kdsWHA<br>Nombre: Rincon Silvestre<br>Teléfono: 678424305]]></description>
       <styleUrl>#icon-ci-8</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -712,7 +712,7 @@
           <value>Pequeño laboratorio de cosmética ecológica dedicado a la elaboración artesanal de productos vegetales y sostenibles, respetuosos con la salud y el medio ambiente.</value>
         </Data>
         <Data name="Persona referencia">
-          <value>Carol</value>
+          <value>Carolina Díaz Bueno</value>
         </Data>
         <Data name="Pueblo">
           <value>Prádena del Rincón</value>
@@ -804,7 +804,7 @@
     </Placemark>
     <Placemark>
       <name>GanadeMad</name>
-      <description><![CDATA[lat: 40.99283107516844<br>long: -3.6385259609858673<br>media_url: https://drive.google.com/file/d/1CWqnKICkrRebicq4vq0ocPFVXgaia-hS/view?usp=sharing<br>icon: 🐄<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Productores locales de carne de vacuno que cuidan de la tierra. Disfruta de una carne de la máxima calidad, criada en extensivo y servida directamente a tu domicilio. 🌿🥩<br>Persona referencia: Esther<br>Pueblo: Sede fiscal Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)<br>Web: https://www.delganaderoatucasa.com/ <br>Email: ganademad@gmail.com<br>Red social: https://www.instagram.com/delganaderoatucasa/ <br>Google Maps: https://maps.app.goo.gl/HRbuczPT1Q9TBHHX7<br>Nombre: GanadeMad<br>Teléfono: 671784732]]></description>
+      <description><![CDATA[lat: 40.99283107516844<br>long: -3.6385259609858673<br>media_url: https://drive.google.com/file/d/1CWqnKICkrRebicq4vq0ocPFVXgaia-hS/view?usp=sharing<br>icon: 🐄<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Productores locales de carne de vacuno que cuidan de la tierra. Disfruta de una carne de la máxima calidad, criada en extensivo y servida directamente a tu domicilio. 🌿🥩<br>Persona referencia: Esther<br>Pueblo: Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)<br>Web: https://www.delganaderoatucasa.com/ <br>Email: ganademad@gmail.com<br>Red social: https://www.instagram.com/eh_madarcos/ <br>Google Maps: https://maps.app.goo.gl/HRbuczPT1Q9TBHHX7<br>Nombre: GanadeMad<br>Teléfono: 671784732]]></description>
       <styleUrl>#icon-ci-10</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -835,7 +835,7 @@
           <value>Esther</value>
         </Data>
         <Data name="Pueblo">
-          <value>Sede fiscal Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)</value>
+          <value>Cooperativa en Buitrago: 2 ganaderos en Prádena (Ismael y Tomás)</value>
         </Data>
         <Data name="Web">
           <value>https://www.delganaderoatucasa.com/ </value>
@@ -844,7 +844,7 @@
           <value>ganademad@gmail.com</value>
         </Data>
         <Data name="Red social">
-          <value>https://www.instagram.com/delganaderoatucasa/ </value>
+          <value>https://www.instagram.com/eh_madarcos/</value>
         </Data>
         <Data name="Google Maps">
           <value>https://maps.app.goo.gl/HRbuczPT1Q9TBHHX7</value>

@@ -172,7 +172,7 @@
     </Placemark>
     <Placemark>
       <name>Cabras la Barda</name>
-      <description><![CDATA[Nombre: Cabras la Barda<br>lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: pink<br>visible: yes<br>Estado: .... <br>Descripción: Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿<br>Persona referencia: Rebecca<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: cabraslabarda@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: ]]></description>
+      <description><![CDATA[Nombre: Cabras la Barda<br>lat: 41.01210558438804<br>long: -3.4450128837411294<br>media_url: https://drive.google.com/file/d/1lyAvcZ1jmvSmVRNp0dpZfeZTeQDe7UVW/view?usp=sharing<br>icon: 🐐<br>color: pink<br>visible: yes<br>Estado: .... <br>Descripción: Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿<br>Persona referencia: Rebeca<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: cabraslabarda@gmail.com<br>Teléfono: <br>Red social: https://www.instagram.com/cabraslabarda/<br>Google Maps: ]]></description>
       <styleUrl>#icon-ci-3-labelson</styleUrl>
       <ExtendedData>
         <Data name="Nombre">
@@ -203,7 +203,7 @@
           <value>Experiencia de pastoreo tradicional: conoce el trabajo del pastor, su valor ambiental y su papel en el paisaje de Puebla de la Sierra. 🐐🌿</value>
         </Data>
         <Data name="Persona referencia">
-          <value>Rebecca y Raúl</value>
+          <value>Rebeca y Raúl</value>
         </Data>
         <Data name="Pueblo">
           <value>Puebla de la Sierra</value>

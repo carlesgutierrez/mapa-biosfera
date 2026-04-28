@@ -135,7 +135,7 @@ html, body {
 
 /* --- Map Header & Legend --- */
 .map-header {
-    pointer-events: auto;
+    pointer-events: none; /* Dejar que los toques pasen al mapa en los huecos */
     background-color: transparent; /* Fondo transparente */
     color: white;
     padding: 10px 15px;
@@ -150,6 +150,7 @@ html, body {
     justify-content: center;
     gap: 15px; /* Espacio entre leyenda y hamburguesa */
     transition: all 0.3s ease;
+    touch-action: none; /* Prevenir gestos del navegador en la cabecera */
 }
 
 .map-header h1 {
@@ -165,6 +166,7 @@ html, body {
     font-size: 0.9em;
     /* width: 100%;  Quitar width 100 para que no fuerce salto */
     flex-wrap: nowrap; /* Intentar no envolver */
+    pointer-events: none;
 }
 
 .legend-item {
@@ -181,6 +183,7 @@ html, body {
     flex-grow: 1;
     min-width: 110px; /* Ancho mínimo para igualar tamaños */
     flex-basis: 0; /* Para que flex-grow funcione equitativamente */
+    pointer-events: auto; /* Solo los botones capturan clicks/gestos */
 }
 
 .legend-item:hover {
@@ -263,6 +266,7 @@ html, body {
     display: flex;
     flex-direction: column;
     box-shadow: -3px 0 15px rgba(0,0,0,0.2);
+    touch-action: none; /* Gestionar toques manualmente o permitir scroll interno */
 }
 
 #info-panel.visible {
@@ -296,6 +300,7 @@ html, body {
     padding: 20px;
     overflow-y: auto;
     flex-grow: 1;
+    touch-action: pan-y; /* Solo permitir scroll vertical interno */
 }
 
 #map-overlay {
@@ -662,7 +667,8 @@ body.high-contrast #legend-all .hc-text {
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header-container {
-        top: 0; /* Pegado arriba */
+        top: 0; /* Restaurar a arriba en vertical */
+        bottom: auto;
         left: 0;
         right: 0;
         width: 100%;
@@ -736,10 +742,11 @@ body.high-contrast #legend-all .hc-text {
         display: none;
     }
 
-    /* Grupo Actividades: Pegado abajo (Footer) */
+    /* Grupo Actividades: Restaurar a abajo en vertical */
     .items-group.group-actividades {
         position: fixed;
-        bottom: 40px; /* Un poco más arriba para dejar espacio al footer real */
+        bottom: 40px; /* Restaurar posición original */
+        top: auto; 
         left: 0;
         width: 100%;
         padding: 10px;
@@ -815,6 +822,7 @@ body.high-contrast #legend-all .hc-text {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none;  /* IE and Edge */
     margin-top: 0; /* Sin margen cuando está cerrado */
+    touch-action: pan-y; /* Permitir scroll vertical, prevenir pinch-to-zoom del navegador */
 }
 
 .items-menu.visible {
@@ -986,10 +994,93 @@ body.high-contrast #legend-all .hc-text {
 
 /* (Eliminado estilos antiguos de borde izquierdo) */
 
-@media (max-width: 600px) and (orientation: portrait) {
-    /*
-    .leaflet-control-zoom {
-        display: none;
+/* --- Media Queries y Ajustes de Orientación --- */
+
+/* Ajustes específicos para móvil en horizontal (Landscape) */
+/* Ajustes específicos para móvil en horizontal (Landscape) */
+@media (orientation: landscape) and (max-height: 600px) {
+    .legend-item {
+        font-size: 0.75em !important;
+        padding: 4px 8px !important;
+        min-width: 90px !important;
     }
-    */
+    
+    #legend-all {
+        padding: 4px !important;
+    }
+
+    .menu-item-btn {
+        font-size: 0.75em !important;
+        padding: 4px 10px !important;
+        gap: 3px !important;
+    }
+
+    .menu-item-btn img {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    /* Mover la leyenda a la parte inferior en horizontal */
+    .map-header-container {
+        top: auto !important;
+        bottom: 5px !important;
+    }
+
+    /* Posicionar el menú general arriba permanentemente para evitar saltos al cerrar */
+    .items-menu {
+        position: fixed !important;
+        top: 10px !important;
+        left: 0 !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        pointer-events: none !important;
+        transition: none !important; /* Quitar saltos de animación */
+    }
+
+    .items-menu.visible {
+        max-height: 50vh !important;
+        opacity: 1 !important;
+        overflow-y: auto !important;
+    }
+
+    .items-group {
+        position: static !important;
+        width: auto !important; /* No ocupar todo el ancho para agruparse juntos */
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        padding: 0 5px !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+        pointer-events: none !important;
+        /* IMPORTANTE: No usar display: flex !important para dejar que JS lo oculte */
+    }
+
+    /* Ocultar títulos de grupo en horizontal para ganar espacio */
+    .items-group-title {
+        display: none !important;
+    }
+
+    .items-group button {
+        pointer-events: auto !important;
+        flex: 0 1 auto !important;
+        margin: 2px !important;
+    }
+    
+    /* Reducir espacio para dejar más área central libre */
+    .map-header {
+        padding: 5px 10px !important;
+        gap: 10px !important;
+    }
+}
+
+/* Fallback para pantallas muy bajitas */
+@media (max-height: 450px) {
+    .legend-item { font-size: 0.7em !important; }
+    .menu-item-btn { font-size: 0.7em !important; }
 }

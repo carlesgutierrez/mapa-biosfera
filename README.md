@@ -31,6 +31,8 @@ El mapa permite visualizar diferentes capas de información, como municipios, pr
 *   **Optimización para Móviles:** Reducción de márgenes y paddings en botones para maximizar el área de mapa visible.
 *   **Mejora en Accesibilidad:** Inclusión de etiquetas de texto (P/A) para el modo de alto contraste en botones que anteriormente eran puramente visuales.
 *   **Sistema de Compartición Nativa:** Uso de `navigator.share` en móviles para una integración fluida con el sistema operativo y fallback directo a WhatsApp.
+*   **Prevención de Zoom Accidental:** Gestión avanzada de eventos táctiles (`touch-action: none` y control de `pointer-events`) y meta viewport para evitar que el navegador aplique zoom sobre la interfaz, asegurando que todos los gestos pasen directamente al mapa.
+*   **Modo Horizontal (Landscape) Optimizado:** Reconfiguración total del layout al girar el móvil. La leyenda se ancla cómodamente en la parte inferior y las listas de opciones se despliegan apiladas en la parte superior, maximizando el área visual del mapa.
 
 ## Cómo Actualizar los Datos del Mapa (KML)
 

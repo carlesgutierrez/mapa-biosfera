@@ -744,7 +744,7 @@
     </Placemark>
     <Placemark>
       <name>Apisquillos</name>
-      <description><![CDATA[lat: 41.011448441922695<br>long: -3.444472806056211<br>media_url: <br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Venta de cabrito de lechal.<br>Persona referencia: Marina y Álvaro<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: <br>Red social: https://www.facebook.com/losapisquillos/<br>Google Maps: https://maps.app.goo.gl/BZdiMMgfUsbKH8vZ6<br>Nombre: Apisquillos<br>Teléfono: 918696004 / 669439648]]></description>
+      <description><![CDATA[lat: 41.011448441922695<br>long: -3.444472806056211<br>media_url: <br>icon: 🐐<br>color: blue<br>visible: yes<br>Estado: activo<br>Descripción: Venta de cabrito de lechal.<br>Persona referencia: Marina y Álvaro<br>Pueblo: Puebla de la Sierra<br>Web: <br>Email: <br>Red social: https://www.facebook.com/losapisquillos/<br>Google Maps: https://maps.app.goo.gl/BZdiMMgfUsbKH8vZ6<br>Nombre: Apisquillos<br>Teléfono: 669439648]]></description>
       <styleUrl>#icon-ci-9</styleUrl>
       <ExtendedData>
         <Data name="lat">
@@ -793,7 +793,7 @@
           <value>Apisquillos</value>
         </Data>
         <Data name="Teléfono">
-          <value>918696004 / 669439648</value>
+          <value>669439648</value>
         </Data>
       </ExtendedData>
       <Point>

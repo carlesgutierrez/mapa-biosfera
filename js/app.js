@@ -350,12 +350,23 @@ function initUI() {
             const url = "https://www.sierradelrincon.org/productos-y-actividades/";
             const text = `Descubre los productos y actividades de la Sierra del Rincón en este mapa interactivo: ${url} #SierraDelRincón #ProductosLocales #Ecoturismo`;
 
-            navigator.clipboard.writeText(text).then(() => {
-                mostrarNotificacion('¡Enlace copiado correctamente!');
-            }).catch(err => {
-                console.error('Error al copiar: ', err);
-                mostrarNotificacion('No se pudo copiar al portapapeles. Por favor, copia el enlace manualmente.');
-            });
+            if (L.Browser.mobile && navigator.share) {
+                navigator.share({
+                    title: 'Reserva de la Biosfera Sierra del Rincón',
+                    text: 'Descubre los productos y actividades de la Sierra del Rincón en este mapa interactivo:',
+                    url: url
+                }).catch(err => console.log('Error al compartir: ', err));
+            } else if (L.Browser.mobile) {
+                const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+                window.open(whatsappUrl, '_blank');
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    mostrarNotificacion('¡Enlace copiado correctamente!');
+                }).catch(err => {
+                    console.error('Error al copiar: ', err);
+                    mostrarNotificacion('No se pudo copiar al portapapeles. Por favor, copia el enlace manualmente.');
+                });
+            }
         });
     }
 
@@ -416,19 +427,9 @@ function initUI() {
             controlsContainer.classList.remove('right-center-controls');
             controlsContainer.classList.add('left-center-controls');
 
-            // Reordenar: Share -> Center -> Contrast -> Fullscreen/NewTab
-            // El usuario pidió: Primero "centrar mapa" y ultimos "abrir en nueva pestaña" o "fullscreen"
-            // Share estaba "el primero de todo".
-            // Vamos a asumir orden visual de arriba a abajo:
-            // 1. Share
-            // 2. Center (Reset)
-            // 3. Contrast
-            // 4. Fullscreen/NewTab
-
             const shareBtn = document.getElementById('share-btn');
             const contrastBtn = document.getElementById('contrast-btn');
 
-            // Append en orden (appendChild mueve el elemento si ya existe)
             if (shareBtn) controlsContainer.appendChild(shareBtn);
             if (resetViewBtn) controlsContainer.appendChild(resetViewBtn);
             if (contrastBtn) controlsContainer.appendChild(contrastBtn);
@@ -436,17 +437,10 @@ function initUI() {
             if (fullscreenNativeBtn) controlsContainer.appendChild(fullscreenNativeBtn);
         }
 
-        // Zoom container ya está a la izquierda por defecto en CSS (.custom-zoom-controls left: 20px)
-        // Si quisiéramos moverlo a la derecha:
         if (zoomContainer && CONFIG.ui.buttonPositions.zoom === 'right') {
             zoomContainer.style.left = 'auto';
             zoomContainer.style.right = '20px';
         }
-    }
-
-    const menuToggleBtn = document.getElementById('menu-toggle-btn');
-    if (menuToggleBtn) {
-        menuToggleBtn.addEventListener('click', toggleItemsMenu);
     }
 }
 
@@ -575,6 +569,14 @@ function createHalo(latlng, isHover = false) {
 
 // --- Lógica de Leyenda y Filtrado ---
 function initLegend() {
+    const btnAll = document.getElementById('legend-all');
+    if (btnAll) {
+        btnAll.classList.add('active');
+        btnAll.addEventListener('click', () => {
+            selectCategory('all');
+        });
+    }
+
     const legendItems = {
         'actividades': document.getElementById('legend-actividades'),
         'productores': document.getElementById('legend-productores')
@@ -585,10 +587,85 @@ function initLegend() {
             element.classList.add('active');
 
             element.addEventListener('click', () => {
-                toggleLayer(key, element);
+                selectCategory(key);
             });
         }
     });
+}
+
+function selectCategory(selectedType) {
+    const types = ['productores', 'actividades'];
+    
+    let isAlreadySelected = false;
+    if (selectedType === 'all') {
+        const allBtn = document.getElementById('legend-all');
+        isAlreadySelected = allBtn && allBtn.classList.contains('active');
+    } else {
+        const btn = document.getElementById(`legend-${selectedType}`);
+        const allBtn = document.getElementById('legend-all');
+        isAlreadySelected = btn && btn.classList.contains('active') && allBtn && !allBtn.classList.contains('active');
+    }
+
+    const menu = document.getElementById('items-menu');
+    if (menu && menu.children.length === 0) {
+        initItemsMenuStructure(); // Esto crea los groupContainers
+    }
+    
+    if (isAlreadySelected) {
+        if (menu) {
+            const isVisible = menu.classList.toggle('visible');
+            if (isVisible) {
+                document.body.classList.add('menu-open');
+            } else {
+                document.body.classList.remove('menu-open');
+            }
+        }
+        return;
+    }
+    
+    types.forEach(type => {
+        const element = document.getElementById(`legend-${type}`);
+        const layer = layerGroups[type];
+        
+        let shouldBeActive = (selectedType === 'all' || type === selectedType);
+        
+        if (shouldBeActive) {
+            if (element) {
+                element.classList.remove('inactive');
+                element.classList.add('active');
+            }
+            if (layer) {
+                sharedClusterGroup.removeLayer(layer); // Evitar duplicados por si acaso
+                sharedClusterGroup.addLayer(layer);
+            }
+        } else {
+            if (element) {
+                element.classList.remove('active');
+                element.classList.add('inactive');
+            }
+            if (layer) {
+                sharedClusterGroup.removeLayer(layer);
+            }
+        }
+        
+        updateItemsGroup(type, shouldBeActive);
+    });
+
+    const btnAll = document.getElementById('legend-all');
+    if (btnAll) {
+        if (selectedType === 'all') {
+            btnAll.classList.add('active');
+            btnAll.classList.remove('inactive');
+        } else {
+            btnAll.classList.remove('active');
+            btnAll.classList.add('inactive');
+        }
+    }
+
+    if (menu && !menu.classList.contains('visible')) {
+        menu.classList.add('visible');
+        document.body.classList.add('menu-open');
+    }
 }
 
 let savedView = null;
@@ -622,25 +699,6 @@ function resetMapView(zoomOffset = 0) {
     toggleMapView();
 }
 
-function toggleLayer(type, element) {
-    const layer = layerGroups[type];
-    if (!layer) return;
-
-    const isActive = element.classList.contains('active');
-
-    if (isActive) {
-        element.classList.remove('active');
-        element.classList.add('inactive');
-        sharedClusterGroup.removeLayer(layer);
-    } else {
-        element.classList.remove('inactive');
-        element.classList.add('active');
-        if (!sharedClusterGroup.hasLayer(layer)) {
-            sharedClusterGroup.addLayer(layer);
-        }
-    }
-    updateItemsGroup(type, !isActive);
-}
 
 // --- Carga de Capas ---
 function loadLayers() {

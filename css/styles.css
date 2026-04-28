@@ -654,6 +654,11 @@ body.high-contrast .legend-item img {
     display: none; /* Ocultar iconos también en leyenda */
 }
 
+/* Mostrar texto P/A del botón Todos en alto contraste */
+body.high-contrast #legend-all .hc-text {
+    display: inline !important;
+}
+
 /* --- Media Queries --- */
 @media (max-width: 600px) {
     .map-header-container {

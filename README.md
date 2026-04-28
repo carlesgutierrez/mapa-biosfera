@@ -18,11 +18,19 @@ El mapa permite visualizar diferentes capas de información, como municipios, pr
 
 ## Características Principales
 
-*   **Visualización Interactiva:** Navegación fluida por el mapa con controles de zoom y desplazamiento.
-*   **Capas de Información:** Activación y desactivación de capas (Productores, Actividades) para personalizar la vista.
+*   **Navegación Simplificada:** Selección rápida entre "Productos" y "Actividades" mediante botones de estilo radio que filtran el mapa y abren el menú lateral automáticamente.
+*   **Visualización Inteligente:** Botón de reset ("Todos") para volver a la vista global de ambas categorías con un solo clic.
 *   **Información Detallada:** Al hacer clic en un punto, se despliega un panel lateral con información completa (descripción, contacto, imágenes, enlaces).
-*   **Diseño Responsivo:** Adaptado para funcionar correctamente tanto en ordenadores de escritorio como en dispositivos móviles.
-*   **Modo Pantalla Completa:** Botón dedicado para abrir el mapa en una nueva pestaña y aprovechar todo el espacio de la pantalla.
+*   **Compartición Avanzada:** Integración con la API nativa de compartición en móviles (WhatsApp, RRSS) y copiado inteligente al portapapeles en escritorio.
+*   **Diseño Responsivo y Accesible:** Adaptado para dispositivos móviles con botones optimizados y modo de Alto Contraste con soporte textual.
+
+## Últimas Actualizaciones
+
+*   **Rediseño de la Leyenda:** Sustitución del menú de hamburguesa por una navegación integrada en los botones de categoría. Ahora, al hacer clic en una categoría, se activa exclusivamente y se despliega la lista de elementos. Al volver a hacer clic en la categoría activa, se pliega/despliega la lista.
+*   **Nuevo Botón "Todos":** Implementación de un botón unificado que permite restaurar la visibilidad de todas las capas y elementos de forma inmediata.
+*   **Optimización para Móviles:** Reducción de márgenes y paddings en botones para maximizar el área de mapa visible.
+*   **Mejora en Accesibilidad:** Inclusión de etiquetas de texto (P/A) para el modo de alto contraste en botones que anteriormente eran puramente visuales.
+*   **Sistema de Compartición Nativa:** Uso de `navigator.share` en móviles para una integración fluida con el sistema operativo y fallback directo a WhatsApp.
 
 ## Cómo Actualizar los Datos del Mapa (KML)
 

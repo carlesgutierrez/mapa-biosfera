@@ -104,6 +104,8 @@ function initMap() {
 
         const tileLayer = L.tileLayer(layerConfig.url, {
             attribution: layerConfig.attribution,
+            maxZoom: layerConfig.maxZoom || 19,
+            maxNativeZoom: layerConfig.maxNativeZoom || 19,
             keepBuffer: 8 // Mantener más teselas en memoria
         });
 

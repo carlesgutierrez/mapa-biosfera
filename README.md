@@ -26,6 +26,7 @@ El mapa permite visualizar diferentes capas de información, como municipios, pr
 
 ## Últimas Actualizaciones
 
+*   **Capas Base sin API Key (Sustitución de CARTO):** Migración de las capas base de CARTO (que pasaron a requerir API key mostrando la marca de agua *API KEY REQUIRED*) a **ESRI World Light Gray** (gratuito y sin registro) y alternativas de **OpenStreetMap**. Se configuró el zoom escalado (`maxNativeZoom: 16`, `maxZoom: 19`) para permitir acercamiento total sin cortes ni mensajes de datos no disponibles.
 *   **Rediseño de la Leyenda:** Sustitución del menú de hamburguesa por una navegación integrada en los botones de categoría. Ahora, al hacer clic en una categoría, se activa exclusivamente y se despliega la lista de elementos. Al volver a hacer clic en la categoría activa, se pliega/despliega la lista.
 *   **Nuevo Botón "Todos":** Implementación de un botón unificado que permite restaurar la visibilidad de todas las capas y elementos de forma inmediata.
 *   **Optimización para Móviles:** Reducción de márgenes y paddings en botones para maximizar el área de mapa visible.
@@ -34,17 +35,13 @@ El mapa permite visualizar diferentes capas de información, como municipios, pr
 *   **Prevención de Zoom Accidental:** Gestión avanzada de eventos táctiles (`touch-action: none` y control de `pointer-events`) y meta viewport para evitar que el navegador aplique zoom sobre la interfaz, asegurando que todos los gestos pasen directamente al mapa.
 *   **Modo Horizontal (Landscape) Optimizado:** Reconfiguración total del layout al girar el móvil. La leyenda se ancla cómodamente en la parte inferior y las listas de opciones se despliegan apiladas en la parte superior, maximizando el área visual del mapa.
 
-## Cómo Actualizar los Datos del Mapa (KML)
+## Mantenimiento y Datos del Mapa
 
-La información que se muestra en el mapa se carga dinámicamente desde archivos **KML** (Keyhole Markup Language). Esto permite actualizar el contenido sin necesidad de modificar el código de la aplicación.
+Históricamente, la aplicación se concibió para cargar la información directamente desde archivos **KML** (`productores/doc.kml`, `actividades/doc.kml` y `municipios/doc.kml`).
 
-1.  **Localizar los archivos:** Los archivos KML se encuentran en las carpetas `productores/` y `actividades/` dentro del directorio del proyecto.
-    *   `productores/doc.kml`: Contiene los datos de los productores.
-    *   `actividades/doc.kml`: Contiene los datos de las actividades.
-2.  **Editar el KML:** Puedes editar estos archivos con cualquier editor de texto o utilizando herramientas como Google Earth Pro.
-    *   Asegúrate de mantener la estructura de etiquetas KML estándar.
-    *   Los campos de datos extendidos (`ExtendedData`) se utilizan para mostrar información adicional en el panel lateral.
-3.  **Imágenes e Iconos:** Si añades nuevos puntos con imágenes o iconos personalizados, asegúrate de subir los archivos correspondientes a las carpetas de imágenes dentro de `productores/` o `actividades/` y referenciarlos correctamente en el KML.
+Actualmente, el flujo de trabajo ha evolucionado:
+*   **Edición más manual y directa:** El mantenimiento actual se realiza de forma más granular y manual sobre la configuración y archivos del proyecto (`js/config.js`, logos circulares en carpetas de recursos, ajustes de estilos, etc.) para tener mayor control visual y de comportamiento.
+*   **Objetivo futuro / Mejora pendiente:** Sería conveniente disponer de una vía automatizada o procedimiento para sincronizar y mantener una versión actualizada y consolidada del archivo KML dentro del propio repositorio con toda la información viva del mapa (facilitando copias de seguridad e interoperabilidad con Google Earth, QGIS u otras herramientas SIG).
 
 ## Cómo Incrustar el Mapa (Iframe)
 

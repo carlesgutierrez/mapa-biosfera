@@ -15,15 +15,17 @@ const CONFIG = {
                 url: 'https://tile.memomaps.de/tilegen/{z}/{x}/{y}.png', // ÖPNVKarte (Transporte público)
                 attribution: '&copy; <a href="https://memomaps.de/">memomaps.de</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
             },
-            // Capa Gris (CartoDB Positron) - Ideal para resaltar iconos
+            // Capa Gris (ESRI World Light Gray) - Ideal para resaltar iconos, sin API key
             gray: {
-                url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+                attribution: '&copy; <a href="https://www.esri.com">Esri</a>, HERE, Garmin, FAO, NOAA, USGS',
+                maxNativeZoom: 16,
+                maxZoom: 19
             },
-            // Capa Voyager (CartoDB Voyager) - Limpia y moderna
+            // Capa Voyager (OpenStreetMap HOT) - Limpia y moderna, sin API key
             voyager: {
-                url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles courtesy of <a href="http://hot.openstreetmap.org/">Humanitarian OpenStreetMap Team</a>'
             }
         },
         // Capa activa por defecto
